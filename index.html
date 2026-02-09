@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEVLANtia | Transformamos sus datos en rentabilidad</title>
+    <meta name="description" content="Desarrollamos herramientas de software quirúrgicas para optimizar el control de stock, automatizar su oficina y monitorear el mercado en tiempo real.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0D9488',
+                            'teal-dark': '#0F766E',
+                            'teal-light': '#14B8A6',
+                            dark: '#111827',
+                            gray: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .teal-gradient {
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+    </style>
+</head>
+<body class="bg-white text-brand-dark font-sans antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 teal-gradient rounded-lg flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-xl">D</span>
+                    </div>
+                    <div>
+                        <span class="block text-xl font-display font-bold tracking-tight text-brand-dark leading-none">DEVLANtia</span>
+                        <span class="block text-[10px] uppercase tracking-[0.2em] text-brand-gray font-semibold">Development Company</span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="#soluciones" class="text-brand-gray hover:text-brand-teal transition-colors">Soluciones</a>
+                    <a href="#nosotros" class="text-brand-gray hover:text-brand-teal transition-colors">Por qué nosotros</a>
+                    <a href="#contacto" class="text-brand-gray hover:text-brand-teal transition-colors">Contacto</a>
+                </div>
+                <div>
+                    <a href="#contacto" class="teal-gradient text-white px-6 py-2.5 rounded-full text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300">
+                        Agendar Demo
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <!-- Background Decorative Elements -->
+            <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] bg-brand-teal/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[400px] h-[400px] bg-brand-teal/10 rounded-full blur-3xl"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center lg:text-left grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-8">
+                        <div class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                            <span class="relative flex h-2 w-2">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-teal opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-teal"></span>
+                            </span>
+                            <span>Sistemas Quirúrgicos B2B</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-brand-dark leading-tight">
+                            DEVLANtia: <span class="text-brand-teal">Transformamos sus datos</span> en rentabilidad
+                        </h1>
+                        <p class="text-lg text-brand-gray max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Desarrollamos herramientas de software quirúrgicas para optimizar el control de stock, automatizar su oficina y monitorear el mercado en tiempo real.
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+                            <a href="#contacto" class="w-full sm:w-auto text-center teal-gradient text-white px-8 py-4 rounded-xl font-bold shadow-lg hover:shadow-brand-teal/30 hover:-translate-y-1 transition-all duration-300">
+                                Agendar Demo Técnica
+                            </a>
+                            <a href="#soluciones" class="w-full sm:w-auto text-center bg-white border-2 border-brand-dark/5 text-brand-dark px-8 py-4 rounded-xl font-bold hover:bg-gray-50 transition-all duration-300">
+                                Ver Soluciones
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative lg:block">
+                        <div class="absolute -inset-4 bg-brand-teal/10 rounded-[2.5rem] blur-2xl animate-pulse"></div>
+                        <div class="relative bg-brand-dark rounded-3xl p-4 shadow-2xl border border-white/10">
+                            <!-- Mockup UI Element -->
+                            <div class="bg-[#1a202c] rounded-2xl overflow-hidden border border-white/5 shadow-inner">
+                                <div class="h-8 bg-brand-dark/50 flex items-center px-4 space-x-2 border-b border-white/5">
+                                    <div class="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
+                                    <div class="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
+                                    <div class="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
+                                </div>
+                                <div class="p-6 space-y-4">
+                                    <div class="h-4 bg-brand-teal/20 w-3/4 rounded-full"></div>
+                                    <div class="grid grid-cols-3 gap-4">
+                                        <div class="h-20 bg-brand-gray/20 rounded-xl border border-white/5"></div>
+                                        <div class="h-20 bg-brand-teal/10 rounded-xl border border-brand-teal/20 relative overflow-hidden">
+                                            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-brand-teal/20"></div>
+                                        </div>
+                                        <div class="h-20 bg-brand-gray/20 rounded-xl border border-white/5"></div>
+                                    </div>
+                                    <div class="h-4 bg-brand-gray/20 w-1/2 rounded-full"></div>
+                                    <div class="space-y-2">
+                                        <div class="h-2 bg-brand-gray/10 w-full rounded-full"></div>
+                                        <div class="h-2 bg-brand-gray/10 w-[90%] rounded-full"></div>
+                                        <div class="h-2 bg-brand-gray/10 w-[95%] rounded-full"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Soluciones a Medida Section -->
+        <section id="soluciones" class="py-20 bg-gray-50 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+                    <h2 class="text-xs uppercase tracking-[0.3em] text-brand-teal font-extrabold">Soluciones Eficientes</h2>
+                    <p class="text-3xl sm:text-4xl font-display font-bold text-brand-dark">Herramientas diseñadas para el resultado económico</p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <!-- Solution Card 1 -->
+                    <div class="group bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-gray-100 h-full flex flex-col">
+                        <div class="w-14 h-14 bg-brand-teal/10 text-brand-teal rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold mb-4 text-brand-dark">Auditoría de Stock Inteligente</h3>
+                        <p class="text-brand-gray leading-relaxed mb-6 flex-grow">
+                            Un sistema que cruza automáticamente existencias teóricas vs. físicas para detectar fugas de capital y errores de carga al instante.
+                        </p>
+                        <div class="pt-4 border-t border-gray-50">
+                            <span class="text-brand-teal font-bold text-sm inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                Optimizar control <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Solution Card 2 -->
+                    <div class="group bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-gray-100 h-full flex flex-col">
+                        <div class="w-14 h-14 bg-brand-teal/10 text-brand-teal rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold mb-4 text-brand-dark">Monitor de Mercado Dinámico</h3>
+                        <p class="text-brand-gray leading-relaxed mb-6 flex-grow">
+                            Herramienta de vigilancia que rastrea precios de la competencia en la web y genera alertas de ajuste de margen para proteger su competitividad.
+                        </p>
+                        <div class="pt-4 border-t border-gray-50">
+                            <span class="text-brand-teal font-bold text-sm inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                Vigilar mercado <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Solution Card 3 -->
+                    <div class="group bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-gray-100 h-full flex flex-col">
+                        <div class="w-14 h-14 bg-brand-teal/10 text-brand-teal rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold mb-4 text-brand-dark">Puentes de Automatización</h3>
+                        <p class="text-brand-gray leading-relaxed mb-6 flex-grow">
+                            Scripts que eliminan la carga manual de datos entre planillas y sistemas, reduciendo el error humano a cero garantizando eficiencia.
+                        </p>
+                        <div class="pt-4 border-t border-gray-50">
+                            <span class="text-brand-teal font-bold text-sm inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                Automatizar ahora <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Por qué elegir DEVLANtia Section -->
+        <section id="nosotros" class="py-20 lg:py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="order-2 lg:order-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                            <div class="space-y-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 border-l-4 border-l-brand-teal">
+                                <h4 class="font-display font-bold text-lg text-brand-dark">Desarrollo Local</h4>
+                                <p class="text-sm text-brand-gray leading-relaxed">Conocemos el ritmo del comercio y la industria en Mendoza. Cercanía y entendimiento real.</p>
+                            </div>
+                            <div class="space-y-4 p-6 bg-gray-50 rounded-2xl border border-gray-100 border-l-4 border-l-brand-teal">
+                                <h4 class="font-display font-bold text-lg text-brand-dark">Privacidad Absoluta</h4>
+                                <p class="text-sm text-brand-gray leading-relaxed">El procesamiento de sus datos es local y seguro; su información nunca sale de su control.</p>
+                            </div>
+                            <div class="sm:col-span-2 space-y-4 p-6 bg-brand-dark text-white rounded-2xl shadow-xl">
+                                <h4 class="font-display font-bold text-lg text-brand-teal">Implementación Ágil</h4>
+                                <p class="text-sm text-gray-300 leading-relaxed">Herramientas diseñadas para integrarse a lo que usted ya usa, sin cambiar su sistema actual. Sin fricción, solo resultados.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-1 lg:order-2 space-y-8">
+                        <h2 class="text-xs uppercase tracking-[0.3em] text-brand-teal font-extrabold text-center lg:text-left">Diferencial Estratégico</h2>
+                        <h3 class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-brand-dark leading-tight text-center lg:text-left">¿Por qué las empresas eligen <span class="text-brand-teal">DEVLANtia</span>?</h3>
+                        <p class="text-lg text-brand-gray leading-relaxed text-center lg:text-left">
+                            No vendemos software genérico. Entramos en su operación, detectamos el cuello de botella y desplegamos la solución que impacta directamente en su margen de ganancia.
+                        </p>
+                        <div class="flex justify-center lg:justify-start">
+                            <div class="flex -space-x-2">
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-200"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-teal-200"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-gray-300"></div>
+                                <div class="w-10 h-10 rounded-full border-2 border-white bg-brand-teal flex items-center justify-center text-[10px] text-white font-bold">+50</div>
+                            </div>
+                            <div class="ml-4 flex items-center">
+                                <p class="text-sm font-bold text-brand-dark italic">Empresas optimizadas</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA / Contact Section -->
+        <section id="contacto" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+            <div class="absolute inset-x-0 bottom-0 top-1/2 teal-gradient opacity-10"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                <div class="max-w-4xl mx-auto bg-white/5 backdrop-blur-xl p-8 lg:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                    <div class="grid lg:grid-cols-2 gap-12 items-start">
+                        <div class="space-y-8">
+                            <h2 class="text-3xl sm:text-4xl font-display font-extrabold tracking-tight">Hablemos de su <span class="text-brand-teal text-gradient italic">próximo salto</span> de eficiencia</h2>
+                            <p class="text-gray-400 leading-relaxed">
+                                Complete el formulario o hable directamente con un consultor técnico para diagnosticar su situación actual.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-brand-teal/20 text-brand-teal rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                                    </div>
+                                    <span class="text-sm font-medium">contacto@devlantia.com</span>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-10 h-10 bg-brand-teal/20 text-brand-teal rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                    </div>
+                                    <span class="text-sm font-medium">Mendoza, Argentina</span>
+                                </div>
+                            </div>
+                            <div class="pt-6">
+                                <a href="https://wa.me/XXXXXXXXXXX" target="_blank" class="inline-flex items-center space-x-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-green-500/20 hover:scale-105 transition-all duration-300 group">
+                                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766a5.772 5.772 0 00-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.171.823-.311.045-.632.072-1.439-.248-1.77-.704-2.87-2.707-2.957-2.825-.088-.119-.715-.951-.715-1.81 0-.859.446-1.277.605-1.442.159-.164.346-.205.461-.205.115 0 .23 0 .331.005.106.005.245-.039.384.298.144.35.49.1.192 1.203.111.396-.135.617-.37.892-.12.141-.247.234-.103.48.144.247.639 1.053 1.371 1.706.942.84 1.737 1.103 1.984 1.226.248.123.393.103.538-.065.144-.168.621-.722.787-.968.167-.247.332-.205.561-.123.229.082 1.455.688 1.706.812.252.123.418.184.479.289.061.106.061.614-.083 1.019z"/></svg>
+                                    <span>Hablar con un consultor técnico</span>
+                                </a>
+                            </div>
+                        </div>
+                        <form class="space-y-4 bg-white/5 p-6 rounded-2xl border border-white/5">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-1 block">Nombre Completo</label>
+                                <input type="text" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal transition-all" placeholder="Juan Pérez">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-1 block">Empresa</label>
+                                <input type="text" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal transition-all" placeholder="Nombre de su negocio">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-1 block">Email Corporativo</label>
+                                <input type="email" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal transition-all" placeholder="juan@empresa.com">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-1 block">Mensaje / Desafío Actual</label>
+                                <textarea rows="3" class="w-full bg-white/10 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal transition-all" placeholder="Cuéntenos qué proceso desea optimizar..."></textarea>
+                            </div>
+                            <button type="submit" class="w-full teal-gradient text-white font-bold py-4 rounded-xl shadow-xl hover:opacity-90 transition-all uppercase tracking-widest text-sm">
+                                Enviar Solicitud
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white py-12 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center space-x-3 mb-8 md:mb-0">
+                    <div class="w-8 h-8 teal-gradient rounded flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">D</span>
+                    </div>
+                    <div>
+                        <span class="block text-lg font-display font-bold text-brand-dark leading-none">DEVLANtia</span>
+                        <span class="block text-[8px] uppercase tracking-widest text-brand-gray">Development Company</span>
+                    </div>
+                </div>
+                <div class="flex space-x-8 text-xs font-bold uppercase tracking-widest text-brand-gray">
+                    <a href="#" class="hover:text-brand-teal transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-brand-teal transition-colors">Términos</a>
+                    <a href="#soluciones" class="hover:text-brand-teal transition-colors">Soluciones</a>
+                </div>
+                <p class="mt-8 md:mt-0 text-sm text-brand-gray">
+                    &copy; 2026 DEVLANtia. Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll behavior
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-lg', 'bg-white/90');
+                header.classList.remove('bg-white/70');
+            } else {
+                header.classList.remove('shadow-lg', 'bg-white/90');
+                header.classList.add('bg-white/70');
+            }
+        });
+    </script>
+</body>
+</html>
