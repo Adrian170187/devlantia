@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditoría de Stock Inteligente | DEVLANTIA Control & Operaciones</title>
+    <meta name="description"
+        content="Sistema de auditoría continua que cruza existencias teóricas vs. físicas para detectar fugas de capital y errores de carga al instante.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0D9488',
+                            'teal-dark': '#0F766E',
+                            'teal-light': '#14B8A6',
+                            dark: '#111827',
+                            gray: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .teal-gradient {
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-brand-dark font-sans antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="transform group-hover:scale-110 transition-transform duration-300">
+                        <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0F766E" fill-opacity="0.1" />
+                        <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
+                        <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
+                        <path d="M24 44V24L4 34L24 44Z" fill="#111827" />
+                        <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.8" />
+                        <path d="M24 4V24L44 14L24 4Z" fill="#14B8A6" />
+                        <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
+                    </svg>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-display font-black tracking-tighter text-brand-dark leading-none">DEVLANTIA</span>
+                        <span class="text-[9px] uppercase tracking-[0.35em] text-brand-teal font-extrabold -mt-0.5">Control de Stock</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="text-brand-gray hover:text-brand-teal transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Volver a DEVLANTIA
+                    </a>
+                    <a href="#articulo" class="text-brand-gray hover:text-brand-teal transition-colors">Fugas Ocultas</a>
+                    <a href="#demo" class="text-brand-gray hover:text-brand-teal transition-colors font-bold text-brand-teal">Simulador de Auditoría</a>
+                    <a href="#comparativa" class="text-brand-gray hover:text-brand-teal transition-colors">Comparativa</a>
+                </div>
+
+                <div>
+                    <a href="#contacto"
+                        class="teal-gradient text-white px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-block shadow-md">
+                        Auditar mi Inventario
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section con Fondo Luminoso de Depósito Moderno -->
+        <section class="relative min-h-[90vh] flex items-center justify-center pt-28 pb-20 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="stock_luxury_bg.jpg" alt="Depósito logístico de vanguardia y luminoso"
+                    class="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.1] transform scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/65 to-brand-dark/40"></div>
+                <div class="absolute inset-0 bg-brand-teal/10 mix-blend-multiply"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white py-12">
+                <div class="inline-flex items-center space-x-2 bg-brand-teal/20 backdrop-blur-md text-brand-teal-light px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6 border border-brand-teal/30">
+                    <span class="w-2 h-2 rounded-full bg-brand-teal-light animate-ping"></span>
+                    <span>Auditoría Continua y Precisión Quirúrgica</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-tight max-w-4xl mx-auto mb-6 drop-shadow-md">
+                    Auditoría de Stock Inteligente: <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">detenga las fugas</span> de capital hoy
+                </h1>
+
+                <p class="text-base sm:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 font-normal drop-shadow">
+                    Cruce automático entre existencias teóricas y conteo físico real. Detecte desvíos, robos hormiga y errores de carga al instante antes de que afecten su balance mensual.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#demo"
+                        class="w-full sm:w-auto teal-gradient text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-brand-teal/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Probar Simulador de Auditoría</span>
+                        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </a>
+                    <a href="#contacto"
+                        class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold transition-all duration-300">
+                        Agendar Diagnóstico Sin Cargo
+                    </a>
+                </div>
+
+                <!-- Métricas Clave -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">0%</div>
+                        <div class="text-xs text-gray-300 font-medium">Error de Carga Manual</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">-85%</div>
+                        <div class="text-xs text-gray-300 font-medium">Tiempo de Relevamiento</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">24/7</div>
+                        <div class="text-xs text-gray-300 font-medium">Alertas de Desviación</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">+12%</div>
+                        <div class="text-xs text-gray-300 font-medium">Margen Neto Protegido</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Explicativa / Blog Editorial -->
+        <section id="articulo" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b border-gray-100 pb-10 mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-teal block mb-2">Informe Operativo B2B</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-brand-dark leading-tight mb-4">
+                        La hemorragia invisible: por qué el inventario mensual en Excel llega siempre tarde
+                    </h2>
+                    <p class="text-base sm:text-lg text-brand-gray leading-relaxed">
+                        En empresas distribuidoras, bodegas, corralones y comercios mayoristas, entre un 3% y un 7% del capital se pierde anualmente por desajustes no detectados a tiempo.
+                    </p>
+                </div>
+
+                <div class="space-y-12 text-brand-gray text-base sm:text-lg leading-relaxed">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            El problema de auditar a fin de mes
+                        </h3>
+                        <p>
+                            Cuando una empresa espera al cierre mensual para hacer recuento general, los desvíos ya ocurrieron hace 20 o 30 días. Es imposible rastrear si la caja faltante se debió a un error de tipeo en el remito de ingreso, una merma no registrada o una fuga no autorizada.
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-brand-teal p-5 rounded-r-xl text-sm sm:text-base text-brand-dark">
+                            <strong>El enfoque DEVLANTIA:</strong> Auditorías cíclicas continuas. El sistema compara automáticamente cada movimiento de venta y despacho contra el stock físico relevado con escáner, notificando discrepancias en el mismo turno de trabajo.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            Conversión automática de unidades de medida
+                        </h3>
+                        <p>
+                            Uno de los errores más costosos es la mezcla de cajas, unidades sueltas, litros y kilos. Si un operario ingresa 10 bultos pero el sistema espera unidades individuales, el balance teórico queda contaminado por meses.
+                        </p>
+                        <p>
+                            Nuestra solución normaliza la carga mediante validación estricta y lectura de códigos de barras, imposibilitando el error humano en los puntos críticos de despacho e ingreso.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            Traducción directa a impacto en pesos ($)
+                        </h3>
+                        <p>
+                            Un desvío de 5 botellas de vino de alta gama no es solo un número: representa una fuga de $150.000 ARS de rentabilidad neta. La plataforma de DEVLANTIA valoriza cada desajuste en tiempo real para que los gerentes y directores tomen decisiones financieras con datos concretos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULADOR INTERACTIVO DE AUDITORÍA -->
+        <section id="demo" class="py-20 bg-gray-100 relative overflow-hidden border-t border-gray-200">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                        <span>Simulador en Tiempo Real</span>
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Panel de Control de Conciliación de Stock
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Pruebe cómo nuestro algoritmo cruza el inventario teórico del sistema contra el conteo físico, detectando anomalías y cuantificando la pérdida monetaria al instante.
+                    </p>
+                </div>
+
+                <!-- Panel Dashboard Mockup -->
+                <div class="bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden max-w-5xl mx-auto">
+                    <div class="bg-brand-dark text-white p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold block">Depósito Central - Sector A</span>
+                            <h3 class="text-xl font-display font-black">Lote de Auditoría #4892</h3>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="simulateScan()" class="teal-gradient text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                                <span>Simular Nuevo Escaneo Físico</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Métricas del Panel -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50 border-b border-gray-200 text-center">
+                        <div>
+                            <span class="text-xs text-gray-500 block">Artículos Conciliados</span>
+                            <span class="text-xl font-display font-bold text-brand-dark">4 / 4 Ítems</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block">Precisión Global</span>
+                            <span id="metric-accuracy" class="text-xl font-display font-bold text-emerald-600">92.4%</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block">Unidades Desviadas</span>
+                            <span id="metric-units" class="text-xl font-display font-bold text-red-600">-12 Unid.</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-gray-500 block">Impacto en Capital</span>
+                            <span id="metric-loss" class="text-xl font-display font-black text-red-600">-$216.000 ARS</span>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Productos -->
+                    <div class="overflow-x-auto p-6">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="text-gray-400 uppercase text-[11px] tracking-wider border-b border-gray-100 pb-3">
+                                    <th class="pb-3">Código & Producto</th>
+                                    <th class="pb-3 text-center">Stock Sistema</th>
+                                    <th class="pb-3 text-center">Conteo Físico</th>
+                                    <th class="pb-3 text-center">Desvío</th>
+                                    <th class="pb-3 text-right">Pérdida / Ganancia</th>
+                                    <th class="pb-3 text-center">Diagnóstico</th>
+                                </tr>
+                            </thead>
+                            <tbody id="audit-table-body" class="divide-y divide-gray-100">
+                                <!-- Filas dinámicas generadas por JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section id="comparativa" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Conteo Manual en Excel vs. Auditoría DEVLANTIA
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        La diferencia entre reaccionar a pérdidas pasadas o prevenirlas en tiempo real.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <thead>
+                            <tr class="bg-brand-dark text-white text-sm">
+                                <th class="p-6 font-display font-bold">Criterio de Control</th>
+                                <th class="p-6 font-display font-bold text-gray-400">Planilla Excel / Recuento Tradicional</th>
+                                <th class="p-6 font-display font-bold text-brand-teal">Auditoría Inteligente DEVLANTIA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm sm:text-base">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Frecuencia de detección</td>
+                                <td class="p-6 text-red-600 font-semibold">Tardía (Cada 30 o 60 días)</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Continua (En cada turno de carga)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Tasa de error de tipeo</td>
+                                <td class="p-6 text-brand-gray">Alta (Errores de ingreso manual)</td>
+                                <td class="p-6 text-brand-teal font-extrabold">0% (Lectura óptica y validación lógica)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Paralización del depósito</td>
+                                <td class="p-6 text-red-600">Requiere frenar ventas o turnos extra</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Sin frenar la operación comercial</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Valorización monetaria</td>
+                                <td class="p-6 text-brand-gray">Compleja de cruzar con listas de costos</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Instantánea en moneda local (ARS/USD)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA y Formulario de Contacto -->
+        <section id="contacto" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-teal/5"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="bg-white/5 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                    <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
+                        <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold">Diagnóstico Quirúrgico</span>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold">
+                            Blinde el stock de su empresa hoy mismo
+                        </h2>
+                        <p class="text-gray-300 text-sm sm:text-base">
+                            Conectamos nuestra herramienta a su sistema actual sin necesidad de migraciones ni cambios traumáticos.
+                        </p>
+                    </div>
+
+                    <form class="space-y-4 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Empresa</label>
+                                <input type="text" placeholder="Nombre de su negocio"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Rubro / Sector</label>
+                                <select class="w-full bg-brand-dark border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                                    <option>Bodega / Distribuidora</option>
+                                    <option>Retail / Supermercado</option>
+                                    <option>Corralón / Materiales</option>
+                                    <option>Fábrica / Industria</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Teléfono / WhatsApp</label>
+                                <input type="tel" placeholder="+54 9 261 ..."
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Cantidad de SKUs aprox.</label>
+                                <input type="number" placeholder="Ej. 1200"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="alert('¡Solicitud recibida! Un ingeniero de DEVLANTIA se comunicará para coordinar la auditoría de diagnóstico.')"
+                            class="w-full teal-gradient text-white font-bold py-4 rounded-xl shadow-xl hover:opacity-90 transition-all uppercase tracking-widest text-sm mt-4">
+                            Solicitar Demo Técnica de Stock
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white py-10 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0D9488" />
+                </svg>
+                <span class="font-display font-black text-brand-dark uppercase tracking-tight text-lg">DEVLANTIA Stock</span>
+            </div>
+            <div class="text-xs text-brand-gray">
+                &copy; 2026 DEVLANTIA. Transformamos sus datos en rentabilidad.
+            </div>
+            <div class="flex space-x-6 text-xs font-bold uppercase tracking-wider text-brand-teal">
+                <a href="index.html" class="hover:underline">Inicio</a>
+                <a href="#articulo" class="hover:underline">Informe</a>
+                <a href="#contacto" class="hover:underline">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica del Simulador de Auditoría -->
+    <script>
+        const stockItems = [
+            { codigo: "SKU-901", nombre: "Vino Gran Malbec Reserva 750ml", sistema: 140, costo: 18000 },
+            { codigo: "SKU-412", nombre: "Aceite de Oliva Extra Virgen 1L", sistema: 85, costo: 9500 },
+            { codigo: "SKU-305", nombre: "Queso Ahumado Gourmet Horma", sistema: 42, costo: 24000 },
+            { codigo: "SKU-772", nombre: "Packs de Cristalería Fina x6", sistema: 30, costo: 32000 }
+        ];
+
+        function simulateScan() {
+            const tableBody = document.getElementById('audit-table-body');
+            let totalLoss = 0;
+            let totalDiffUnits = 0;
+            let totalExpectedUnits = 0;
+            let totalPhysicalUnits = 0;
+
+            tableBody.innerHTML = stockItems.map(item => {
+                // Simulación de desvío aleatorio controlado
+                const variance = Math.floor(Math.random() * 5) - 3; // entre -3 y +1
+                const physical = Math.max(0, item.sistema + variance);
+                const diff = physical - item.sistema;
+                const loss = diff * item.costo;
+
+                totalLoss += loss;
+                totalDiffUnits += diff;
+                totalExpectedUnits += item.sistema;
+                totalPhysicalUnits += physical;
+
+                const isWarning = diff < 0;
+                const statusBadge = isWarning 
+                    ? `<span class="bg-red-100 text-red-700 text-xs font-bold px-2.5 py-1 rounded-full">Fuga Detectada</span>`
+                    : `<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-full">Conciliado</span>`;
+
+                return `
+                    <tr class="hover:bg-gray-50/80 transition">
+                        <td class="py-4">
+                            <span class="text-xs text-gray-400 font-mono block">${item.codigo}</span>
+                            <span class="font-bold text-brand-dark">${item.nombre}</span>
+                        </td>
+                        <td class="py-4 text-center font-semibold text-gray-600">${item.sistema}</td>
+                        <td class="py-4 text-center font-bold text-brand-dark">${physical}</td>
+                        <td class="py-4 text-center font-extrabold ${diff < 0 ? 'text-red-600' : diff > 0 ? 'text-emerald-600' : 'text-gray-400'}">
+                            ${diff > 0 ? '+' : ''}${diff}
+                        </td>
+                        <td class="py-4 text-right font-display font-black ${loss < 0 ? 'text-red-600' : 'text-gray-600'}">
+                            ${loss < 0 ? '-' : ''}$${Math.abs(loss).toLocaleString('es-AR')} ARS
+                        </td>
+                        <td class="py-4 text-center">${statusBadge}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            const accuracy = ((1 - Math.abs(totalDiffUnits) / totalExpectedUnits) * 100).toFixed(1);
+            document.getElementById('metric-accuracy').textContent = `${accuracy}%`;
+            document.getElementById('metric-units').textContent = `${totalDiffUnits} Unid.`;
+            document.getElementById('metric-loss').textContent = `${totalLoss < 0 ? '-' : ''}$${Math.abs(totalLoss).toLocaleString('es-AR')} ARS`;
+        }
+
+        document.addEventListener('DOMContentLoaded', simulateScan);
+    </script>
+</body>
+
+</html>

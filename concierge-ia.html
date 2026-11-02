@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concierge Digital con IA | DEVLANTIA Inteligencia Artificial B2B</title>
+    <meta name="description"
+        content="Asistente virtual multilingüe que automatiza la atención al cliente, gestiona reservas en Google Calendar y facilita la venta directa 24/7.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0D9488',
+                            'teal-dark': '#0F766E',
+                            'teal-light': '#14B8A6',
+                            dark: '#111827',
+                            gray: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .teal-gradient {
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-brand-dark font-sans antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="transform group-hover:scale-110 transition-transform duration-300">
+                        <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0F766E" fill-opacity="0.1" />
+                        <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
+                        <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
+                        <path d="M24 44V24L4 34L24 44Z" fill="#111827" />
+                        <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.8" />
+                        <path d="M24 4V24L44 14L24 4Z" fill="#14B8A6" />
+                        <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
+                    </svg>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-display font-black tracking-tighter text-brand-dark leading-none">DEVLANTIA</span>
+                        <span class="text-[9px] uppercase tracking-[0.35em] text-brand-teal font-extrabold -mt-0.5">Concierge IA</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="text-brand-gray hover:text-brand-teal transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Volver a DEVLANTIA
+                    </a>
+                    <a href="#articulo" class="text-brand-gray hover:text-brand-teal transition-colors">Venta Directa</a>
+                    <a href="#demo" class="text-brand-gray hover:text-brand-teal transition-colors font-bold text-brand-teal">Simulador de Chat</a>
+                    <a href="#comparativa" class="text-brand-gray hover:text-brand-teal transition-colors">Comparativa</a>
+                </div>
+
+                <div>
+                    <a href="#contacto"
+                        class="teal-gradient text-white px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-block shadow-md">
+                        Implementar Concierge
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section con Fondo de Hotel / Bodega Exclusiva Luminosa -->
+        <section class="relative min-h-[90vh] flex items-center justify-center pt-28 pb-20 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="concierge_luxury_bg.jpg" alt="Recepción de hotel boutique y bodega luminosa"
+                    class="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.05] transform scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/65 to-brand-dark/40"></div>
+                <div class="absolute inset-0 bg-brand-teal/10 mix-blend-multiply"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white py-12">
+                <div class="inline-flex items-center space-x-2 bg-brand-teal/20 backdrop-blur-md text-brand-teal-light px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6 border border-brand-teal/30">
+                    <span class="w-2 h-2 rounded-full bg-brand-teal-light animate-ping"></span>
+                    <span>Inteligencia Artificial Especializada</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-tight max-w-4xl mx-auto mb-6 drop-shadow-md">
+                    Concierge Digital con IA: <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">reservas automáticas 24/7</span> sin pagar comisiones
+                </h1>
+
+                <p class="text-base sm:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 font-normal drop-shadow">
+                    Atienda al instante a turistas y clientes en inglés, portugués y español. Nuestro asistente se conecta a su Google Calendar, responde dudas enológicas o médicas y asegura la venta directa.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#demo"
+                        class="w-full sm:w-auto teal-gradient text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-brand-teal/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Interactuar con el Concierge Demo</span>
+                        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </a>
+                    <a href="#contacto"
+                        class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold transition-all duration-300">
+                        Configurar para mi Empresa
+                    </a>
+                </div>
+
+                <!-- Métricas Clave -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">0%</div>
+                        <div class="text-xs text-gray-300 font-medium">Comisión a OTAs / Intermediarios</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">&lt;3 Seg</div>
+                        <div class="text-xs text-gray-300 font-medium">Tiempo de Respuesta 24/7</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">100%</div>
+                        <div class="text-xs text-gray-300 font-medium">Sincronizado con Calendarios</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">4 Idiomas</div>
+                        <div class="text-xs text-gray-300 font-medium">Atención a Turistas Nativos</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Explicativa / Blog Editorial -->
+        <section id="articulo" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b border-gray-100 pb-10 mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-teal block mb-2">Hospitalidad & Venta Directa</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-brand-dark leading-tight mb-4">
+                        Por qué responder 2 horas tarde en WhatsApp le cuesta hasta un tercio de sus reservas
+                    </h2>
+                    <p class="text-base sm:text-lg text-brand-gray leading-relaxed">
+                        El turista contemporáneo consulta a múltiples opciones al mismo tiempo. Quien responde primero con disponibilidad concreta y calidez en su idioma se queda con la reserva.
+                    </p>
+                </div>
+
+                <div class="space-y-12 text-brand-gray text-base sm:text-lg leading-relaxed">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            Recupere el 20% que hoy se llevan las plataformas intermediarias
+                        </h3>
+                        <p>
+                            Portales como Booking, Airbnb o plataformas de tours cobran hasta un 25% de comisión por cada turista que ingresa a su establecimiento. El Concierge Digital convierte a los visitantes de su web o Instagram en ventas directas (D2C), reteniendo el 100% del margen para su negocio.
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-brand-teal p-5 rounded-r-xl text-sm sm:text-base text-brand-dark">
+                            <strong>La ventaja DEVLANTIA:</strong> En lugar de comisiones recurrentes por comensal o huésped, usted abona una implementación fija y retiene toda la ganancia.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            Coordinación en tiempo real con Google Calendar
+                        </h3>
+                        <p>
+                            Los bots convencionales suelen responder mensajes estáticos que terminan en: "Un asesor te atenderá pronto". Nuestro Concierge consulta activamente su agenda en Google Calendar, conoce los cupos exactos para cada turno de degustación o cita médica y bloquea el horario al instante.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            Entrenado con el tono y protocolos de su marca
+                        </h3>
+                        <p>
+                            No suena como un robot frío. Alimentamos al modelo con la historia de su bodega, detalles de añadas, políticas de cancelación, requerimientos de vestimenta y ubicación exacta, brindando una experiencia hospitalaria de primer nivel.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SIMULADOR INTERACTIVO DE CHAT DE CONCIERGE -->
+        <section id="demo" class="py-20 bg-gray-100 relative overflow-hidden border-t border-gray-200">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+                    <span class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                        <span>Simulador en Tiempo Real</span>
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Pruebe el Concierge Digital en Vivo
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Seleccione una consulta típica de un comensal o turista extranjero y observe cómo el asistente resuelve y agenda en segundos.
+                    </p>
+                </div>
+
+                <!-- Mockup de Chat WhatsApp -->
+                <div class="max-w-md mx-auto bg-white rounded-3xl shadow-2xl border border-gray-200 overflow-hidden">
+                    <div class="bg-brand-dark text-white p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="relative">
+                                <div class="w-9 h-9 rounded-full teal-gradient flex items-center justify-center text-xs font-bold">
+                                    🤖
+                                </div>
+                                <span class="w-2.5 h-2.5 bg-emerald-400 border-2 border-brand-dark rounded-full absolute bottom-0 right-0"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-sm leading-tight">Concierge Bodega & Hotel</h4>
+                                <span class="text-[11px] text-brand-teal font-medium">Sincronizado con Google Calendar</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensajes -->
+                    <div id="concierge-chat-messages" class="p-4 h-96 overflow-y-auto bg-gray-50 flex flex-col gap-3 text-xs sm:text-sm">
+                        <!-- Mensaje Inicial -->
+                        <div class="flex items-start gap-2">
+                            <div class="w-6 h-6 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                                🤖
+                            </div>
+                            <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm text-brand-dark leading-relaxed">
+                                ¡Hola! Bienvenido a Finca Los Andes. Soy el Concierge Digital. ¿Desea agendar una degustación guiada o reservar una mesa en nuestro bistro?
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Botones de Interacción Rápida -->
+                    <div class="p-3 bg-white border-t border-gray-100 flex flex-col gap-2">
+                        <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold text-center">Simule una respuesta de comensal:</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <button onclick="triggerConciergeReply('reserva_es', '🍷 Quiero reservar cata de vinos para 2 personas mañana')" class="p-2 border border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-xl transition text-left">
+                                🍷 "Quiero cata para 2 personas mañana"
+                            </button>
+                            <button onclick="triggerConciergeReply('reserva_en', '🇺🇸 Hello! Do you have availability for wine tasting tomorrow in English?')" class="p-2 border border-brand-teal text-brand-teal hover:bg-brand-teal hover:text-white rounded-xl transition text-left">
+                                🇺🇸 "Wine tasting tomorrow in English?"
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section id="comparativa" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Atención Manual Tradicional vs. Concierge IA DEVLANTIA
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Profesionalice la primera impresión de su establecimiento y multiplique sus reservas directas.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <thead>
+                            <tr class="bg-brand-dark text-white text-sm">
+                                <th class="p-6 font-display font-bold">Capacidad</th>
+                                <th class="p-6 font-display font-bold text-gray-400">Atención Manual por WhatsApp</th>
+                                <th class="p-6 font-display font-bold text-brand-teal">Concierge Digital con IA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm sm:text-base">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Horario de Respuesta</td>
+                                <td class="p-6 text-red-600 font-semibold">Limitado a horario de oficina</td>
+                                <td class="p-6 text-brand-teal font-extrabold">24 horas, domingos y feriados</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Gestión de Calendario</td>
+                                <td class="p-6 text-brand-gray">Manual, propenso a sobreventas y cruces</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Google Calendar bloqueado en tiempo real</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Idiomas para Turistas</td>
+                                <td class="p-6 text-brand-gray">Depende del conocimiento del personal</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Inglés, portugués y francés fluido</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Comisión por Reserva</td>
+                                <td class="p-6 text-red-600">Hasta 25% si el cliente reserva por OTAs</td>
+                                <td class="p-6 text-brand-teal font-extrabold">0% comisión (Venta directa para usted)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Formulario de Contacto -->
+        <section id="contacto" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-teal/5"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="bg-white/5 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                    <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
+                        <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold">Implementación en Menos de 10 Días</span>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold">
+                            Active su Concierge Digital hoy mismo
+                        </h2>
+                        <p class="text-gray-300 text-sm sm:text-base">
+                            Entrenamos al modelo con sus folletos, catálogo y disponibilidad y lo integramos a su número de WhatsApp oficial.
+                        </p>
+                    </div>
+
+                    <form class="space-y-4 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Establecimiento</label>
+                                <input type="text" placeholder="Nombre de bodega / hotel"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Tipo de Actividad</label>
+                                <select class="w-full bg-brand-dark border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                                    <option>Bodega & Enoturismo</option>
+                                    <option>Hotel Boutique / Cabañas</option>
+                                    <option>Restaurante de Alta Gama</option>
+                                    <option>Clínica / Consultorios Médicos</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">WhatsApp / Teléfono</label>
+                                <input type="tel" placeholder="+54 9 261 ..."
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Email</label>
+                                <input type="email" placeholder="reservas@finca.com"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="alert('¡Gracias! Un consultor en inteligencia artificial se contactará para armar la demo personalizada con los datos de su local.')"
+                            class="w-full teal-gradient text-white font-bold py-4 rounded-xl shadow-xl hover:opacity-90 transition-all uppercase tracking-widest text-sm mt-4">
+                            Solicitar Demo Funcional de Concierge
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white py-10 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0D9488" />
+                </svg>
+                <span class="font-display font-black text-brand-dark uppercase tracking-tight text-lg">DEVLANTIA Concierge IA</span>
+            </div>
+            <div class="text-xs text-brand-gray">
+                &copy; 2026 DEVLANTIA. Transformamos sus datos en rentabilidad.
+            </div>
+            <div class="flex space-x-6 text-xs font-bold uppercase tracking-wider text-brand-teal">
+                <a href="index.html" class="hover:underline">Inicio</a>
+                <a href="#articulo" class="hover:underline">Hospitalidad</a>
+                <a href="#contacto" class="hover:underline">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica del Simulador de Concierge -->
+    <script>
+        function triggerConciergeReply(type, userText) {
+            const container = document.getElementById('concierge-chat-messages');
+
+            // Mensaje del usuario
+            const userBubble = document.createElement('div');
+            userBubble.className = "flex justify-end";
+            userBubble.innerHTML = `
+                <div class="teal-gradient text-white p-2.5 px-3.5 rounded-2xl rounded-tr-none text-xs sm:text-sm shadow-sm font-medium">
+                    ${userText}
+                </div>
+            `;
+            container.appendChild(userBubble);
+            container.scrollTop = container.scrollHeight;
+
+            // Respuesta del bot tras breve delay
+            setTimeout(() => {
+                let botReply = '';
+                if (type === 'reserva_es') {
+                    botReply = "¡Con gusto! Para mañana tenemos disponibilidad en la Cata Gran Reserva a las 11:30 hs y a las 16:00 hs (incluye recorrido por viñedos y 4 copas con maridaje). ¿Cuál horario prefiere para asentar su reserva en nuestro Google Calendar?";
+                } else {
+                    botReply = "Hello! Yes, we have English-guided wine tastings available tomorrow at 11:30 AM and 4:00 PM. It includes a walk through the vineyards and 4 premium reserve glasses with pairings. Which time works best for you so I can lock the calendar?";
+                }
+
+                const botBubble = document.createElement('div');
+                botBubble.className = "flex items-start gap-2";
+                botBubble.innerHTML = `
+                    <div class="w-6 h-6 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center flex-shrink-0 text-xs font-bold">
+                        🤖
+                    </div>
+                    <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm text-brand-dark leading-relaxed">
+                        ${botReply}
+                    </div>
+                `;
+                container.appendChild(botBubble);
+                container.scrollTop = container.scrollHeight;
+            }, 400);
+        }
+    </script>
+</body>
+
+</html>

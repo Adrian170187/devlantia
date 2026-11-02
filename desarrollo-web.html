@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desarrollo Web & E-Commerce | DEVLANTIA Soluciones Digitales</title>
+    <meta name="description"
+        content="Landing Pages B2B de alta conversión, tiendas online E-Commerce ultra veloces y portales corporativos diseñados para maximizar sus ventas.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0D9488',
+                            'teal-dark': '#0F766E',
+                            'teal-light': '#14B8A6',
+                            dark: '#111827',
+                            gray: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .teal-gradient {
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-brand-dark font-sans antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="transform group-hover:scale-110 transition-transform duration-300">
+                        <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0F766E" fill-opacity="0.1" />
+                        <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
+                        <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
+                        <path d="M24 44V24L4 34L24 44Z" fill="#111827" />
+                        <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.8" />
+                        <path d="M24 4V24L44 14L24 4Z" fill="#14B8A6" />
+                        <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
+                    </svg>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-display font-black tracking-tighter text-brand-dark leading-none">DEVLANTIA</span>
+                        <span class="text-[9px] uppercase tracking-[0.35em] text-brand-teal font-extrabold -mt-0.5">Desarrollo Web</span>
+                    </div>
+                </a>
+
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="text-brand-gray hover:text-brand-teal transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Volver a DEVLANTIA
+                    </a>
+                    <a href="#articulo" class="text-brand-gray hover:text-brand-teal transition-colors">La Regla de Velocidad</a>
+                    <a href="#demo" class="text-brand-gray hover:text-brand-teal transition-colors font-bold text-brand-teal">Calculadora de ROI</a>
+                    <a href="#comparativa" class="text-brand-gray hover:text-brand-teal transition-colors">Comparativa</a>
+                </div>
+
+                <div>
+                    <a href="#contacto"
+                        class="teal-gradient text-white px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-block shadow-md">
+                        Cotizar mi Sitio
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section con Fondo de Espacio de Trabajo Tecnológico Luminoso -->
+        <section class="relative min-h-[90vh] flex items-center justify-center pt-28 pb-20 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <img src="web_luxury_bg.jpg" alt="Espacio de trabajo moderno con luz natural y tecnología"
+                    class="w-full h-full object-cover object-center filter brightness-[0.70] contrast-[1.05] transform scale-105">
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/65 to-brand-dark/40"></div>
+                <div class="absolute inset-0 bg-brand-teal/10 mix-blend-multiply"></div>
+            </div>
+
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white py-12">
+                <div class="inline-flex items-center space-x-2 bg-brand-teal/20 backdrop-blur-md text-brand-teal-light px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6 border border-brand-teal/30">
+                    <span class="w-2 h-2 rounded-full bg-brand-teal-light animate-ping"></span>
+                    <span>Ingeniería Web de Ultra Velocidad</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-tight max-w-4xl mx-auto mb-6 drop-shadow-md">
+                    Desarrollo Web & E-Commerce: <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">sitios que convierten</span> visitas en clientes
+                </h1>
+
+                <p class="text-base sm:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 font-normal drop-shadow">
+                    Deje atrás las plantillas pesadas y sitios que tardan en cargar. Creamos Landing Pages B2B, portales institucionales y tiendas online diseñadas específicamente para captar leads y cerrar ventas.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#demo"
+                        class="w-full sm:w-auto teal-gradient text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-brand-teal/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Calcular Rentabilidad de mi Web</span>
+                        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </a>
+                    <a href="#contacto"
+                        class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold transition-all duration-300">
+                        Solicitar Presupuesto Web
+                    </a>
+                </div>
+
+                <!-- Métricas Clave -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">&lt;0.8s</div>
+                        <div class="text-xs text-gray-300 font-medium">Tiempo de Carga Inicial</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">+42%</div>
+                        <div class="text-xs text-gray-300 font-medium">Conversión de Contacto</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">98/100</div>
+                        <div class="text-xs text-gray-300 font-medium">Google PageSpeed Score</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">100%</div>
+                        <div class="text-xs text-gray-300 font-medium">Optimizado para Móviles</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Explicativa / Blog Editorial -->
+        <section id="articulo" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="border-b border-gray-100 pb-10 mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-teal block mb-2">Estrategia Digital B2B</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-brand-dark leading-tight mb-4">
+                        Por qué un sitio lento destruye más del 50% de su inversión publicitaria
+                    </h2>
+                    <p class="text-base sm:text-lg text-brand-gray leading-relaxed">
+                        En la era de la inmediatez, un retraso de apenas 2 segundos en cargar una web incrementa la tasa de rebote en un 103%.
+                    </p>
+                </div>
+
+                <div class="space-y-12 text-brand-gray text-base sm:text-lg leading-relaxed">
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            El problema de las plantillas genéricas sobrecargadas
+                        </h3>
+                        <p>
+                            Muchas empresas compran plantillas comerciales o sitios construidos con decenas de plugins innecesarios. El resultado es un código pesado que tarda segundos en responder, afectando el posicionamiento orgánico en Google (SEO) y encareciendo el costo por clic en Google Ads y Meta Ads.
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-brand-teal p-5 rounded-r-xl text-sm sm:text-base text-brand-dark">
+                            <strong>La solución DEVLANTIA:</strong> Código limpio, moderno y optimizado a medida con Tailwind CSS y arquitectura estática ultra veloz que responde al instante.
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            Landing Pages quirúrgicas vs. sitios laberínticos
+                        </h3>
+                        <p>
+                            Un cliente potencial no quiere leer la biografía completa de los fundadores; busca saber qué problema le resuelven, cuál es el precio o propuesta de valor y cómo contactarse. Nuestras Landing Pages B2B guían la mirada del visitante con claridad implacable hacia la conversión.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            E-Commerce con cobro directo y sin fricción
+                        </h3>
+                        <p>
+                            Integramos pasarelas de pago locales e internacionales (Mercado Pago, Stripe, transferencias inmediatas) y conexión directa a WhatsApp para resolver dudas en el momento caliente de compra.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CALCULADORA INTERACTIVA DE ROI Y CONVERSIÓN -->
+        <section id="demo" class="py-20 bg-gray-100 relative overflow-hidden border-t border-gray-200">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                        <span>Herramienta Interactiva</span>
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Calculadora de Impacto Económico Web
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Mueva los valores para estimar cuántos ingresos adicionales puede generar optimizando la velocidad y conversión de su sitio.
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-2xl p-8 sm:p-12 border border-gray-200 grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Controles -->
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <label class="text-brand-dark">Visitas Mensuales Estimadas</label>
+                                <span id="val-visitas" class="text-brand-teal">3.000</span>
+                            </div>
+                            <input type="range" id="input-visitas" min="500" max="25000" step="500" value="3000"
+                                class="w-full accent-brand-teal cursor-pointer" oninput="updateCalculator()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <label class="text-brand-dark">Tasa de Conversión Actual</label>
+                                <span id="val-conv" class="text-brand-teal">1.0%</span>
+                            </div>
+                            <input type="range" id="input-conv" min="0.5" max="4.0" step="0.1" value="1.0"
+                                class="w-full accent-brand-teal cursor-pointer" oninput="updateCalculator()">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <label class="text-brand-dark">Ticket Promedio por Cliente (ARS)</label>
+                                <span id="val-ticket" class="text-brand-teal">$45.000</span>
+                            </div>
+                            <input type="range" id="input-ticket" min="10000" max="250000" step="5000" value="45000"
+                                class="w-full accent-brand-teal cursor-pointer" oninput="updateCalculator()">
+                        </div>
+                    </div>
+
+                    <!-- Resultado de Impacto -->
+                    <div class="bg-brand-dark text-white p-8 rounded-2xl shadow-inner border border-white/10 text-center space-y-4">
+                        <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold block">Facturación Adicional Estimada (+40% de optimización)</span>
+                        <div id="result-boost" class="text-3xl sm:text-4xl font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">
+                            +$540.000 ARS / mes
+                        </div>
+                        <p class="text-xs text-gray-300 leading-relaxed">
+                            Al reducir la tasa de rebote y clarificar el llamado a la acción, un incremento de 1.0% a 1.4% en conversión genera clientes directos sin aumentar el gasto en anuncios.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa -->
+        <section id="comparativa" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Plantilla Genérica vs. Desarrollo Quirúrgico DEVLANTIA
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Invierta en un activo digital que trabaje como su mejor vendedor las 24 horas del día.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <thead>
+                            <tr class="bg-brand-dark text-white text-sm">
+                                <th class="p-6 font-display font-bold">Elemento</th>
+                                <th class="p-6 font-display font-bold text-gray-400">Sitio de Plantilla Común</th>
+                                <th class="p-6 font-display font-bold text-brand-teal">Desarrollo Web DEVLANTIA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm sm:text-base">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Velocidad de Carga</td>
+                                <td class="p-6 text-red-600 font-semibold">Lenta (3 a 6 segundos)</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Instantánea (menos de 1 segundo)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Código e Infraestructura</td>
+                                <td class="p-6 text-brand-gray">Sobrecargado de plugins y dependencias</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Código limpio y liviano a medida</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Diseño UX / Conversión</td>
+                                <td class="p-6 text-brand-gray">Visual pero sin estrategia comercial</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Estructura B2B orientada al contacto</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Mantenimiento y Caídas</td>
+                                <td class="p-6 text-red-600">Constantes conflictos por actualizaciones</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Ultra estable y libre de fallos</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Formulario de Contacto -->
+        <section id="contacto" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-teal/5"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="bg-white/5 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                    <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
+                        <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold">Consulte Presupuesto</span>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold">
+                            Lleve la presencia digital de su empresa al siguiente nivel
+                        </h2>
+                        <p class="text-gray-300 text-sm sm:text-base">
+                            Construimos el sitio web que su marca merece con garantía de velocidad y diseño responsive impecable.
+                        </p>
+                    </div>
+
+                    <form class="space-y-4 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Nombre / Empresa</label>
+                                <input type="text" placeholder="Su nombre o negocio"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Tipo de Proyecto</label>
+                                <select class="w-full bg-brand-dark border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                                    <option>Landing Page B2B</option>
+                                    <option>Tienda Online / E-Commerce</option>
+                                    <option>Sitio Institucional Corporativo</option>
+                                    <option>Rediseño de Sitio Existente</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">WhatsApp / Teléfono</label>
+                                <input type="tel" placeholder="+54 9 261 ..."
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Email</label>
+                                <input type="email" placeholder="contacto@empresa.com"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="alert('¡Gracias por su consulta! Le enviaremos una propuesta técnica y cotización a la brevedad.')"
+                            class="w-full teal-gradient text-white font-bold py-4 rounded-xl shadow-xl hover:opacity-90 transition-all uppercase tracking-widest text-sm mt-4">
+                            Solicitar Cotización Web
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white py-10 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0D9488" />
+                </svg>
+                <span class="font-display font-black text-brand-dark uppercase tracking-tight text-lg">DEVLANTIA Web</span>
+            </div>
+            <div class="text-xs text-brand-gray">
+                &copy; 2026 DEVLANTIA. Transformamos sus datos en rentabilidad.
+            </div>
+            <div class="flex space-x-6 text-xs font-bold uppercase tracking-wider text-brand-teal">
+                <a href="index.html" class="hover:underline">Inicio</a>
+                <a href="#articulo" class="hover:underline">Estrategia</a>
+                <a href="#contacto" class="hover:underline">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica de Calculadora de ROI -->
+    <script>
+        function updateCalculator() {
+            const visitas = parseInt(document.getElementById('input-visitas').value);
+            const conv = parseFloat(document.getElementById('input-conv').value);
+            const ticket = parseInt(document.getElementById('input-ticket').value);
+
+            document.getElementById('val-visitas').textContent = visitas.toLocaleString('es-AR');
+            document.getElementById('val-conv').textContent = `${conv.toFixed(1)}%`;
+            document.getElementById('val-ticket').textContent = `$${ticket.toLocaleString('es-AR')}`;
+
+            // Estimación de +40% de mejora en conversión con sitio rápido y UX óptima
+            const convOptima = conv * 1.4;
+            const clientesActuales = (visitas * (conv / 100));
+            const clientesNuevos = (visitas * (convOptima / 100));
+            const extraIngresos = (clientesNuevos - clientesActuales) * ticket;
+
+            document.getElementById('result-boost').textContent = `+$${Math.round(extraIngresos).toLocaleString('es-AR')} ARS / mes`;
+        }
+
+        document.addEventListener('DOMContentLoaded', updateCalculator);
+    </script>
+</body>
+
+</html>

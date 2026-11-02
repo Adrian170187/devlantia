@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú QR para Restaurantes | DEVLANTIA Gastronomía</title>
+    <meta name="description"
+        content="Cartas digitales interactivas para restaurantes, cafés y bodegas. Actualización de precios en tiempo real, fotos HD y pedidos directos sin costos de reimpresión.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            teal: '#0D9488',
+                            'teal-dark': '#0F766E',
+                            'teal-light': '#14B8A6',
+                            dark: '#111827',
+                            gray: '#374151',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .glass-dark {
+            background: rgba(17, 24, 39, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .teal-gradient {
+            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-brand-dark font-sans antialiased overflow-x-hidden">
+
+    <!-- Header / Navbar -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo DEVLANTIA -->
+                <a href="index.html" class="flex items-center space-x-3 group">
+                    <svg width="40" height="40" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        class="transform group-hover:scale-110 transition-transform duration-300">
+                        <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0F766E" fill-opacity="0.1" />
+                        <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
+                        <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
+                        <path d="M24 44V24L4 34L24 44Z" fill="#111827" />
+                        <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.8" />
+                        <path d="M24 4V24L44 14L24 4Z" fill="#14B8A6" />
+                        <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
+                    </svg>
+                    <div class="flex flex-col">
+                        <span class="text-2xl font-display font-black tracking-tighter text-brand-dark leading-none">DEVLANTIA</span>
+                        <span class="text-[9px] uppercase tracking-[0.35em] text-brand-teal font-extrabold -mt-0.5">Gastronomía Tech</span>
+                    </div>
+                </a>
+
+                <!-- Navegación -->
+                <div class="hidden md:flex space-x-8 text-sm font-medium">
+                    <a href="index.html" class="text-brand-gray hover:text-brand-teal transition-colors flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        </svg>
+                        Volver a DEVLANTIA
+                    </a>
+                    <a href="#articulo" class="text-brand-gray hover:text-brand-teal transition-colors">¿Por qué Menú QR?</a>
+                    <a href="#demo" class="text-brand-gray hover:text-brand-teal transition-colors font-bold text-brand-teal">Simulador en Vivo</a>
+                    <a href="#comparativa" class="text-brand-gray hover:text-brand-teal transition-colors">Comparativa</a>
+                </div>
+
+                <div>
+                    <a href="#contacto"
+                        class="teal-gradient text-white px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold hover:shadow-xl hover:scale-105 transition-all duration-300 inline-block shadow-md">
+                        Cotizar Carta Digital
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section con Imagen Lujosa de Restaurante Luminoso -->
+        <section class="relative min-h-[90vh] flex items-center justify-center pt-28 pb-20 overflow-hidden">
+            <!-- Imagen de fondo de restaurante lujoso y muy luminoso -->
+            <div class="absolute inset-0 z-0">
+                <img src="restaurant_luxury_bg.jpg" alt="Interior de restaurante moderno y luminoso"
+                    class="w-full h-full object-cover object-center filter brightness-[0.75] contrast-[1.05] transform scale-105 animate-fade-in">
+                <!-- Gradientes para asegurar perfecta legibilidad y contraste -->
+                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-brand-dark/40"></div>
+                <div class="absolute inset-0 bg-brand-teal/10 mix-blend-multiply"></div>
+            </div>
+
+            <!-- Contenido del Hero -->
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center text-white py-12">
+                <div class="inline-flex items-center space-x-2 bg-brand-teal/20 backdrop-blur-md text-brand-teal-light px-4 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] mb-6 border border-brand-teal/30">
+                    <span class="w-2 h-2 rounded-full bg-brand-teal-light animate-ping"></span>
+                    <span>Revolución Gastronómica Digital</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight leading-tight max-w-4xl mx-auto mb-6 drop-shadow-md">
+                    Menús QR Inteligentes: <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 to-emerald-400">cero costos de papel</span> y más ventas por mesa
+                </h1>
+
+                <p class="text-base sm:text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed mb-10 font-normal drop-shadow">
+                    Actualice precios en segundos sin volver a imprimir nunca más. Brinde a sus comensales una experiencia visual gourmet con fotos en alta definición, filtros de alérgenos y traducción para turistas.
+                </p>
+
+                <!-- Botones de Acción -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+                    <a href="#demo"
+                        class="w-full sm:w-auto teal-gradient text-white px-8 py-4 rounded-xl font-bold shadow-2xl hover:shadow-brand-teal/50 hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Probar Menú Demo en Vivo</span>
+                        <svg class="w-5 h-5 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                        </svg>
+                    </a>
+                    <a href="#contacto"
+                        class="w-full sm:w-auto bg-white/10 hover:bg-white/20 backdrop-blur-md text-white border border-white/20 px-8 py-4 rounded-xl font-bold transition-all duration-300">
+                        Pedir Presupuesto para mi Local
+                    </a>
+                </div>
+
+                <!-- Métricas Destacadas (Glass Badges) -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">-100%</div>
+                        <div class="text-xs text-gray-300 font-medium">Costos de Reimpresión</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">+18%</div>
+                        <div class="text-xs text-gray-300 font-medium">Ticket Promedio con Fotos</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">5 Seg</div>
+                        <div class="text-xs text-gray-300 font-medium">Para Cambiar Precios</div>
+                    </div>
+                    <div class="glass-dark p-4 rounded-2xl border border-white/15 text-center">
+                        <div class="text-2xl sm:text-3xl font-display font-black text-brand-teal-light mb-1">4 Idiomas</div>
+                        <div class="text-xs text-gray-300 font-medium">Traducción para Turistas</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección Explicativa / Formato Blog Editorial -->
+        <section id="articulo" class="py-20 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Encabezado del Artículo -->
+                <div class="border-b border-gray-100 pb-10 mb-12">
+                    <span class="text-xs font-bold uppercase tracking-widest text-brand-teal block mb-2">Informe Gastronómico & Rentabilidad</span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-bold text-brand-dark leading-tight mb-4">
+                        ¿Por qué la carta de papel tradicional está dañando el margen de su restaurante?
+                    </h2>
+                    <p class="text-base sm:text-lg text-brand-gray leading-relaxed">
+                        En un contexto de costos cambiantes y alta afluencia turística, los restaurantes y bares enfrentan pérdidas silenciosas por falta de dinamismo en sus cartas físicas.
+                    </p>
+                </div>
+
+                <!-- Contenido del Artículo -->
+                <div class="space-y-12 text-brand-gray text-base sm:text-lg leading-relaxed">
+                    
+                    <!-- Punto 1 -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">1</span>
+                            El drama de los precios desactualizados y stickers sobre papel
+                        </h3>
+                        <p>
+                            Cada vez que un insumo aumenta, el gastronómico se debate entre dos males: absorber la pérdida o reimprimir cientos de cartas físicas con costos exorbitantes. La solución de emergencia suele ser tachar precios o pegar calcomanías que deterioran la imagen del local.
+                        </p>
+                        <div class="bg-gray-50 border-l-4 border-brand-teal p-5 rounded-r-xl text-sm sm:text-base text-brand-dark">
+                            <strong>La ventaja DEVLANTIA:</strong> Modifique un precio, agregue la sugerencia del chef o marque un plato como "Agotado" desde su propio celular en menos de 10 segundos, sin gastar un solo peso en imprenta.
+                        </div>
+                    </div>
+
+                    <!-- Punto 2 -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">2</span>
+                            El comensal compra con los ojos: la fotografía dispara el ticket
+                        </h3>
+                        <p>
+                            Una carta de papel ofrece poco espacio para imágenes. El comensal lee "Ojo de Bife con salsa de Malbec y papas rústicas" pero no dimensiona la calidad del corte. En cambio, cuando el usuario escanea un Menú QR interactivo y ve una fotografía profesional del plato humeante, la decisión de consumo es instantánea.
+                        </p>
+                        <p>
+                            Estudios gastronómicos demuestran que las cartas visuales aumentan hasta un <strong>18% la venta de entradas, postres y coctelería de autor</strong>, los ítems de mayor margen bruto para el establecimiento.
+                        </p>
+                    </div>
+
+                    <!-- Punto 3 -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">3</span>
+                            Turistas internacionales: elimine la barrera idiomática de sus mozos
+                        </h3>
+                        <p>
+                            Especialmente en Mendoza y las capitales turísticas, los comensales extranjeros (Brasil, EE.UU., Europa) dudan ante platos típicos argentinos. El mozo debe gastar largos minutos traduciendo o el turista pide lo más básico por miedo a equivocarse.
+                        </p>
+                        <p>
+                            Nuestras cartas digitales incluyen selector de idiomas automático en <strong>Español, Inglés y Portugués</strong>, describiendo las notas de los vinos y los puntos de cocción con precisión gastronómica.
+                        </p>
+                    </div>
+
+                    <!-- Punto 4 -->
+                    <div class="space-y-4">
+                        <h3 class="text-2xl font-display font-bold text-brand-dark flex items-center gap-3">
+                            <span class="w-8 h-8 rounded-full bg-brand-teal/10 text-brand-teal flex items-center justify-center text-sm font-bold flex-shrink-0">4</span>
+                            Filtros de alérgenos y dietas especiales (Sin TACC, Vegano)
+                        </h3>
+                        <p>
+                            Hoy los comensales exigen saber qué contiene cada preparación. La carta digital de DEVLANTIA incorpora etiquetas automáticas y filtros rápidos para celíacos, vegetarianos e intolerantes a la lactosa, brindando seguridad total al comensal y protegiendo la reputación del restaurante.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- DEMOSTRACIÓN INTERACTIVA EN VIVO (Simulador de Carta Digital) -->
+        <section id="demo" class="py-20 bg-gray-100 relative overflow-hidden border-t border-gray-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <span class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-brand-teal animate-pulse"></span>
+                        <span>Experiencia en Vivo</span>
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Simulador Interactivo de Menú QR
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Pruebe cómo verían sus comensales la carta desde su smartphone: filtre por categorías, vea fotos y agregue platos a la comanda interactiva.
+                    </p>
+                </div>
+
+                <!-- Mockup de Pantalla Móvil Centrado -->
+                <div class="max-w-md mx-auto bg-white rounded-[2.5rem] shadow-2xl border-8 border-brand-dark overflow-hidden relative">
+                    <!-- Notch / Barra de estado del móvil -->
+                    <div class="bg-brand-dark text-white pt-3 pb-2 px-6 flex justify-between items-center text-xs">
+                        <span class="font-bold">12:45</span>
+                        <div class="flex items-center space-x-1.5">
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M17.778 8.222c-4.296-4.296-11.26-4.296-15.556 0A1 1 0 01.808 6.808c5.076-5.077 13.308-5.077 18.384 0a1 1 0 01-1.414 1.414zM14.95 11.05a7 7 0 00-9.9 0 1 1 0 01-1.414-1.414 9 9 0 0112.728 0 1 1 0 01-1.414 1.414zM12.12 13.88a3 3 0 00-4.24 0 1 1 0 01-1.414-1.414 5 5 0 017.07 0 1 1 0 01-1.414 1.414zM9 17a1 1 0 112 0 1 1 0 01-2 0z" clip-rule="evenodd"/></svg>
+                            <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Cabecera del Restaurante Demo -->
+                    <div class="relative bg-brand-dark text-white p-5 pt-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <span class="text-[10px] uppercase tracking-widest text-brand-teal font-extrabold block">Mesa #08</span>
+                                <h3 class="text-xl font-display font-black leading-tight">Finca & Bistro Los Andes</h3>
+                                <p class="text-xs text-gray-300">Cocina de autor y vinos de montaña</p>
+                            </div>
+                            <div class="bg-white/10 p-2 rounded-xl text-xs flex items-center gap-1 font-bold">
+                                <span>🇦🇷 ES</span>
+                            </div>
+                        </div>
+
+                        <!-- Barra de Categorías con scroll horizontal -->
+                        <div class="flex space-x-2 overflow-x-auto pb-2 scrollbar-none pt-2 text-xs font-semibold">
+                            <button onclick="filterCategory('carnes')" id="btn-carnes" class="px-3.5 py-1.5 rounded-full bg-brand-teal text-white whitespace-nowrap shadow-sm transition">
+                                🥩 Carnes & Fuegos
+                            </button>
+                            <button onclick="filterCategory('pastas')" id="btn-pastas" class="px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 hover:text-white whitespace-nowrap transition">
+                                🍝 Pastas
+                            </button>
+                            <button onclick="filterCategory('vinos')" id="btn-vinos" class="px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 hover:text-white whitespace-nowrap transition">
+                                🍷 Vinos & Tragos
+                            </button>
+                            <button onclick="filterCategory('postres')" id="btn-postres" class="px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 hover:text-white whitespace-nowrap transition">
+                                🍨 Postres
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Lista de Platos en el Móvil -->
+                    <div id="dishes-container" class="p-4 space-y-4 max-h-[460px] overflow-y-auto bg-gray-50">
+                        <!-- Platos se actualizan dinámicamente con JS -->
+                    </div>
+
+                    <!-- Barra Flotante de Comanda / Carrito -->
+                    <div class="p-4 bg-white border-t border-gray-100 flex items-center justify-between shadow-lg">
+                        <div>
+                            <span class="text-[11px] text-gray-500 block">Total Estimado</span>
+                            <span id="cart-total" class="text-lg font-display font-black text-brand-dark">$0</span>
+                        </div>
+                        <button onclick="sendOrderWhatsApp()"
+                            class="teal-gradient text-white text-xs font-bold py-2.5 px-4 rounded-xl shadow-md hover:scale-105 active:scale-95 transition flex items-center gap-1.5">
+                            <span>Pedir a la Barra / WhatsApp</span>
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.101.005.237-.038.371.285.144.346.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.044c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.043.073.043.419-.101.824z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aviso debajo del simulador -->
+                <p class="text-center text-xs text-brand-gray mt-6">
+                    * Este simulador corre sobre la misma tecnología web ultra rápida que recibirán sus comensales al escanear el QR físico en su mesa.
+                </p>
+            </div>
+        </section>
+
+        <!-- Tabla Comparativa: Carta de Papel vs. Menú QR DEVLANTIA -->
+        <section id="comparativa" class="py-20 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+                    <h2 class="text-3xl sm:text-4xl font-display font-extrabold text-brand-dark">
+                        Carta Impresa Tradicional vs. Menú QR DEVLANTIA
+                    </h2>
+                    <p class="text-brand-gray text-base sm:text-lg">
+                        Descubra cómo la digitalización protege su caja y profesionaliza el servicio de salón.
+                    </p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+                        <thead>
+                            <tr class="bg-brand-dark text-white text-sm">
+                                <th class="p-6 font-display font-bold">Característica</th>
+                                <th class="p-6 font-display font-bold text-gray-400">Carta de Papel Tradicional</th>
+                                <th class="p-6 font-display font-bold text-brand-teal">Menú QR Inteligente DEVLANTIA</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm sm:text-base">
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Costo por cambio de precios</td>
+                                <td class="p-6 text-red-600 font-semibold">Alto (Reimpresión total de cartas)</td>
+                                <td class="p-6 text-brand-teal font-extrabold">$0 (Actualización instantánea)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Tiempo de actualización</td>
+                                <td class="p-6 text-brand-gray">De 3 a 7 días hábiles de imprenta</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Inmediato (5 segundos en el celular)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Fotografías gastronómicas</td>
+                                <td class="p-6 text-brand-gray">Mínimas o nulas por límite de espacio</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Fotos HD en cada plato (+18% ticket)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Idiomas para turistas</td>
+                                <td class="p-6 text-brand-gray">Solo español o folletos bilingües caros</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Multi-idioma instantáneo (ES/EN/PT)</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Filtros para celíacos y veganos</td>
+                                <td class="p-6 text-brand-gray">El cliente debe consultar mozo por mozo</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Filtrado en 1 toque por alérgenos</td>
+                            </tr>
+                            <tr class="hover:bg-gray-50/80 transition">
+                                <td class="p-6 font-bold text-brand-dark">Higiene y durabilidad</td>
+                                <td class="p-6 text-red-600">Se desgasta, mancha y transmite bacterias</td>
+                                <td class="p-6 text-brand-teal font-extrabold">Impecable siempre en el móvil del cliente</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA y Formulario de Cotización para Gastronómicos -->
+        <section id="contacto" class="py-20 bg-brand-dark text-white relative overflow-hidden">
+            <div class="absolute inset-0 bg-brand-teal/5"></div>
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="bg-white/5 backdrop-blur-xl p-8 sm:p-12 rounded-[2.5rem] border border-white/10 shadow-2xl">
+                    <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
+                        <span class="text-xs uppercase tracking-widest text-brand-teal font-extrabold">Puesta en Marcha en 48 Horas</span>
+                        <h2 class="text-3xl sm:text-4xl font-display font-extrabold">
+                            Digitalice la carta de su restaurante hoy
+                        </h2>
+                        <p class="text-gray-300 text-sm sm:text-base">
+                            Cargamos su menú inicial, configuramos sus fotos y le entregamos los códigos QR listos para imprimir en madera, acrílico o autoadhesivos para mesa.
+                        </p>
+                    </div>
+
+                    <form class="space-y-4 max-w-xl mx-auto">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Nombre del Local</label>
+                                <input type="text" placeholder="Ej. Bistro La Finca"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Tipo de Negocio</label>
+                                <select class="w-full bg-brand-dark border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                                    <option>Restaurante de Salón</option>
+                                    <option>Cafetería / Bar</option>
+                                    <option>Bodega / Enoturismo</option>
+                                    <option>Pizzería / Cervecería</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Teléfono / WhatsApp</label>
+                                <input type="tel" placeholder="+54 9 261 ..."
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                            <div>
+                                <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Cantidad de Mesas</label>
+                                <input type="number" placeholder="Ej. 25"
+                                    class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="text-xs uppercase tracking-widest text-gray-400 font-bold mb-1 block">Email</label>
+                            <input type="email" placeholder="contacto@mirestaurante.com"
+                                class="w-full bg-white/10 border border-white/15 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-brand-teal text-sm">
+                        </div>
+
+                        <button type="button" onclick="alert('¡Gracias por su interés! Un asesor gastronómico de DEVLANTIA se contactará por WhatsApp para coordinar la demo de su Menú QR.')"
+                            class="w-full teal-gradient text-white font-bold py-4 rounded-xl shadow-xl hover:opacity-90 transition-all uppercase tracking-widest text-sm mt-4">
+                            Solicitar Presupuesto y Demo Personalizada
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white py-10 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center space-x-3">
+                <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#0D9488" />
+                </svg>
+                <span class="font-display font-black text-brand-dark uppercase tracking-tight text-lg">DEVLANTIA Gastronomía</span>
+            </div>
+            <div class="text-xs text-brand-gray">
+                &copy; 2026 DEVLANTIA. Transformamos sus datos en rentabilidad.
+            </div>
+            <div class="flex space-x-6 text-xs font-bold uppercase tracking-wider text-brand-teal">
+                <a href="index.html" class="hover:underline">Página Principal</a>
+                <a href="#articulo" class="hover:underline">Informe</a>
+                <a href="#contacto" class="hover:underline">Contacto</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lógica del Simulador Interactivo de Menú QR -->
+    <script>
+        const menuData = {
+            carnes: [
+                {
+                    id: 1,
+                    nombre: "Ojo de Bife con Costra de Malbec",
+                    desc: "Corte de 450g con papas rústicas al romero y reducción de vino tinto.",
+                    precio: 18500,
+                    img: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Corte Premium", "Recomendado"]
+                },
+                {
+                    id: 2,
+                    nombre: "Vacío Braseado al Horno de Barro",
+                    desc: "Cocción lenta 6hs con verduras asadas y chimichurri fresco.",
+                    precio: 16800,
+                    img: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Sin TACC"]
+                }
+            ],
+            pastas: [
+                {
+                    id: 3,
+                    nombre: "Sorrentinos de Trucha y Ricotta",
+                    desc: "Masa casera con salsa de azafrán, crema y nueces tostadas.",
+                    precio: 14200,
+                    img: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Hecho a Mano"]
+                },
+                {
+                    id: 4,
+                    nombre: "Tagliatelle al Funghi Porcini",
+                    desc: "Hongos de montaña salteados en manteca de hierbas y parmesano reggiano.",
+                    precio: 13500,
+                    img: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Vegetariano"]
+                }
+            ],
+            vinos: [
+                {
+                    id: 5,
+                    nombre: "Gran Malbec Reserva de Finca (Copa)",
+                    desc: "Valle de Uco. Notas a frutos negros, vainilla y taninos sedosos.",
+                    precio: 5200,
+                    img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Copa o Botella"]
+                },
+                {
+                    id: 6,
+                    nombre: "Cocktail Enebro & Pomelo Rosado",
+                    desc: "Gin artesanal local, tónica macerada con romero fresco y frutos rojos.",
+                    precio: 6500,
+                    img: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=400&q=80",
+                    tags: ["De Autor"]
+                }
+            ],
+            postres: [
+                {
+                    id: 7,
+                    nombre: "Volcán de Dulce de Leche",
+                    desc: "Centro fluido acompañado de helado artesanal de crema americana.",
+                    precio: 6800,
+                    img: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80",
+                    tags: ["Postre Estrella"]
+                }
+            ]
+        };
+
+        let currentCategory = 'carnes';
+        let cart = [];
+
+        function renderDishes(category) {
+            const container = document.getElementById('dishes-container');
+            const dishes = menuData[category] || [];
+
+            container.innerHTML = dishes.map(dish => `
+                <div class="bg-white rounded-2xl p-3 border border-gray-100 shadow-sm flex gap-3 hover:shadow-md transition">
+                    <img src="${dish.img}" alt="${dish.nombre}" class="w-20 h-20 rounded-xl object-cover flex-shrink-0">
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-1.5 mb-1">
+                                ${dish.tags.map(t => `<span class="bg-brand-teal/10 text-brand-teal text-[9px] font-bold px-1.5 py-0.5 rounded-full">${t}</span>`).join('')}
+                            </div>
+                            <h4 class="font-display font-bold text-sm text-brand-dark leading-snug">${dish.nombre}</h4>
+                            <p class="text-[11px] text-gray-500 leading-tight line-clamp-2 mt-0.5">${dish.desc}</p>
+                        </div>
+                        <div class="flex items-center justify-between mt-2 pt-1 border-t border-gray-50">
+                            <span class="font-display font-extrabold text-sm text-brand-dark">$${dish.precio.toLocaleString('es-AR')}</span>
+                            <button onclick="addToCart(${dish.id}, '${dish.nombre}', ${dish.precio})"
+                                class="bg-brand-dark hover:bg-brand-teal text-white text-[11px] font-bold px-2.5 py-1 rounded-lg transition active:scale-95">
+                                + Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            const buttons = ['carnes', 'pastas', 'vinos', 'postres'];
+            buttons.forEach(cat => {
+                const btn = document.getElementById(`btn-${cat}`);
+                if (cat === category) {
+                    btn.className = "px-3.5 py-1.5 rounded-full bg-brand-teal text-white whitespace-nowrap shadow-sm transition";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-full bg-white/10 text-gray-300 hover:text-white whitespace-nowrap transition";
+                }
+            });
+            renderDishes(category);
+        }
+
+        function addToCart(id, name, price) {
+            cart.push({ id, name, price });
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').textContent = `$${total.toLocaleString('es-AR')} (${cart.length})`;
+        }
+
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert('Agregue al menos un plato o bebida a la comanda interactiva para probar el pedido.');
+                return;
+            }
+            const orderList = cart.map(i => `- ${i.name} ($${i.price.toLocaleString('es-AR')})`).join('%0A');
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            const message = `Hola! Quiero hacer el siguiente pedido desde el Menú QR de la Mesa #08:%0A%0A${orderList}%0A%0ATotal: $${total.toLocaleString('es-AR')}`;
+            window.open(`https://wa.me/?text=${message}`, '_blank');
+        }
+
+        // Render inicial
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDishes('carnes');
+        });
+    </script>
+</body>
+
+</html>
