@@ -1,12 +1,20 @@
-# 🚀 Integración del Asistente Virtual DEVLANTIA con n8n
+# 🚀 Integración del Asistente Virtual DEVLANTIA con n8n + Ollama AI
 
-Este proyecto incluye una integración interactiva en tiempo real entre la landing page **DEVLANTIA** y la plataforma de automatización **n8n** alojada en [https://n8n.spiderwebargapi.com.ar/](https://n8n.spiderwebargapi.com.ar/).
+Este proyecto incluye una integración interactiva en tiempo real entre la landing page **DEVLANTIA** y la plataforma de automatización **n8n** alojada en [https://n8n.spiderwebargapi.com.ar/](https://n8n.spiderwebargapi.com.ar/), basada en el modelo de **AI Agent (LangChain) + Ollama + Memory**.
 
 ---
 
 ## 📁 Archivos Incluidos
 
-1. **`n8n-devlantia-assistant.json`**: Plantilla oficial del flujo de trabajo (*workflow*) lista para importar en n8n.
+1. **`n8n-devlantia-assistant.json`**: Plantilla oficial del flujo de trabajo (*workflow*) construida con el modelo de LangChain AI Agent + Ollama + Buffer Memory:
+   - **Webhook Chatbot DEVLANTIA** (`n8n-nodes-base.webhook`): Recibe las consultas desde la landing page.
+   - **Armar catálogo DEVLANTIA** (`n8n-nodes-base.code`): Estructura el catálogo completo de las 4 soluciones (Menú QR, Concierge IA, Desarrollo Web, Auditoría de Stock, precios de setup $350k ARS y enlaces a las demos).
+   - **AI Agent** (`@n8n/n8n-nodes-langchain.agent`): Agente conversacional con System Prompt especializado en DEVLANTIA.
+   - **Ollama Chat Model** (`@n8n/n8n-nodes-langchain.lmChatOllama`): Conectado con el modelo `LiquidAI/lfm2.5-350m:latest` y credenciales `Ollama account` (`9hTpdwJqxD2ghaBr`).
+   - **Simple Memory** (`@n8n/n8n-nodes-langchain.memoryBufferWindow`): Memoria contextual por sesión (`sessionId`, ventana de 8 mensajes).
+   - **Formatear Respuesta & Chips** (`n8n-nodes-base.code`): Infiere botones interactivos contextuales (*chips*) según la respuesta generada.
+   - **Responder al Webhook** (`n8n-nodes-base.respondToWebhook`): Devuelve el JSON con cabeceras CORS (`Access-Control-Allow-Origin: *`).
+
 2. **`index.html`**: Frontend interactivo con:
    - Envío asíncrono vía `fetch` al Webhook de n8n.
    - Indicador de estado en vivo (🟢 n8n Live / 🟡 Respaldo IA Local).
@@ -28,26 +36,13 @@ Ingresa a tu instancia de n8n:
 3. Selecciona **Import from File...** (Importar desde archivo).
 4. Elige el archivo **`n8n-devlantia-assistant.json`** ubicado en la carpeta de este proyecto.
 
-### Paso 3: Estructura del Flujo Importado
-El flujo contiene 3 nodos principales listos para funcionar sin requerir ninguna clave de API externa:
-1. **Webhook Chatbot DEVLANTIA**:
-   - Método: `POST`
-   - Path: `devlantia-assistant`
-   - URLs generadas por n8n:
-     - **Producción:** `https://n8n.spiderwebargapi.com.ar/webhook/devlantia-assistant`
-     - **Test:** `https://n8n.spiderwebargapi.com.ar/webhook-test/devlantia-assistant`
-   - CORS habilitado para todos los orígenes (`allowedOrigins: "*"`).
-2. **Cerebro IA & Lógica DEVLANTIA**:
-   - Procesa y normaliza la consulta.
-   - Detecta si el usuario dejó datos de contacto (email o teléfono) y lo etiqueta como Lead.
-   - Responde con la información de las 4 soluciones clave (Menú QR, Concierge IA, Desarrollo Web, Auditoría de Stock, Precios y Demos).
-   - Genera respuestas enriquecidas con enlaces a las páginas simuladoras y botones de acción rápida (*chips*).
-3. **Responder al Chatbot**:
-   - Devuelve la respuesta en formato JSON estructurado con cabeceras CORS.
+### Paso 3: Verificar la Conexión Ollama
+El nodo **Ollama Chat Model** ya viene preconfigurado con tu credencial existente `Ollama account` (`9hTpdwJqxD2ghaBr`) y el modelo `LiquidAI/lfm2.5-350m:latest`.
+*(Si en tu servidor tienes otro modelo instalado en Ollama como `llama3`, `mistral`, etc., puedes seleccionarlo directamente en la lista desplegable del nodo)*.
 
 ### Paso 4: Activar el Flujo
 1. En la esquina superior derecha de n8n, cambia el interruptor de **Inactive** a **Active**.
-2. ¡Listo! A partir de ese momento, el webhook de producción comenzará a recibir y responder en tiempo real.
+2. ¡Listo! A partir de ese momento, el webhook de producción comenzará a responder con Inteligencia Artificial generativa contextualizada con tu catálogo.
 
 ---
 
@@ -59,7 +54,7 @@ El flujo contiene 3 nodos principales listos para funcionar sin requerir ninguna
    - Podrás ver la URL configurada.
    - Puedes hacer clic en **"Probar Ping"** para verificar si n8n responde en ese instante con `200 OK`.
    - Puedes alternar con un clic entre el modo **Producción** (`/webhook/`) y el modo **Test** (`/webhook-test/`) cuando estés depurando en el editor de n8n.
-4. Escribe cualquier mensaje o haz clic en las opciones predeterminadas (por ejemplo: *"Menú QR"*, *"Precios"*, *"Concierge con IA"*).
+4. Escribe cualquier mensaje o haz clic en las opciones predeterminadas (por ejemplo: *"¿Qué soluciones tienen para una bodega?"*, *"¿Cuánto sale el Concierge con IA?"*, *"Menú QR para restaurante"*).
 5. Observa la etiqueta superior:
-   - 🟢 **n8n Live**: Indica que la respuesta provino en directo desde tu servidor n8n.
+   - 🟢 **n8n Live**: Indica que la respuesta provino en directo desde tu servidor n8n con Ollama AI.
    - 🟡 **Respaldo IA Local**: Se activa automáticamente si n8n está pausado o en mantenimiento para garantizar que tu web nunca falle ante un visitante.
