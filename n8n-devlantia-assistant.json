@@ -103,8 +103,7 @@
     },
     {
       "parameters": {
-        "respondWith": "json",
-        "responseBody": "={{ $json }}",
+        "respondWith": "firstIncomingItem",
         "options": {
           "responseHeaders": {
             "entries": [

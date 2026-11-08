@@ -650,11 +650,11 @@
         async function testN8nConnection() {
             const url = (n8nWebhookInput ? n8nWebhookInput.value.trim() : '') || getN8nWebhookUrl();
             localStorage.setItem(N8N_URL_KEY, url);
-            if (n8nStatusMsg) n8nStatusMsg.innerHTML = '<span class="text-amber-400">Verificando conexión con n8n...</span>';
+            if (n8nStatusMsg) n8nStatusMsg.innerHTML = '<span class="text-amber-400">Verificando conexión con n8n y Ollama...</span>';
             
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.signal.abort(), 6000);
+                const timeoutId = setTimeout(() => controller.abort(), 35000);
                 
                 const response = await fetch(url, {
                     method: 'POST',
@@ -671,7 +671,7 @@
 
                 if (response.ok) {
                     if (n8nStatusMsg) {
-                        n8nStatusMsg.innerHTML = '<span class="text-emerald-400 font-bold">🟢 Webhook conectado y activo (200 OK)</span>';
+                        n8nStatusMsg.innerHTML = '<span class="text-emerald-400 font-bold">🟢 Webhook conectado y respondiendo (200 OK)</span>';
                     }
                     updateChatStatus('n8n-live', 'n8n Live &bull; Conectado');
                 } else if (response.status === 404) {
@@ -687,7 +687,7 @@
                 }
             } catch (err) {
                 if (n8nStatusMsg) {
-                    n8nStatusMsg.innerHTML = '<span class="text-rose-400">🔴 Sin respuesta. Flujo inactivo o error de red.</span>';
+                    n8nStatusMsg.innerHTML = '<span class="text-rose-400">🔴 Sin respuesta. Timeout o flujo inactivo.</span>';
                 }
                 updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
             }
@@ -867,15 +867,32 @@
 
             appendUserMessage(text);
             chatHistory.push({ role: 'user', content: text });
-            showTypingIndicator('Consultando con n8n Webhook...');
-            updateChatStatus('connecting', 'Consultando n8n...');
+            showTypingIndicator('DEVLANTIA IA está pensando...');
+            updateChatStatus('connecting', 'Consultando n8n + Ollama...');
 
             const webhookUrl = getN8nWebhookUrl();
             let n8nSuccess = false;
 
+            // Timer para actualizar dinámicamente el mensaje mientras Ollama procesa la respuesta
+            let elapsedSec = 0;
+            const progressInterval = setInterval(() => {
+                elapsedSec += 3;
+                const label = document.getElementById('typing-status-label');
+                if (label) {
+                    if (elapsedSec < 8) {
+                        label.textContent = 'Ollama IA analizando consulta...';
+                    } else if (elapsedSec < 20) {
+                        label.textContent = 'Consultando catálogo y procesando (' + elapsedSec + 's)...';
+                    } else {
+                        label.textContent = 'Generando respuesta técnica (' + elapsedSec + 's)...';
+                    }
+                }
+            }, 3000);
+
             try {
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 7000);
+                // Timeout holgado de 75 segundos para permitir inferencia de Ollama en el servidor
+                const timeoutId = setTimeout(() => controller.abort(), 75000);
 
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
@@ -893,9 +910,17 @@
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
+                clearInterval(progressInterval);
 
                 if (response.ok) {
-                    const data = await response.json();
+                    const responseText = await response.text();
+                    let data;
+                    try {
+                        data = JSON.parse(responseText);
+                    } catch (parseErr) {
+                        data = { output: responseText };
+                    }
+
                     const rawOutput = data.output || data.response || data.text || data.message || '';
                     const parsedHtml = formatMarkdownResponse(rawOutput);
 
@@ -911,20 +936,24 @@
                     }
 
                     const chips = data.chips || [];
-                    appendBotResponse(finalHtml, chips, '⚡ Potenciado por n8n');
+                    appendBotResponse(finalHtml, chips, '⚡ n8n + Ollama AI');
                     chatHistory.push({ role: 'assistant', content: rawOutput });
                     updateChatStatus('n8n-live', 'n8n Live &bull; Asistente Activo');
                     n8nSuccess = true;
+                } else {
+                    console.warn('n8n response no fue OK, HTTP status:', response.status);
                 }
             } catch (err) {
-                console.warn('n8n webhook no disponible o timeout, activando fallback local:', err.message);
+                clearInterval(progressInterval);
+                console.warn('n8n webhook error o timeout (activando fallback local):', err.message);
             }
 
-            // Si n8n no está activo todavía o dio error, activamos el fallback local inmediato
+            // Si n8n no respondió a tiempo o dio error, se activa el fallback local para no dejar esperando al usuario
             if (!n8nSuccess) {
+                clearInterval(progressInterval);
                 updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
                 const label = document.getElementById('typing-status-label');
-                if (label) label.textContent = 'Procesando en modo respaldo local...';
+                if (label) label.textContent = 'Generando respuesta en modo respaldo...';
                 
                 setTimeout(() => {
                     processAIQuery(text);
