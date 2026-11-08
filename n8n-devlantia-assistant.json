@@ -1,0 +1,111 @@
+{
+  "name": "DEVLANTIA - Asistente Virtual IA",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "devlantia-assistant",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "a1b2c3d4-0001-4000-8000-000000000001",
+      "name": "Webhook Chatbot DEVLANTIA",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "devlantia-assistant"
+    },
+    {
+      "parameters": {
+        "language": "javascript",
+        "jsCode": "// Normalizar datos de entrada recibidos por el Webhook\nconst body = $input.item.json.body || $input.item.json || {};\nconst rawMessage = (body.message || body.text || body.prompt || '').trim();\nconst sessionId = body.sessionId || ('session_' + Date.now());\nconst timestamp = body.timestamp || new Date().toISOString();\n\nfunction normalize(str) {\n  return (str || '')\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .replace(/[^a-z0-9\\s]/g, ' ')\n    .trim();\n}\n\nconst norm = normalize(rawMessage);\n\nconst emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/;\nconst phoneRegex = /(\\+?[0-9]{2,3}[-\\s]?)?[0-9]{8,12}/;\nconst hasEmail = emailRegex.test(rawMessage);\nconst hasPhone = phoneRegex.test(rawMessage);\nconst isLead = hasEmail || hasPhone;\n\nlet outputHtml = '';\nlet chips = [];\nlet action = null;\nlet intent = 'general';\n\nif (isLead) {\n  intent = 'lead_captured';\n  outputHtml = `\n    <p class=\"font-bold text-emerald-600 flex items-center gap-1.5\">\n      <span>✅</span> ¡Datos de contacto recibidos con éxito en n8n!\n    </p>\n    <p>Hemos registrado su información en nuestro sistema de <strong>DEVLANTIA</strong>. Un ingeniero de soluciones se pondrá en contacto a la brevedad para coordinar la demo técnica.</p>\n    <p class=\"text-xs text-brand-gray\">Mientras tanto, puede explorar nuestros simuladores interactivos en vivo:</p>\n  `;\n  chips = [\n    { label: '📱 Ver Menú QR', prompt: 'Quiero ver el demo de Menú QR' },\n    { label: '🤖 Probar Concierge IA', prompt: 'Quiero ver el demo de Concierge IA' },\n    { label: '📦 Auditoría de Stock', prompt: 'Quiero ver el demo de Auditoría de Stock' }\n  ];\n  action = {\n    type: 'link',\n    url: '#contacto',\n    label: 'Ir a Confirmación de Contacto'\n  };\n} else if (\n  norm.includes('menu') || norm.includes('qr') || norm.includes('carta') ||\n  norm.includes('restaurante') || norm.includes('resto') || norm.includes('gastro') ||\n  norm.includes('cafeteria') || norm.includes('cafe') || norm.includes('bar') ||\n  norm.includes('pizzeria') || norm.includes('plato') || norm.includes('comida') ||\n  norm.includes('vino') || norm.includes('mozo') || norm.includes('alergeno') ||\n  norm.includes('wine bar') || norm.includes('degustacion')\n) {\n  intent = 'menu_qr';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>📱</span> Menú QR para Gastronomía\n    </p>\n    <p>Diseñamos cartas digitales interactivas de ultra alta velocidad para restaurantes, bodegas, cafeterías y bares:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li><strong class=\"text-brand-dark\">Actualización instantánea:</strong> Modifique precios, pause platos agotados y publique sugerencias del día en segundos sin reimprimir papel.</li>\n      <li><strong class=\"text-brand-dark\">Multilingüe:</strong> Traducción automática para turistas extranjeros (ideal para bodegas y zonas turísticas).</li>\n      <li><strong class=\"text-brand-dark\">Fotografía HD y Pedidos:</strong> Muestre cada plato en alta definición y canalice pedidos directamente a WhatsApp o cocina.</li>\n    </ul>\n  `;\n  chips = [\n    { label: '🍽️ Para Restaurante', prompt: '¿Cómo funciona el Menú QR para restaurantes?' },\n    { label: '🍷 Para Bodega / Wine Bar', prompt: '¿Cómo aplican el Menú QR en bodegas y cartas de vinos?' },\n    { label: '☕ Para Cafetería / Bar', prompt: '¿Tienen opciones de carta QR para cafeterías y bares?' },\n    { label: '💰 Precios y Setup', prompt: '¿Cuánto cuesta implementar el Menú QR?' }\n  ];\n  action = {\n    type: 'link',\n    url: 'menu-qr.html',\n    label: 'Ver Demo & Simulador de Menú QR →'\n  };\n} else if (\n  norm.includes('concierge') || norm.includes('chatbot') || norm.includes('bot') ||\n  norm.includes('ia') || norm.includes('inteligencia artificial') || norm.includes('reserva') ||\n  norm.includes('calendar') || norm.includes('google calendar') || norm.includes('whatsapp') ||\n  norm.includes('hotel') || norm.includes('bodega') || norm.includes('enoturismo') ||\n  norm.includes('turno') || norm.includes('clinica') || norm.includes('consultorio') ||\n  norm.includes('recepcionista') || norm.includes('multilingue') || norm.includes('atencion')\n) {\n  intent = 'concierge_ia';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>🤖</span> Concierge Digital con IA 24/7\n    </p>\n    <p>Asistente virtual autónomo para bodegas, hoteles boutique, clínicas y empresas de servicios:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li><strong class=\"text-brand-dark\">Sincronización con Google Calendar:</strong> Agenda visitas, catas y turnos automáticamente sin solapamientos ni fricción humana.</li>\n      <li><strong class=\"text-brand-dark\">Venta Directa D2C sin comisiones:</strong> Ahorre un 15% a 20% en comisiones que cobran plataformas intermediarias (Booking, TripAdvisor).</li>\n      <li><strong class=\"text-brand-dark\">Atención Multilingüe 24/7:</strong> Responde en español, inglés, portugués y otros idiomas con tono profesional.</li>\n      <li><strong class=\"text-brand-dark\">Setup inicial:</strong> Desde <span class=\"text-brand-teal font-extrabold\">$350.000 ARS</span> llave en mano.</li>\n    </ul>\n  `;\n  chips = [\n    { label: '🍷 Para Bodegas y Turismo', prompt: '¿Cómo ayuda el Concierge IA a una bodega o enoturismo?' },\n    { label: '🏨 Para Hoteles', prompt: '¿Cómo funciona para reservas en hoteles?' },\n    { label: '💼 Para Consultorios', prompt: '¿Cómo gestiona turnos médicos o de estética?' },\n    { label: '💰 Plan y Setup $350k', prompt: '¿Qué incluye el Setup de $350.000 ARS del Concierge?' }\n  ];\n  action = {\n    type: 'link',\n    url: 'concierge-ia.html',\n    label: 'Probar Simulador de Concierge IA →'\n  };\n} else if (\n  norm.includes('web') || norm.includes('pagina') || norm.includes('sitio') ||\n  norm.includes('ecommerce') || norm.includes('e commerce') || norm.includes('tienda') ||\n  norm.includes('landing') || norm.includes('online') || norm.includes('catalogo') ||\n  norm.includes('diseno web') || norm.includes('desarrollo') || norm.includes('seo') ||\n  norm.includes('mercadopago') || norm.includes('stripe') || norm.includes('velocidad') ||\n  norm.includes('lighthouse')\n) {\n  intent = 'web_ecommerce';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>🌐</span> Desarrollo Web & E-Commerce\n    </p>\n    <p>Desarrollamos ingeniería web de alto rendimiento optimizada para la conversión y ventas online:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li><strong class=\"text-brand-dark\">Velocidad sub-segundo:</strong> Tiempos de carga menores a 1s y puntaje Lighthouse >95 para posicionar primero en Google.</li>\n      <li><strong class=\"text-brand-dark\">Landing Pages B2B:</strong> Arquitecturas orientadas a generar leads corporativos y cerrar contratos calificados.</li>\n      <li><strong class=\"text-brand-dark\">E-Commerce D2C:</strong> Tiendas online integradas con MercadoPago, Stripe y pedidos directos por WhatsApp sin comisiones abusivas.</li>\n    </ul>\n  `;\n  chips = [\n    { label: '🛒 Tiendas E-Commerce', prompt: '¿Cómo estructuran una tienda E-Commerce de alta conversión?' },\n    { label: '📄 Landing Pages B2B', prompt: '¿Qué incluye el diseño de una Landing Page B2B?' },\n    { label: '⚡ Velocidad y SEO', prompt: '¿Por qué la velocidad sub-1s mejora las ventas?' },\n    { label: '📅 Agendar Demo Técnica', prompt: 'Quiero agendar una demo técnica para mi web' }\n  ];\n  action = {\n    type: 'link',\n    url: 'desarrollo-web.html',\n    label: 'Ver Calculadora ROI & Showcase Web →'\n  };\n} else if (\n  norm.includes('stock') || norm.includes('inventario') || norm.includes('deposito') ||\n  norm.includes('merma') || norm.includes('perdida') || norm.includes('fuga') ||\n  norm.includes('auditoria') || norm.includes('insumo') || norm.includes('botella') ||\n  norm.includes('almacen') || norm.includes('control') || norm.includes('robo hormiga') ||\n  norm.includes('desvio') || norm.includes('mercaderia')\n) {\n  intent = 'stock_auditing';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>📦</span> Auditoría de Stock Inteligente\n    </p>\n    <p>Blindamos la rentabilidad operativa de bodegas, distribuidoras y comercios detectando desvíos invisibles:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li><strong class=\"text-brand-dark\">Reconciliación en tiempo real:</strong> Cruce automático entre las ventas registradas y el conteo físico de almacén.</li>\n      <li><strong class=\"text-brand-dark\">Detección de mermas y robos:</strong> Identifica de inmediato discrepancias en botellas, productos de alto valor o insumos.</li>\n      <li><strong class=\"text-brand-dark\">Alertas preventivas:</strong> Avisos por WhatsApp o correo antes de quiebres de stock o desvíos críticos.</li>\n    </ul>\n  `;\n  chips = [\n    { label: '📉 Control de Mermas', prompt: '¿Cómo detecta las mermas y desvíos de mercadería?' },\n    { label: '🚨 Alertas Automatizadas', prompt: '¿Cómo funcionan las alertas preventivas de stock?' },\n    { label: '🍷 Para Bodegas y Distribuidoras', prompt: '¿Cómo se aplica la auditoría de stock en bodegas y botellas?' },\n    { label: '📅 Agendar Diagnóstico', prompt: 'Quiero agendar un diagnóstico de stock para mi empresa' }\n  ];\n  action = {\n    type: 'link',\n    url: 'auditoria-stock.html',\n    label: 'Ver Simulador de Auditoría en Vivo →'\n  };\n} else if (\n  norm.includes('precio') || norm.includes('costo') || norm.includes('tarifa') ||\n  norm.includes('cuanto sale') || norm.includes('cuanto cuesta') || norm.includes('cotizacion') ||\n  norm.includes('presupuesto') || norm.includes('setup') || norm.includes('plan') ||\n  norm.includes('350000') || norm.includes('ars') || norm.includes('valor') || norm.includes('inversion')\n) {\n  intent = 'pricing';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>💰</span> Tarifas y Modelos de Inversión\n    </p>\n    <p>En DEVLANTIA trabajamos con esquemas transparentes según el alcance técnico de cada solución:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li><strong class=\"text-brand-dark\">Concierge Digital con IA:</strong> Setup llave en mano desde <span class=\"text-brand-teal font-extrabold\">$350.000 ARS</span> (incluye entrenamiento del modelo, integración con Google Calendar y puesta en marcha).</li>\n      <li><strong class=\"text-brand-dark\">Menú QR Gastronómico:</strong> Planes accesibles por local con actualización continua y soporte técnico.</li>\n      <li><strong class=\"text-brand-dark\">Desarrollo Web & Auditoría:</strong> Cotización a medida basada en volumen de catálogo, sucursales y arquitectura.</li>\n      <li><strong class=\"text-brand-dark\">Demostración Técnica:</strong> 100% gratuita y sin compromiso para calcular el ROI de su negocio.</li>\n    </ul>\n  `;\n  chips = [\n    { label: '🤖 Detalle Setup $350k', prompt: '¿Qué incluye exactamente el Setup de $350.000 ARS?' },\n    { label: '📱 Cotizar Menú QR', prompt: 'Quiero cotizar un Menú QR para mi local' },\n    { label: '🌐 Cotizar Sitio Web', prompt: 'Quiero cotizar el desarrollo de una web o tienda' },\n    { label: '📅 Agendar Demo', prompt: 'Quiero agendar una demo técnica gratuita' }\n  ];\n  action = {\n    type: 'link',\n    url: '#contacto',\n    label: 'Solicitar Cotización y Demo Gratuita →'\n  };\n} else if (\n  norm.includes('contacto') || norm.includes('contactar') || norm.includes('demo') ||\n  norm.includes('reunion') || norm.includes('agendar') || norm.includes('turno') ||\n  norm.includes('hablar') || norm.includes('telefono') || norm.includes('email') ||\n  norm.includes('mail') || norm.includes('asesor') || norm.includes('contratar') ||\n  norm.includes('llamada') || norm.includes('cita') || norm.includes('formulario')\n) {\n  intent = 'contact_demo';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>📅</span> Agendar Demostración Técnica\n    </p>\n    <p>Coordinemos una sesión de 20 minutos con nuestros ingenieros para evaluar su proyecto en detalle:</p>\n    <ul class=\"space-y-1.5 pl-3 list-disc text-gray-600 text-xs sm:text-[13px]\">\n      <li>Análisis de su operación y cuellos de botella actuales.</li>\n      <li>Demostración en vivo de la solución recomendada.</li>\n      <li>Presupuesto cerrado con estimación de retorno de inversión (ROI).</li>\n    </ul>\n    <p class=\"text-xs text-brand-gray pt-1\">Puede escribirnos su correo o teléfono aquí mismo o ir al formulario oficial:</p>\n  `;\n  chips = [\n    { label: '🤖 Probar Concierge IA', prompt: 'Quiero ver el demo de Concierge IA' },\n    { label: '📱 Probar Menú QR', prompt: 'Quiero ver el demo de Menú QR' },\n    { label: '💰 Consultar Precios', prompt: '¿Cuáles son los precios de los servicios?' }\n  ];\n  action = {\n    type: 'link',\n    url: '#contacto',\n    label: 'Ir al Formulario de Contacto →'\n  };\n} else if (\n  norm.includes('quienes son') || norm.includes('devlantia') || norm.includes('empresa') ||\n  norm.includes('donde estan') || norm.includes('mendoza') || norm.includes('argentina') ||\n  norm.includes('experiencia') || norm.includes('que hacen') || norm.includes('historia')\n) {\n  intent = 'company_info';\n  outputHtml = `\n    <p class=\"font-bold text-brand-dark flex items-center gap-1.5 text-sm\">\n      <span>🏛️</span> Sobre DEVLANTIA\n    </p>\n    <p><strong>DEVLANTIA Development Company</strong> es una boutique de desarrollo de software nacida en <strong>Mendoza, Argentina</strong>, con alcance nacional e internacional.</p>\n    <p>Nos especializamos en digitalización de alto nivel para bodegas, hospitalidad premium, gastronomía y empresas que buscan maximizar ventas directas y reducir costos manuales.</p>\n  `;\n  chips = [\n    { label: '🤖 Concierge IA', prompt: 'Contame sobre el Concierge Digital con IA' },\n    { label: '📱 Menú QR', prompt: 'Contame sobre el Menú QR para gastronomía' },\n    { label: '🌐 Desarrollo Web', prompt: 'Contame sobre Desarrollo Web & E-Commerce' },\n    { label: '📦 Auditoría de Stock', prompt: 'Contame sobre Auditoría de Stock Inteligente' }\n  ];\n  action = {\n    type: 'link',\n    url: '#soluciones',\n    label: 'Explorar todas las Soluciones →'\n  };\n} else if (\n  norm === 'hola' || norm.startsWith('hola ') || norm === 'buenas' ||\n  norm.startsWith('buenas ') || norm.includes('buen dia') || norm.includes('buenas tardes') ||\n  norm.includes('buenas noches') || norm === 'hey' || norm.includes('que tal')\n) {\n  intent = 'greeting';\n  outputHtml = `\n    <p>¡Hola! Un gusto saludarle. Soy el asistente inteligente de <strong>DEVLANTIA</strong> conectado a nuestro flujo de <strong>n8n</strong>.</p>\n    <p>Estoy conectado en tiempo real para brindarle respuestas técnicas sobre nuestras soluciones, cotizaciones y agendar demostraciones.</p>\n    <p class=\"text-xs text-brand-gray\">¿Qué desafío de su empresa le gustaría resolver hoy?</p>\n  `;\n  chips = [\n    { label: '📱 Menú QR Gastronómico', prompt: 'Quiero información sobre el Menú QR' },\n    { label: '🤖 Concierge IA para Reservas', prompt: 'Quiero información sobre el Concierge con IA' },\n    { label: '🌐 Desarrollo Web & Tiendas', prompt: 'Quiero información sobre Desarrollo Web' },\n    { label: '📦 Auditoría de Stock', prompt: 'Quiero información sobre Auditoría de Stock' },\n    { label: '💰 Precios y Setup', prompt: '¿Cuáles son los precios de sus servicios?' }\n  ];\n} else if (\n  norm.includes('gracias') || norm.includes('muchas gracias') || norm.includes('adios') ||\n  norm.includes('chau') || norm.includes('hasta luego') || norm.includes('perfecto gracias') ||\n  norm.includes('genial') || norm.includes('excelente')\n) {\n  intent = 'farewell';\n  outputHtml = `\n    <p>¡Ha sido un placer ayudarle! En <strong>DEVLANTIA</strong> estamos a su total disposición para potenciar tecnológicamente su negocio.</p>\n    <p class=\"text-xs text-brand-gray\">Cuando lo desee, puede agendar una demo técnica personalizada de 20 minutos con nuestros especialistas.</p>\n  `;\n  chips = [\n    { label: '💰 Ver Precios', prompt: '¿Cuáles son las tarifas de los servicios?' },\n    { label: '🤖 Probar Concierge IA', prompt: 'Quiero probar el simulador de Concierge IA' },\n    { label: '📱 Probar Menú QR', prompt: 'Quiero probar el simulador de Menú QR' }\n  ];\n  action = {\n    type: 'link',\n    url: '#contacto',\n    label: 'Agendar Demo Técnica →'\n  };\n} else {\n  intent = 'fallback';\n  outputHtml = `\n    <p>He procesado su consulta: <em>\"${rawMessage}\"</em> mediante nuestro flujo de automatización en n8n.</p>\n    <p>En <strong>DEVLANTIA</strong> desarrollamos ingeniería de software a medida adaptada a los requerimientos exactos de cada cliente.</p>\n    <p class=\"text-xs text-brand-gray\">Para orientarle con máxima precisión, elija la especialidad que mejor se adapte a su proyecto o solicite una llamada técnica:</p>\n  `;\n  chips = [\n    { label: '📱 Menú QR Gastronómico', prompt: 'Explicame el servicio de Menú QR' },\n    { label: '🤖 Concierge con IA', prompt: 'Explicame el Concierge Digital con IA' },\n    { label: '🌐 Desarrollo Web & E-Commerce', prompt: 'Explicame el Desarrollo Web & E-Commerce' },\n    { label: '📦 Auditoría de Stock', prompt: 'Explicame la Auditoría de Stock Inteligente' },\n    { label: '💰 Tarifas & Setup', prompt: '¿Cuáles son los precios de los servicios?' }\n  ];\n  action = {\n    type: 'link',\n    url: '#contacto',\n    label: 'Agendar Consulta Técnica Personalizada'\n  };\n}\n\nreturn {\n  json: {\n    output: outputHtml,\n    chips: chips,\n    action: action,\n    intent: intent,\n    sessionId: sessionId,\n    isLead: isLead,\n    timestamp: timestamp,\n    status: 'success',\n    engine: 'n8n'\n  }\n};"
+      },
+      "id": "a1b2c3d4-0002-4000-8000-000000000002",
+      "name": "Cerebro IA & Logica DEVLANTIA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Authorization"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "a1b2c3d4-0003-4000-8000-000000000003",
+      "name": "Responder al Chatbot",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        760,
+        300
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Chatbot DEVLANTIA": {
+      "main": [
+        [
+          {
+            "node": "Cerebro IA & Logica DEVLANTIA",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cerebro IA & Logica DEVLANTIA": {
+      "main": [
+        [
+          {
+            "node": "Responder al Chatbot",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b8f219d3-5596-419b-a01f-0e12fa281b31",
+  "tags": [
+    {
+      "name": "DEVLANTIA"
+    },
+    {
+      "name": "Chatbot"
+    },
+    {
+      "name": "Landing Page"
+    }
+  ]
+}

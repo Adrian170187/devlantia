@@ -454,19 +454,25 @@
                         <div class="w-9 h-9 rounded-full teal-gradient flex items-center justify-center text-sm font-bold shadow-inner">
                             🤖
                         </div>
-                        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-brand-dark rounded-full"></span>
+                        <span id="chat-status-dot" class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-brand-dark rounded-full transition-colors"></span>
                     </div>
                     <div>
                         <div class="flex items-center gap-1.5">
                             <h4 class="font-display font-bold text-sm tracking-tight">Asistente DEVLANTIA</h4>
-                            <span class="text-[9px] uppercase tracking-wider font-extrabold bg-brand-teal/20 text-brand-teal px-1.5 py-0.5 rounded">IA</span>
+                            <span class="text-[9px] uppercase tracking-wider font-extrabold bg-brand-teal/20 text-brand-teal px-1.5 py-0.5 rounded">n8n IA</span>
                         </div>
-                        <span class="text-[11px] text-brand-teal font-medium flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 rounded-full bg-brand-teal animate-pulse"></span> En línea &bull; Motor Inteligente
+                        <span id="chat-status-text" class="text-[11px] text-brand-teal font-medium flex items-center gap-1">
+                            <span id="chat-status-pulse" class="w-1.5 h-1.5 rounded-full bg-brand-teal animate-pulse"></span> n8n Live &bull; Asistente Activo
                         </span>
                     </div>
                 </div>
                 <div class="flex items-center gap-1">
+                    <button type="button" onclick="toggleN8nSettings()" class="text-gray-400 hover:text-white p-1.5 rounded-lg transition-colors" title="Configurar Webhook n8n" aria-label="Configurar Webhook n8n">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
                     <button type="button" onclick="initChat()" class="text-gray-400 hover:text-white p-1.5 rounded-lg transition-colors" title="Reiniciar chat" aria-label="Reiniciar chat">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -477,6 +483,34 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
+                </div>
+            </div>
+
+            <!-- Panel Desplegable de Configuración n8n -->
+            <div id="n8n-settings-panel" class="hidden bg-slate-900 text-white p-3 border-b border-slate-700 text-xs flex-shrink-0">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="font-bold text-brand-teal flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span> Conexión n8n Webhook
+                    </span>
+                    <button type="button" onclick="toggleN8nSettings()" class="text-gray-400 hover:text-white p-0.5 rounded text-sm leading-none">&times;</button>
+                </div>
+                <div class="space-y-2">
+                    <div>
+                        <label class="text-[10px] text-gray-400 block mb-1">Webhook Endpoint:</label>
+                        <input id="n8n-webhook-url" type="text"
+                            value="https://n8n.spiderwebargapi.com.ar/webhook/devlantia-assistant"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-[11px] text-white focus:outline-none focus:ring-1 focus:ring-brand-teal font-mono">
+                    </div>
+                    <div class="flex items-center justify-between gap-1.5 pt-0.5">
+                        <div class="flex items-center gap-1">
+                            <button type="button" onclick="setN8nWebhookMode('prod')" class="px-2 py-1 bg-slate-800 hover:bg-brand-teal text-[10px] rounded border border-slate-700 hover:border-brand-teal transition">Producción</button>
+                            <button type="button" onclick="setN8nWebhookMode('test')" class="px-2 py-1 bg-slate-800 hover:bg-brand-teal text-[10px] rounded border border-slate-700 hover:border-brand-teal transition">Test (Editor)</button>
+                        </div>
+                        <button type="button" id="btn-test-n8n" onclick="testN8nConnection()" class="teal-gradient text-white px-2.5 py-1 rounded text-[10px] font-bold shadow-sm hover:opacity-90 transition">
+                            Probar Ping
+                        </button>
+                    </div>
+                    <div id="n8n-status-msg" class="text-[10px] text-gray-400 italic pt-0.5"></div>
                 </div>
             </div>
 
@@ -564,13 +598,114 @@
             }
         });
 
-        // Chatbot Inteligente con IA DEVLANTIA
+        // Chatbot Inteligente con n8n Webhook & Respaldo IA DEVLANTIA
         const chatWindow = document.getElementById('chat-window');
         const chatMessages = document.getElementById('chat-messages');
         const chatOpenIcon = document.getElementById('chat-open-icon');
         const chatCloseIcon = document.getElementById('chat-close-icon');
         const chatUserInput = document.getElementById('chat-user-input');
+        const chatStatusDot = document.getElementById('chat-status-dot');
+        const chatStatusText = document.getElementById('chat-status-text');
+        const n8nSettingsPanel = document.getElementById('n8n-settings-panel');
+        const n8nWebhookInput = document.getElementById('n8n-webhook-url');
+        const n8nStatusMsg = document.getElementById('n8n-status-msg');
+
+        const N8N_URL_KEY = 'devlantia_n8n_webhook_url';
+        const DEFAULT_N8N_PROD_URL = 'https://n8n.spiderwebargapi.com.ar/webhook/devlantia-assistant';
+        const DEFAULT_N8N_TEST_URL = 'https://n8n.spiderwebargapi.com.ar/webhook-test/devlantia-assistant';
+        
         let chatInitialized = false;
+        let chatHistory = [];
+        let chatSessionId = sessionStorage.getItem('devlantia_chat_session') || ('session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 7));
+        sessionStorage.setItem('devlantia_chat_session', chatSessionId);
+
+        // Obtener URL configurada del Webhook
+        function getN8nWebhookUrl() {
+            return localStorage.getItem(N8N_URL_KEY) || DEFAULT_N8N_PROD_URL;
+        }
+
+        function setN8nWebhookMode(mode) {
+            const url = (mode === 'test') ? DEFAULT_N8N_TEST_URL : DEFAULT_N8N_PROD_URL;
+            if (n8nWebhookInput) n8nWebhookInput.value = url;
+            localStorage.setItem(N8N_URL_KEY, url);
+            if (n8nStatusMsg) {
+                n8nStatusMsg.innerHTML = `<span class="text-brand-teal">Modo cambiado a: ${mode === 'test' ? 'Test (Editor n8n)' : 'Producción'}</span>`;
+            }
+        }
+
+        function toggleN8nSettings() {
+            if (!n8nSettingsPanel) return;
+            const isHidden = n8nSettingsPanel.classList.contains('hidden');
+            if (isHidden) {
+                if (n8nWebhookInput) n8nWebhookInput.value = getN8nWebhookUrl();
+                n8nSettingsPanel.classList.remove('hidden');
+            } else {
+                if (n8nWebhookInput && n8nWebhookInput.value.trim()) {
+                    localStorage.setItem(N8N_URL_KEY, n8nWebhookInput.value.trim());
+                }
+                n8nSettingsPanel.classList.add('hidden');
+            }
+        }
+
+        async function testN8nConnection() {
+            const url = (n8nWebhookInput ? n8nWebhookInput.value.trim() : '') || getN8nWebhookUrl();
+            localStorage.setItem(N8N_URL_KEY, url);
+            if (n8nStatusMsg) n8nStatusMsg.innerHTML = '<span class="text-amber-400">Verificando conexión con n8n...</span>';
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.signal.abort(), 6000);
+                
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: 'ping',
+                        sessionId: chatSessionId,
+                        test: true,
+                        timestamp: new Date().toISOString()
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    if (n8nStatusMsg) {
+                        n8nStatusMsg.innerHTML = '<span class="text-emerald-400 font-bold">🟢 Webhook conectado y activo (200 OK)</span>';
+                    }
+                    updateChatStatus('n8n-live', 'n8n Live &bull; Conectado');
+                } else if (response.status === 404) {
+                    if (n8nStatusMsg) {
+                        n8nStatusMsg.innerHTML = '<span class="text-amber-400">🟡 Webhook no activo (404). Activa el flujo en n8n o usa Test.</span>';
+                    }
+                    updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
+                } else {
+                    if (n8nStatusMsg) {
+                        n8nStatusMsg.innerHTML = `<span class="text-rose-400">🔴 Error HTTP ${response.status}. Revisa n8n.</span>`;
+                    }
+                    updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
+                }
+            } catch (err) {
+                if (n8nStatusMsg) {
+                    n8nStatusMsg.innerHTML = '<span class="text-rose-400">🔴 Sin respuesta. Flujo inactivo o error de red.</span>';
+                }
+                updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
+            }
+        }
+
+        function updateChatStatus(state, labelText) {
+            if (!chatStatusText) return;
+            if (state === 'n8n-live') {
+                if (chatStatusDot) chatStatusDot.className = 'absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-brand-dark rounded-full transition-colors';
+                chatStatusText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> ${labelText || 'n8n Live &bull; Asistente'}`;
+            } else if (state === 'fallback') {
+                if (chatStatusDot) chatStatusDot.className = 'absolute bottom-0 right-0 w-2.5 h-2.5 bg-amber-400 border-2 border-brand-dark rounded-full transition-colors';
+                chatStatusText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span> ${labelText || 'Respaldo IA Local'}`;
+            } else if (state === 'connecting') {
+                if (chatStatusDot) chatStatusDot.className = 'absolute bottom-0 right-0 w-2.5 h-2.5 bg-brand-teal border-2 border-brand-dark rounded-full animate-ping';
+                chatStatusText.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-brand-teal animate-pulse"></span> ${labelText || 'Consultando n8n...'}`;
+            }
+        }
 
         function toggleChat() {
             const isHidden = chatWindow.classList.contains('hidden');
@@ -601,7 +736,7 @@
             }
         }
 
-        function showTypingIndicator() {
+        function showTypingIndicator(customStatus) {
             hideTypingIndicator();
             const indicator = document.createElement('div');
             indicator.id = 'chat-typing-indicator';
@@ -616,7 +751,7 @@
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-teal animate-bounce" style="animation-delay: 150ms"></span>
                         <span class="w-1.5 h-1.5 rounded-full bg-brand-teal animate-bounce" style="animation-delay: 300ms"></span>
                     </div>
-                    <span class="text-[11px] text-gray-400 font-medium">DEVLANTIA IA está pensando...</span>
+                    <span id="typing-status-label" class="text-[11px] text-gray-400 font-medium">${customStatus || 'Conectando con n8n...'}</span>
                 </div>
             `;
             chatMessages.appendChild(indicator);
@@ -640,7 +775,7 @@
             scrollToBottom();
         }
 
-        function appendBotResponse(htmlContent, chips = []) {
+        function appendBotResponse(htmlContent, chips = [], badge = null) {
             hideTypingIndicator();
             const botMsg = document.createElement('div');
             botMsg.className = 'flex flex-col gap-2.5';
@@ -650,13 +785,18 @@
                 chipsHtml = `
                     <div class="flex flex-wrap gap-1.5 pt-1 pl-9">
                         ${chips.map(chip => `
-                            <button type="button" onclick="sendQuickPrompt('${escapeHtml(chip.prompt)}')" 
+                            <button type="button" onclick="sendQuickPrompt('${escapeHtml(chip.prompt || chip.label)}')" 
                                 class="bg-white border border-brand-teal/30 hover:border-brand-teal text-brand-teal text-[11px] sm:text-xs font-medium rounded-lg px-2.5 py-1.5 hover:bg-brand-teal hover:text-white transition-all shadow-2xs text-left">
                                 ${chip.label}
                             </button>
                         `).join('')}
                     </div>
                 `;
+            }
+
+            let badgeHtml = '';
+            if (badge) {
+                badgeHtml = `<div class="text-[9px] uppercase tracking-wider font-extrabold text-brand-teal/80 flex items-center gap-1 mb-1">${badge}</div>`;
             }
 
             botMsg.innerHTML = `
@@ -666,6 +806,7 @@
                     </div>
                     <div class="space-y-2.5 max-w-[88%]">
                         <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm text-xs sm:text-sm text-brand-dark leading-relaxed space-y-2">
+                            ${badgeHtml}
                             ${htmlContent}
                         </div>
                     </div>
@@ -686,6 +827,21 @@
                 .replace(/'/g, '&#39;');
         }
 
+        function formatMarkdownResponse(text) {
+            if (!text) return '';
+            if (/<[a-z][\s\S]*>/i.test(text)) {
+                return text;
+            }
+            let html = escapeHtml(text)
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`([^`]+)`/g, '<code class="bg-gray-100 px-1 py-0.5 rounded text-brand-dark font-mono text-xs">$1</code>')
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" class="text-brand-teal underline font-medium hover:text-teal-700">$1</a>')
+                .replace(/\n\n/g, '</p><p class="mt-2">')
+                .replace(/\n/g, '<br>');
+            return `<p>${html}</p>`;
+        }
+
         function normalizeQuery(str) {
             return (str || '')
                 .toLowerCase()
@@ -699,7 +855,8 @@
             handleUserSend(promptText);
         }
 
-        function handleUserSend(overrideText) {
+        // Envío asíncrono con n8n y fallback inteligente a IA Local
+        async function handleUserSend(overrideText) {
             const rawText = overrideText || (chatUserInput ? chatUserInput.value : '');
             if (!rawText || !rawText.trim()) return;
 
@@ -709,16 +866,73 @@
             }
 
             appendUserMessage(text);
-            showTypingIndicator();
+            chatHistory.push({ role: 'user', content: text });
+            showTypingIndicator('Consultando con n8n Webhook...');
+            updateChatStatus('connecting', 'Consultando n8n...');
 
-            // Simulación de latencia realista de IA (450ms a 700ms)
-            const simulatedDelay = Math.floor(Math.random() * 250) + 450;
-            setTimeout(() => {
-                processAIQuery(text);
-            }, simulatedDelay);
+            const webhookUrl = getN8nWebhookUrl();
+            let n8nSuccess = false;
+
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        message: text,
+                        sessionId: chatSessionId,
+                        timestamp: new Date().toISOString(),
+                        history: chatHistory.slice(-4),
+                        clientInfo: {
+                            page: window.location.href,
+                            screen: window.innerWidth + 'x' + window.innerHeight
+                        }
+                    }),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const rawOutput = data.output || data.response || data.text || data.message || '';
+                    const parsedHtml = formatMarkdownResponse(rawOutput);
+
+                    let finalHtml = parsedHtml;
+                    if (data.action && data.action.url) {
+                        finalHtml += `
+                            <div class="pt-2">
+                                <a href="${data.action.url}" target="_blank" class="block text-center text-xs font-bold teal-gradient text-white py-2.5 px-3 rounded-xl shadow-md hover:opacity-95 transition">
+                                    ${escapeHtml(data.action.label || 'Ver más información →')}
+                                </a>
+                            </div>
+                        `;
+                    }
+
+                    const chips = data.chips || [];
+                    appendBotResponse(finalHtml, chips, '⚡ Potenciado por n8n');
+                    chatHistory.push({ role: 'assistant', content: rawOutput });
+                    updateChatStatus('n8n-live', 'n8n Live &bull; Asistente Activo');
+                    n8nSuccess = true;
+                }
+            } catch (err) {
+                console.warn('n8n webhook no disponible o timeout, activando fallback local:', err.message);
+            }
+
+            // Si n8n no está activo todavía o dio error, activamos el fallback local inmediato
+            if (!n8nSuccess) {
+                updateChatStatus('fallback', 'Modo Respaldo &bull; IA Local');
+                const label = document.getElementById('typing-status-label');
+                if (label) label.textContent = 'Procesando en modo respaldo local...';
+                
+                setTimeout(() => {
+                    processAIQuery(text);
+                }, 400);
+            }
         }
 
-        // Base de conocimiento y motor de intención de IA
+        // Base de conocimiento y motor de intención de IA (Fallback de alta fidelidad)
         function processAIQuery(query) {
             const norm = normalizeQuery(query);
 
@@ -757,7 +971,7 @@
                     { label: '☕ Para Cafetería / Bar', prompt: '¿Tienen opciones de carta QR para cafeterías y bares?' },
                     { label: '💰 Precios y Setup', prompt: '¿Cuánto cuesta implementar el Menú QR?' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -797,7 +1011,7 @@
                     { label: '💼 Para Consultorios', prompt: '¿Cómo gestiona turnos médicos o de estética?' },
                     { label: '💰 Plan y Setup $350k', prompt: '¿Qué incluye el Setup de $350.000 ARS del Concierge?' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -836,7 +1050,7 @@
                     { label: '⚡ Velocidad y SEO', prompt: '¿Por qué la velocidad sub-1s mejora las ventas?' },
                     { label: '📅 Agendar Demo Técnica', prompt: 'Quiero agendar una demo técnica para mi web' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -874,7 +1088,7 @@
                     { label: '🍷 Para Bodegas y Distribuidoras', prompt: '¿Cómo se aplica la auditoría de stock en bodegas y botellas?' },
                     { label: '📅 Agendar Diagnóstico', prompt: 'Quiero agendar un diagnóstico de stock para mi empresa' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -908,7 +1122,7 @@
                     { label: '🌐 Cotizar Sitio Web', prompt: 'Quiero cotizar el desarrollo de una web o tienda' },
                     { label: '📅 Agendar Demo', prompt: 'Quiero agendar una demo técnica gratuita' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -942,7 +1156,7 @@
                     { label: '📱 Probar Menú QR', prompt: 'Quiero ver el demo de Menú QR' },
                     { label: '💰 Consultar Precios', prompt: '¿Cuáles son los precios de los servicios?' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -976,7 +1190,7 @@
                     { label: '🌐 Desarrollo Web', prompt: 'Contame sobre Desarrollo Web & E-Commerce' },
                     { label: '📦 Auditoría de Stock', prompt: 'Contame sobre Auditoría de Stock Inteligente' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -998,7 +1212,7 @@
                     { label: '📦 Auditoría de Stock', prompt: 'Quiero información sobre Auditoría de Stock' },
                     { label: '💰 Precios y Setup', prompt: '¿Cuáles son los precios de sus servicios?' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -1022,7 +1236,7 @@
                     { label: '🤖 Probar Concierge IA', prompt: 'Quiero probar el simulador de Concierge IA' },
                     { label: '📱 Probar Menú QR', prompt: 'Quiero probar el simulador de Menú QR' }
                 ];
-                appendBotResponse(responseHtml, chips);
+                appendBotResponse(responseHtml, chips, '🛡️ Motor Respaldo Local');
                 return;
             }
 
@@ -1044,7 +1258,7 @@
                 { label: '📦 Auditoría de Stock', prompt: 'Explicame la Auditoría de Stock Inteligente' },
                 { label: '💰 Tarifas & Setup', prompt: '¿Cuáles son los precios de los servicios?' }
             ];
-            appendBotResponse(fallbackHtml, fallbackChips);
+            appendBotResponse(fallbackHtml, fallbackChips, '🛡️ Motor Respaldo Local');
         }
 
         function initChat() {
@@ -1054,8 +1268,16 @@
                         🤖
                     </div>
                     <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm text-xs sm:text-sm text-brand-dark leading-relaxed space-y-2">
-                        <p>¡Hola! Bienvenido a <strong>DEVLANTIA Intelligence</strong>. Soy su asistente virtual con IA.</p>
-                        <p class="text-brand-gray text-[11px] sm:text-xs">Puedo responder preguntas sobre nuestras 4 soluciones estrella, cotizaciones y casos de estudio, o ayudarle a agendar una demo técnica. Escriba libremente abajo o seleccione una opción:</p>
+                        <div class="flex items-center justify-between border-b border-gray-100 pb-1.5 mb-1.5">
+                            <span class="text-[10px] uppercase tracking-wider font-extrabold text-brand-teal flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Conectado a n8n
+                            </span>
+                            <button type="button" onclick="toggleN8nSettings()" class="text-[10px] text-gray-400 hover:text-brand-teal flex items-center gap-0.5">
+                                ⚙️ Ajustes
+                            </button>
+                        </div>
+                        <p>¡Hola! Bienvenido a <strong>DEVLANTIA Intelligence</strong>. Soy su asistente virtual conectado a nuestro backend en <strong>n8n</strong>.</p>
+                        <p class="text-brand-gray text-[11px] sm:text-xs">Puedo responder preguntas técnicas sobre nuestras 4 soluciones estrella, cotizaciones y casos de estudio, o ayudarle a agendar una demo técnica. Escriba libremente abajo o seleccione una opción:</p>
                     </div>
                 </div>
                 <div class="flex flex-wrap gap-1.5 pt-1 pl-10">
