@@ -29,12 +29,30 @@
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
                         display: ['Outfit', 'sans-serif'],
+                        cyber: ['Usuzi', 'Outfit', 'sans-serif'],
+                        pixel: ['"Pixelify Sans"', 'monospace'],
                     }
                 }
             }
         }
     </script>
     <style>
+        @font-face {
+            font-family: 'Usuzi';
+            src: url('assets/fonts/usuzi.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pixelify Sans';
+            src: url('assets/fonts/pixelify-sans.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
         .glass {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
@@ -44,6 +62,177 @@
 
         .teal-gradient {
             background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+        }
+
+        /* Glitch & Cyber Typography Effect - Inspirado en underc0de.org */
+        .glitch-box {
+            position: relative;
+            display: inline-block;
+            vertical-align: baseline;
+        }
+
+        /* Capa traslúcida cian/teal que aparece sobre las letras y luego desaparece */
+        .glitch-overlay-layer {
+            position: absolute;
+            inset: -4px -8px;
+            background: rgba(13, 148, 136, 0.22);
+            border-top: 1px solid rgba(20, 184, 166, 0.6);
+            border-bottom: 1px solid rgba(20, 184, 166, 0.6);
+            border-left: 3px solid #14B8A6;
+            border-right: 3px solid #14B8A6;
+            box-shadow: 0 0 20px rgba(20, 184, 166, 0.4), inset 0 0 12px rgba(13, 148, 136, 0.25);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left center;
+        }
+
+        /* Animación de barrido de la capa */
+        @keyframes layerSweep {
+            0% {
+                opacity: 0;
+                transform: scaleX(0);
+                transform-origin: left center;
+            }
+            20% {
+                opacity: 0.95;
+                transform: scaleX(1);
+                transform-origin: left center;
+            }
+            45% {
+                opacity: 0.95;
+                transform: scaleX(1);
+                transform-origin: right center;
+            }
+            75% {
+                opacity: 0.6;
+                transform: scaleX(0.2);
+                transform-origin: right center;
+            }
+            100% {
+                opacity: 0;
+                transform: scaleX(0);
+                transform-origin: right center;
+            }
+        }
+
+        .glitch-box.active-scan .glitch-overlay-layer {
+            animation: layerSweep 0.75s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        /* Elemento tipográfico con soporte para la fuente Usuzi */
+        .glitch {
+            position: relative;
+            display: inline-block;
+            font-family: 'Usuzi', 'Outfit', sans-serif;
+            letter-spacing: 0.03em;
+            will-change: transform, clip-path;
+        }
+
+        /* Capas pseudo ::before y ::after clonadas con attr(data-text) */
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0;
+            will-change: clip-path, transform;
+        }
+
+        .glitch::before {
+            color: #14B8A6;
+            text-shadow: -2px 0 rgba(20, 184, 166, 0.75);
+            animation: g1 6s infinite steps(1);
+        }
+
+        .glitch::after {
+            color: #06B6D4;
+            text-shadow: 2px 0 rgba(6, 182, 212, 0.75);
+            animation: g2 6s infinite steps(1);
+        }
+
+        /* Disparo de Burst de alta energía */
+        .glitch.burst::before {
+            animation: gb1 0.35s steps(1) 1 !important;
+        }
+        .glitch.burst::after {
+            animation: gb2 0.35s steps(1) 1 !important;
+        }
+        .glitch.burst {
+            animation: gshake 0.35s steps(1) 1 !important;
+        }
+
+        /* Keyframes de rebanado tomados de underc0de.org */
+        @keyframes g1 {
+            0%, 88%, 100% {
+                opacity: 0;
+                clip-path: inset(0 0 100% 0);
+            }
+            89% {
+                opacity: 1;
+                clip-path: inset(10% 0 70% 0);
+                transform: translate(-5px, 0);
+            }
+            91% {
+                clip-path: inset(60% 0 15% 0);
+                transform: translate(4px, 0);
+            }
+            93% {
+                clip-path: inset(35% 0 45% 0);
+                transform: translate(-3px, 0);
+            }
+            95% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes g2 {
+            0%, 89%, 100% {
+                opacity: 0;
+                clip-path: inset(0 0 100% 0);
+            }
+            90% {
+                opacity: 1;
+                clip-path: inset(75% 0 5% 0);
+                transform: translate(5px, 0);
+            }
+            92% {
+                clip-path: inset(20% 0 60% 0);
+                transform: translate(-4px, 0);
+            }
+            94% {
+                clip-path: inset(50% 0 30% 0);
+                transform: translate(3px, 0);
+            }
+            96% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes gb1 {
+            0% { opacity: 1; clip-path: inset(5% 0 75% 0); transform: translate(-8px, 0); }
+            25% { clip-path: inset(45% 0 30% 0); transform: translate(6px, 0); }
+            50% { clip-path: inset(80% 0 2% 0); transform: translate(-4px, 0); }
+            75% { clip-path: inset(20% 0 55% 0); transform: translate(8px, 0); }
+            100% { opacity: 0; }
+        }
+
+        @keyframes gb2 {
+            0% { opacity: 1; clip-path: inset(60% 0 20% 0); transform: translate(7px, 0); }
+            25% { clip-path: inset(10% 0 70% 0); transform: translate(-8px, 0); }
+            50% { clip-path: inset(35% 0 40% 0); transform: translate(5px, 0); }
+            75% { clip-path: inset(70% 0 10% 0); transform: translate(-6px, 0); }
+            100% { opacity: 0; }
+        }
+
+        @keyframes gshake {
+            25% { transform: translate(2px, -1px) skewX(-3deg); }
+            50% { transform: translate(-2px, 1px) skewX(2deg); }
+            75% { transform: skewX(-2deg); }
+            100% { transform: none; }
         }
     </style>
 </head>
@@ -68,10 +257,12 @@
                             <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
                         </svg>
                         <div class="flex flex-col">
+                            <span class="glitch-box cursor-pointer select-none">
+                                <span class="glitch-overlay-layer"></span>
+                                <span class="glitch text-3xl font-cyber font-black tracking-tight text-brand-dark leading-none" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
+                            </span>
                             <span
-                                class="text-3xl font-display font-black tracking-tighter text-brand-dark leading-none">DEVLANTIA</span>
-                            <span
-                                class="text-[11px] uppercase tracking-[0.4em] text-brand-teal font-extrabold -mt-0.5">Development
+                                class="text-[10px] uppercase font-pixel tracking-[0.3em] text-brand-teal font-extrabold -mt-0.5">Development
                                 Company</span>
                         </div>
                     </div>
@@ -107,17 +298,20 @@
                 <div class="text-center lg:text-left grid lg:grid-cols-2 gap-12 items-center">
                     <div class="space-y-8">
                         <div
-                            class="inline-flex items-center space-x-2 bg-brand-teal/10 text-brand-teal px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+                            class="inline-flex items-center space-x-2 bg-slate-900 text-brand-teal px-3.5 py-1.5 rounded-lg text-xs font-pixel tracking-wider shadow-inner border border-brand-teal/30">
                             <span class="relative flex h-2 w-2">
                                 <span
                                     class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-teal opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-teal"></span>
                             </span>
-                            <span>Sistemas Quirúrgicos B2B</span>
+                            <span>SYS://DEVLANTIA.TECH · ONLINE · MENDOZA, AR</span>
                         </div>
                         <h1
-                            class="text-4xl sm:text-5xl lg:text-6xl font-display font-extrabold text-brand-dark leading-tight">
-                            DEVLANTIA: <span class="text-brand-teal">Transformamos sus datos</span> en rentabilidad
+                            class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-brand-dark leading-tight">
+                            <span class="glitch-box cursor-pointer select-none" id="hero-glitch-box" title="Clic o pasa el mouse para efecto glitch">
+                                <span class="glitch-overlay-layer"></span>
+                                <span class="glitch font-cyber text-brand-dark" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
+                            </span>: <span class="text-brand-teal font-display">Transformamos sus datos</span> <span class="font-display">en rentabilidad</span>
                         </h1>
                         <p class="text-lg text-brand-gray max-w-2xl mx-auto lg:mx-0 leading-relaxed">
                             Desarrollamos soluciones de software quirúrgicas: Concierges con IA para reservas 24/7, Menús QR interactivos, desarrollo web de alta conversión y auditoría de stock inteligente.
@@ -565,10 +759,12 @@
                             <path d="M44 34L24 44V24L44 34Z" fill="#0F766E" fill-opacity="0.6" />
                         </svg>
                         <div class="flex flex-col">
+                            <span class="glitch-box cursor-pointer select-none">
+                                <span class="glitch-overlay-layer"></span>
+                                <span class="glitch text-xl font-cyber font-black tracking-tight text-brand-dark leading-none uppercase" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
+                            </span>
                             <span
-                                class="text-xl font-display font-black tracking-tighter text-brand-dark leading-none uppercase">DEVLANTIA</span>
-                            <span
-                                class="text-[7px] uppercase tracking-[0.3em] text-brand-teal font-extrabold -mt-0.5">Development
+                                class="text-[8px] font-pixel uppercase tracking-[0.3em] text-brand-teal font-extrabold -mt-0.5">Development
                                 Company</span>
                         </div>
                     </div>
@@ -1288,6 +1484,104 @@
                 { label: '💰 Tarifas & Setup', prompt: '¿Cuáles son los precios de los servicios?' }
             ];
             appendBotResponse(fallbackHtml, fallbackChips, '🛡️ Motor Respaldo Local');
+        }
+
+        // Motor de Efecto Glitch y Capa con Tipografía Usuzi (inspirado en underc0de.org)
+        function initGlitchEffects() {
+            const glitchBoxes = document.querySelectorAll('.glitch-box');
+            if (!glitchBoxes.length) return;
+
+            const chars = '01#$%/&<>_[]*+~XYZ';
+
+            function scrambleText(element, finalText, duration = 650) {
+                const startTime = performance.now();
+                const originalText = finalText || element.getAttribute('data-text') || element.textContent;
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const revealIndex = Math.floor(progress * originalText.length);
+
+                    let result = '';
+                    for (let i = 0; i < originalText.length; i++) {
+                        if (originalText[i] === ' ' || originalText[i] === ':') {
+                            result += originalText[i];
+                        } else if (i < revealIndex) {
+                            result += originalText[i];
+                        } else {
+                            result += chars[Math.floor(Math.random() * chars.length)];
+                        }
+                    }
+
+                    element.textContent = result;
+                    element.setAttribute('data-text', result);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        element.textContent = originalText;
+                        element.setAttribute('data-text', originalText);
+                    }
+                }
+
+                requestAnimationFrame(update);
+            }
+
+            function triggerGlitch(box) {
+                box.classList.remove('active-scan');
+                const glitchElem = box.querySelector('.glitch');
+                if (glitchElem) glitchElem.classList.remove('burst');
+
+                // Forzar reflow
+                void box.offsetWidth;
+
+                // 1. Aparece la capa arriba y barre
+                box.classList.add('active-scan');
+
+                // 2. Justo cuando la capa empieza a desvanecerse (~220ms), se detona el burst cromático y el descifrado
+                setTimeout(() => {
+                    if (glitchElem) {
+                        glitchElem.classList.add('burst');
+                        scrambleText(glitchElem, glitchElem.dataset.finalText || glitchElem.getAttribute('data-text'), 600);
+                    }
+                }, 220);
+            }
+
+            glitchBoxes.forEach(box => {
+                box.addEventListener('mouseenter', () => triggerGlitch(box));
+                box.addEventListener('click', () => triggerGlitch(box));
+
+                const glitchElem = box.querySelector('.glitch');
+                if (glitchElem) {
+                    glitchElem.addEventListener('animationend', (e) => {
+                        if (e.animationName === 'gshake') {
+                            glitchElem.classList.remove('burst');
+                        }
+                    });
+                }
+            });
+
+            // Disparo inicial automático tras cargar
+            setTimeout(() => {
+                glitchBoxes.forEach(box => triggerGlitch(box));
+            }, 600);
+
+            // Bucle periódico cada 8 a 12 segundos (como en underc0de)
+            function loopGlitch() {
+                if (!document.hidden) {
+                    glitchBoxes.forEach(box => triggerGlitch(box));
+                }
+                const nextDelay = Math.floor(Math.random() * 4000) + 8000;
+                setTimeout(loopGlitch, nextDelay);
+            }
+            setTimeout(loopGlitch, 9000);
+        }
+
+        // Inicializar efectos al cargar el DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initGlitchEffects);
+        } else {
+            initGlitchEffects();
         }
 
         function initChat() {
