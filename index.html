@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEVLANTIA | Transformamos sus datos en rentabilidad</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 4L4 14V34L24 44L44 34V14L24 4Z' fill='%238A4FFF'/%3E%3C/svg%3E">
     <meta name="description"
         content="Desarrollamos soluciones de software quirúrgicas: Concierges con IA para reservas 24/7, Menús QR para gastronomía, desarrollo web de alta conversión y auditoría de stock inteligente.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- GSAP, ScrollTrigger y Lenis vía CDN para Scrollytelling 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -19,12 +24,12 @@
                 extend: {
                     colors: {
                         brand: {
-                            teal: '#14B8A6',
-                            'teal-dark': '#0D9488',
-                            'teal-light': '#2DD4BF',
-                            dark: '#0B0F17',
-                            card: '#111827',
-                            gray: '#94A3B8',
+                            teal: '#8A4FFF',
+                            'teal-dark': '#5B21B6',
+                            'teal-light': '#A78BFA',
+                            dark: '#1E0B36',
+                            card: '#2E1065',
+                            gray: '#C4B5FD',
                         }
                     },
                     fontFamily: {
@@ -56,32 +61,167 @@
         }
 
         .glass {
-            background: rgba(11, 15, 23, 0.85);
+            background: rgba(30, 11, 54, 0.78);
             backdrop-filter: blur(14px);
             -webkit-backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(20, 184, 166, 0.18);
+            border-bottom: 1px solid rgba(138, 79, 255, 0.28);
         }
 
         .teal-gradient {
-            background: linear-gradient(135deg, #0D9488 0%, #0F766E 100%);
+            background: linear-gradient(135deg, #8A4FFF 0%, #7C3AED 50%, #5B21B6 100%);
         }
 
         .dark-tech-grid {
-            background-color: #0B0F17;
-            background-image: radial-gradient(rgba(20, 184, 166, 0.14) 1px, transparent 1px);
+            background-color: #1E0B36;
+            background-image: radial-gradient(rgba(138, 79, 255, 0.16) 1px, transparent 1px);
             background-size: 36px 36px;
         }
 
+        /* ==========================================================================
+           ESCENARIO 3D PERSISTENTE DE LUZ (PÚRPURA / ÍNDIGO PROFUNDO CONTINUO)
+           ========================================================================== */
+        #devlantia-light-stage {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 0;
+            pointer-events: none;
+            background-color: #1E0B36;
+            overflow: hidden;
+        }
+
+        #hero-scrolly-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        header, main, footer, #devlantia-chatbot-widget {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==========================================================================
+           GLASSMORPHISM + BRILLO NEÓN DINÁMICO + PERSPECTIVE TILT 3D
+           ========================================================================== */
+        .perspective-stage {
+            perspective: 1000px;
+        }
+
         .tech-card {
-            background: rgba(17, 24, 39, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            --glare-x: 50%;
+            --glare-y: 50%;
+            --glare-opacity: 0;
+            background: linear-gradient(155deg, rgba(76, 29, 149, 0.68) 0%, rgba(46, 16, 101, 0.88) 55%, rgba(30, 11, 54, 0.94) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(167, 139, 250, 0.36);
+            box-shadow:
+                0 22px 50px -12px rgba(10, 4, 22, 0.92),
+                0 0 28px -6px rgba(138, 79, 255, 0.22),
+                inset 0 1px 0 rgba(255, 255, 255, 0.24),
+                inset 0 0 24px rgba(138, 79, 255, 0.08);
+            transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.35s ease,
+                        box-shadow 0.35s ease,
+                        background 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        /* Reflejo de luz dinámico sobre el borde (Púrpura Neón #8A4FFF + #7C3AED + #5B21B6) */
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1.5px;
+            background: radial-gradient(
+                400px circle at var(--glare-x) var(--glare-y),
+                rgba(196, 181, 253, 0.95),
+                rgba(138, 79, 255, 0.9) 45%,
+                rgba(91, 33, 182, 0.18) 80%
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: var(--glare-opacity, 0);
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        /* Reflejo especular suave sobre el cristal */
+        .tech-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: radial-gradient(
+                360px circle at var(--glare-x) var(--glare-y),
+                rgba(138, 79, 255, 0.2),
+                rgba(124, 58, 237, 0.1) 42%,
+                transparent 75%
+            );
+            opacity: var(--glare-opacity, 0);
+            transition: opacity 0.35s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .tech-card > * {
+            position: relative;
+            z-index: 2;
         }
 
         .tech-card:hover {
-            border-color: rgba(20, 184, 166, 0.65);
-            box-shadow: 0 0 28px rgba(20, 184, 166, 0.18), inset 0 0 15px rgba(20, 184, 166, 0.05);
-            transform: translateY(-4px);
+            background: linear-gradient(155deg, rgba(91, 33, 182, 0.78) 0%, rgba(59, 20, 128, 0.92) 55%, rgba(30, 11, 54, 0.96) 100%);
+            border-color: rgba(138, 79, 255, 0.85);
+            box-shadow: 0 26px 54px -10px rgba(10, 4, 22, 0.92),
+                        0 0 38px rgba(138, 79, 255, 0.34),
+                        0 0 24px rgba(124, 58, 237, 0.24),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.34);
+            --glare-opacity: 1;
+        }
+
+        .tilt-card.is-tilting {
+            transition: transform 0.08s linear,
+                        border-color 0.35s ease,
+                        box-shadow 0.35s ease,
+                        background 0.35s ease;
+        }
+
+        /* Animación fluida Fade-Up al hacer scroll (IntersectionObserver) */
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform;
+        }
+
+        .reveal-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .reveal-up {
+                opacity: 1;
+                transform: none;
+                transition: none;
+            }
         }
 
         @keyframes cursorBlink {
@@ -93,7 +233,7 @@
             display: inline-block;
             width: 8px;
             height: 15px;
-            background-color: #14B8A6;
+            background-color: #8A4FFF;
             vertical-align: middle;
             animation: cursorBlink 1s infinite;
         }
@@ -106,16 +246,16 @@
             max-width: 100%;
         }
 
-        /* Capa traslúcida cian/teal que aparece sobre las letras y luego desaparece */
+        /* Capa traslúcida púrpura neón que aparece sobre las letras y luego desaparece */
         .glitch-overlay-layer {
             position: absolute;
             inset: -2px -4px;
-            background: rgba(13, 148, 136, 0.24);
-            border-top: 1px solid rgba(20, 184, 166, 0.7);
-            border-bottom: 1px solid rgba(20, 184, 166, 0.7);
-            border-left: 2px solid #14B8A6;
-            border-right: 2px solid #14B8A6;
-            box-shadow: 0 0 16px rgba(20, 184, 166, 0.4), inset 0 0 10px rgba(13, 148, 136, 0.25);
+            background: rgba(124, 58, 237, 0.28);
+            border-top: 1px solid rgba(138, 79, 255, 0.75);
+            border-bottom: 1px solid rgba(138, 79, 255, 0.75);
+            border-left: 2px solid #8A4FFF;
+            border-right: 2px solid #8A4FFF;
+            box-shadow: 0 0 18px rgba(138, 79, 255, 0.45), inset 0 0 10px rgba(91, 33, 182, 0.3);
             pointer-events: none;
             z-index: 10;
             opacity: 0;
@@ -128,7 +268,7 @@
             inset: -4px -8px;
             border-left-width: 4px;
             border-right-width: 4px;
-            box-shadow: 0 0 30px rgba(20, 184, 166, 0.5), inset 0 0 18px rgba(13, 148, 136, 0.35);
+            box-shadow: 0 0 30px rgba(138, 79, 255, 0.55), inset 0 0 18px rgba(124, 58, 237, 0.38);
         }
 
         @media (min-width: 640px) {
@@ -200,14 +340,14 @@
         }
 
         .glitch::before {
-            color: #14B8A6;
-            text-shadow: -2px 0 rgba(20, 184, 166, 0.75);
+            color: #8A4FFF;
+            text-shadow: -2px 0 rgba(138, 79, 255, 0.8);
             animation: g1 6s infinite steps(1);
         }
 
         .glitch::after {
-            color: #06B6D4;
-            text-shadow: 2px 0 rgba(6, 182, 212, 0.75);
+            color: #C4B5FD;
+            text-shadow: 2px 0 rgba(124, 58, 237, 0.8);
             animation: g2 6s infinite steps(1);
         }
 
@@ -291,24 +431,215 @@
             75% { transform: skewX(-2deg); }
             100% { transform: none; }
         }
+
+        /* ==========================================================================
+           HERO SCROLLYTELLING: MINIMALISTA OSCURO + NEÓN + GLASSMORPHISM (GSAP + LENIS)
+           ========================================================================== */
+        html, body {
+            overflow-x: clip;
+        }
+
+        html.lenis, html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-smooth [data-lenis-prevent] {
+            overscroll-behavior: contain;
+        }
+
+        /* Pista de Scroll equilibrada para 6 fases (transparente sobre el Canvas 3D fijo) */
+        .scrolly-hero-track {
+            position: relative;
+            width: 100%;
+            height: 460vh;
+            background-color: transparent;
+        }
+
+        @media (max-width: 767px) {
+            .scrolly-hero-track {
+                height: 360vh;
+            }
+        }
+
+        /* Contenedor Sticky a Pantalla Completa (transparente para continuidad total del fondo 3D) */
+        .scrolly-sticky-viewport {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: transparent;
+            contain: layout paint;
+        }
+
+        /* Viñeta púrpura oscuro/índigo (#1E0B36 / #2E1065) + malla neón sutil */
+        .scrolly-vignette-overlay {
+            background:
+                radial-gradient(circle at 50% 48%, rgba(138, 79, 255, 0.08) 0%, rgba(46, 16, 101, 0.34) 55%, rgba(30, 11, 54, 0.88) 100%),
+                linear-gradient(180deg, rgba(30, 11, 54, 0.72) 0%, rgba(46, 16, 101, 0.08) 28%, rgba(46, 16, 101, 0.08) 72%, rgba(30, 11, 54, 0.82) 100%),
+                linear-gradient(rgba(138, 79, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(138, 79, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 54px 54px, 54px 54px;
+        }
+
+        /* Tipografía y Acentos Neón Púrpura (#8A4FFF / #7C3AED / #C4B5FD) */
+        .scrolly-neon-cyan {
+            color: #C4B5FD;
+            text-shadow: 0 0 18px rgba(138, 79, 255, 0.75), 0 0 38px rgba(124, 58, 237, 0.45);
+        }
+
+        .scrolly-neon-badge {
+            background: rgba(30, 11, 54, 0.85);
+            border: 1px solid rgba(138, 79, 255, 0.55);
+            box-shadow: 0 0 18px rgba(138, 79, 255, 0.22);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Tarjetas Glassmorphism de Alto Contraste Unificadas (Paleta Púrpura / Índigo) */
+        .scrolly-glass-card {
+            --card-accent: rgba(138, 79, 255, 0.65);
+            --card-glow: rgba(138, 79, 255, 0.3);
+            background: linear-gradient(155deg, rgba(91, 33, 182, 0.72) 0%, rgba(46, 16, 101, 0.9) 55%, rgba(30, 11, 54, 0.96) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--card-accent);
+            box-shadow:
+                0 26px 64px -12px rgba(12, 4, 26, 0.95),
+                0 0 0 1px rgba(196, 181, 253, 0.14),
+                0 0 38px -4px var(--card-glow),
+                inset 0 1px 0 rgba(255, 255, 255, 0.28),
+                inset 0 0 28px rgba(138, 79, 255, 0.08);
+        }
+
+        @media (max-width: 767px) {
+            .scrolly-glass-card {
+                background: linear-gradient(155deg, rgba(76, 29, 149, 0.88) 0%, rgba(46, 16, 101, 0.94) 55%, rgba(30, 11, 54, 0.97) 100%);
+                backdrop-filter: blur(5px);
+                -webkit-backdrop-filter: blur(5px);
+                box-shadow:
+                    0 18px 42px -8px rgba(12, 4, 26, 0.95),
+                    0 0 26px -4px var(--card-glow),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.24);
+            }
+        }
+
+        .scrolly-glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 8%;
+            right: 8%;
+            height: 2px;
+            border-radius: 9999px;
+            background: linear-gradient(90deg, transparent, #8A4FFF, #F5F3FF, #8A4FFF, transparent);
+            pointer-events: none;
+        }
+
+        /* Halo sutil de legibilidad detrás del texto introductorio Hero */
+        .scrolly-intro-backdrop {
+            background: radial-gradient(ellipse at center, rgba(30, 11, 54, 0.78) 0%, rgba(30, 11, 54, 0.44) 55%, rgba(30, 11, 54, 0) 80%);
+            border-radius: 2rem;
+        }
+
+        /* Bloques de texto superpuestos (controlados por GSAP ScrollTrigger) */
+        .scrolly-text-block {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            padding-top: 5rem;
+            padding-bottom: 3.75rem;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+
+        .scrolly-text-block-inner {
+            pointer-events: auto;
+        }
+
+        /* Píldoras de métricas neón de alto contraste */
+        .scrolly-metric-pill {
+            background: rgba(30, 11, 54, 0.9);
+            border: 1px solid rgba(167, 139, 250, 0.45);
+            color: #F5F3FF;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        }
+
+        /* Botón CTA interior de cada tarjeta de servicio */
+        .scrolly-card-cta {
+            background: linear-gradient(135deg, rgba(138, 79, 255, 0.28) 0%, rgba(91, 33, 182, 0.45) 100%);
+            border: 1px solid rgba(167, 139, 250, 0.6);
+            box-shadow: 0 4px 18px -4px rgba(12, 4, 26, 0.65);
+            transition: background-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .scrolly-card-cta:hover {
+            background: linear-gradient(135deg, rgba(138, 79, 255, 0.45) 0%, rgba(124, 58, 237, 0.6) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px -4px rgba(138, 79, 255, 0.45);
+        }
+
+        /* Indicadores de fase en barra inferior (interactivos) */
+        .scrolly-phase-dot {
+            transition: transform 0.22s ease, background-color 0.22s ease;
+        }
+
+        .scrolly-phase-dot.is-active {
+            background-color: #8A4FFF;
+            box-shadow: 0 0 12px #8A4FFF;
+            transform: scale(1.3);
+        }
+
+        #scrolly-progress-bar {
+            width: 100%;
+            transform: scaleX(0);
+            transform-origin: left center;
+            will-change: transform;
+        }
     </style>
 </head>
 
-<body class="dark-tech-grid text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-teal-500/30 selection:text-teal-200">
+<body class="bg-[#1E0B36] text-slate-100 font-sans antialiased selection:bg-[#8A4FFF]/35 selection:text-violet-100">
+
+    <!-- 1. ESCENARIO 3D PERSISTENTE ("BUILT FROM LIGHT") — CONTINUO EN TODA LA PÁGINA -->
+    <!-- Soporta secuencia externa (data-sequence-template="assets/frames/frame_{index}.webp"),
+         video MP4 de respaldo (data-video-fallback="assets/video/hero-fallback.mp4")
+         y escultura 3D autónoma de luz sincronizada con scroll (nunca se corta entre secciones) -->
+    <div id="devlantia-light-stage" aria-hidden="true">
+        <canvas id="hero-scrolly-canvas"
+            data-frame-count="120"
+            data-mobile-frame-count="72"
+            data-sequence-template=""
+            data-video-fallback=""></canvas>
+        <video id="hero-fallback-video"
+            class="hidden"
+            muted
+            playsinline
+            preload="auto"
+            crossorigin="anonymous"></video>
+        <div class="scrolly-vignette-overlay absolute inset-0"></div>
+    </div>
 
     <!-- Header / Navbar + Barra Superior de Estado -->
     <header class="fixed top-0 left-0 right-0 z-50 glass transition-all duration-300">
         <!-- Barra superior de estado muy fina -->
-        <div class="bg-[#060911] border-b border-teal-500/20 py-1 px-4">
-            <div class="max-w-7xl mx-auto flex items-center justify-center sm:justify-between text-[10px] sm:text-[11px] font-mono text-teal-400 tracking-wide">
+        <div class="bg-[#1E0B36] border-b border-[#8A4FFF]/25 py-1 px-4">
+            <div class="max-w-7xl mx-auto flex items-center justify-center sm:justify-between text-[10px] sm:text-[11px] font-mono text-violet-300 tracking-wide">
                 <div class="flex items-center space-x-2 truncate">
                     <span class="relative flex h-2 w-2 flex-shrink-0">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8A4FFF] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#A78BFA]"></span>
                     </span>
                     <span class="truncate">sys://devlantia.com · online · 32.89°S 68.84°W · Mendoza, AR</span>
                 </div>
-                <span class="hidden sm:inline-block text-slate-500">status: <span class="text-emerald-400">operational</span></span>
+                <span class="hidden sm:inline-block text-violet-400/70">status: <span class="text-[#C4B5FD]">operational</span></span>
             </div>
         </div>
 
@@ -316,16 +647,16 @@
             <div class="flex justify-between items-center h-16 sm:h-20">
                 <a href="#" class="flex items-center group cursor-pointer" aria-label="DEVLANTIA Home">
                     <div class="flex items-center space-x-2.5 sm:space-x-3">
-                        <!-- SVG Logo Icon -->
+                        <!-- SVG Logo Icon (Paleta Púrpura / Índigo DEVLANTIA) -->
                         <svg width="34" height="34" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"
-                            class="w-7 h-7 sm:w-8 sm:h-8 transform group-hover:scale-105 transition-transform duration-300 flex-shrink-0">
-                            <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#14B8A6" fill-opacity="0.15" />
-                            <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
-                            <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
-                            <path d="M24 44V24L4 34L24 44Z" fill="#1E293B" />
-                            <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.85" />
-                            <path d="M24 4V24L44 14L24 4Z" fill="#2DD4BF" />
-                            <path d="M44 34L24 44V24L44 34Z" fill="#0D9488" fill-opacity="0.7" />
+                            class="w-7 h-7 sm:w-8 sm:h-8 transform group-hover:scale-105 transition-transform duration-300 flex-shrink-0 drop-shadow-[0_0_10px_rgba(138,79,255,0.45)]">
+                            <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#8A4FFF" fill-opacity="0.18" />
+                            <path d="M24 4V24L4 14L24 4Z" fill="#7C3AED" />
+                            <path d="M4 14V34L24 24L4 14Z" fill="#4C1D95" />
+                            <path d="M24 44V24L4 34L24 44Z" fill="#1E0B36" />
+                            <path d="M44 34V14L24 24L44 34Z" fill="#5B21B6" />
+                            <path d="M24 4V24L44 14L24 4Z" fill="#8A4FFF" />
+                            <path d="M44 34L24 44V24L44 34Z" fill="#2E1065" />
                         </svg>
                         <div class="flex flex-col">
                             <!-- Nombre de empresa del header más pequeño y elegante en modo oscuro -->
@@ -334,24 +665,24 @@
                                 <span class="glitch text-lg sm:text-xl md:text-2xl font-cyber font-bold tracking-tight text-white leading-none" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
                             </span>
                             <span
-                                class="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.22em] text-teal-400 font-semibold mt-0.5">Development
+                                class="text-[8px] sm:text-[9px] uppercase font-mono tracking-[0.22em] text-[#C4B5FD] font-semibold mt-0.5">Development
                                 Company</span>
                         </div>
                     </div>
                 </a>
                 <div class="hidden md:flex space-x-8 text-sm font-mono">
-                    <a href="#soluciones" class="text-slate-300 hover:text-teal-400 transition-colors">./soluciones</a>
-                    <a href="#nosotros" class="text-slate-300 hover:text-teal-400 transition-colors">./nosotros</a>
-                    <a href="#contacto" class="text-slate-300 hover:text-teal-400 transition-colors">./contacto</a>
+                    <a href="#soluciones" class="text-violet-100/85 hover:text-[#C4B5FD] transition-colors">./soluciones</a>
+                    <a href="#nosotros" class="text-violet-100/85 hover:text-[#C4B5FD] transition-colors">./nosotros</a>
+                    <a href="#contacto" class="text-violet-100/85 hover:text-[#C4B5FD] transition-colors">./contacto</a>
                 </div>
                 <div class="flex items-center space-x-2 sm:space-x-3">
                     <a href="#contacto"
-                        class="teal-gradient text-white px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-lg text-xs sm:text-sm font-mono font-semibold border border-teal-400/30 hover:shadow-[0_0_20px_rgba(20,184,166,0.4)] hover:scale-105 transition-all duration-300">
+                        class="teal-gradient text-white px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-lg text-xs sm:text-sm font-mono font-semibold border border-[#A78BFA]/45 hover:shadow-[0_0_22px_rgba(138,79,255,0.55)] hover:scale-105 transition-all duration-300">
                         Agendar Demo
                     </a>
                     <!-- Botón Hamburguesa para Mobile -->
                     <button id="mobile-menu-btn" type="button" onclick="toggleMobileMenu()"
-                        class="md:hidden text-slate-200 hover:text-teal-400 p-1.5 rounded-lg focus:outline-none"
+                        class="md:hidden text-violet-100 hover:text-[#C4B5FD] p-1.5 rounded-lg focus:outline-none"
                         aria-label="Abrir menú de navegación">
                         <svg id="hamburger-icon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -364,239 +695,401 @@
             </div>
 
             <!-- Drawer Desplegable Mobile -->
-            <div id="mobile-menu-drawer" class="hidden md:hidden pb-4 pt-2 border-t border-slate-800 space-y-2 font-mono">
-                <a href="#soluciones" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-teal-500/10 hover:text-teal-400 transition-colors">./soluciones</a>
-                <a href="#nosotros" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-teal-500/10 hover:text-teal-400 transition-colors">./nosotros</a>
-                <a href="#contacto" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-200 hover:bg-teal-500/10 hover:text-teal-400 transition-colors">./contacto</a>
+            <div id="mobile-menu-drawer" class="hidden md:hidden pb-4 pt-2 border-t border-[#5B21B6]/50 space-y-2 font-mono">
+                <a href="#soluciones" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-violet-100 hover:bg-[#8A4FFF]/20 hover:text-[#C4B5FD] transition-colors">./soluciones</a>
+                <a href="#nosotros" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-violet-100 hover:bg-[#8A4FFF]/20 hover:text-[#C4B5FD] transition-colors">./nosotros</a>
+                <a href="#contacto" onclick="toggleMobileMenu()" class="block px-3 py-2 rounded-lg text-sm font-medium text-violet-100 hover:bg-[#8A4FFF]/20 hover:text-[#C4B5FD] transition-colors">./contacto</a>
             </div>
         </nav>
     </header>
 
     <main>
-        <!-- Hero Section -->
-        <section class="relative pt-36 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-            <!-- Background Decorative Elements -->
-            <div
-                class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-3xl pointer-events-none">
-            </div>
-            <div
-                class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-3xl pointer-events-none">
-            </div>
+        <!-- Hero Section: Scrollytelling Minimalista Oscuro con Acentos Neón & Glassmorphism -->
+        <section id="hero-scrollytelling" class="scrolly-hero-track select-none" aria-label="Experiencia Scrollytelling DEVLANTIA">
+            <!-- Contenedor Sticky a Pantalla Completa (100vh / 100dvh, transparente sobre el Canvas 3D persistente) -->
+            <div id="hero-sticky-viewport" class="scrolly-sticky-viewport">
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div class="text-center lg:text-left grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-                    <div class="lg:col-span-7 space-y-6">
-                        <!-- Prompt inicial estilo consola -->
-                        <div class="inline-flex items-center space-x-2 bg-slate-900/90 text-teal-400 px-3.5 py-1.5 rounded-md text-xs font-mono tracking-wide border border-teal-500/30 shadow-inner">
-                            <span class="text-slate-500">root@devlantia:~$</span>
-                            <span class="text-emerald-400 font-semibold">whoami</span>
+                <!-- Esquinas Decorativas Minimalistas HUD -->
+                <div class="pointer-events-none absolute inset-3 sm:inset-5 lg:inset-7 border border-[#8A4FFF]/18 rounded-2xl z-[2]">
+                    <div class="absolute -top-px -left-px w-4 h-4 border-t-2 border-l-2 border-[#8A4FFF]/65 rounded-tl"></div>
+                    <div class="absolute -top-px -right-px w-4 h-4 border-t-2 border-r-2 border-[#8A4FFF]/65 rounded-tr"></div>
+                    <div class="absolute -bottom-px -left-px w-4 h-4 border-b-2 border-l-2 border-[#8A4FFF]/65 rounded-bl"></div>
+                    <div class="absolute -bottom-px -right-px w-4 h-4 border-b-2 border-r-2 border-[#8A4FFF]/65 rounded-br"></div>
+                </div>
+
+                <!-- Telemetría Superior de Secuencia + Control de Movimiento 3D -->
+                <div class="absolute top-24 sm:top-28 left-0 right-0 z-20 pointer-events-none">
+                    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex items-center justify-between gap-2 text-[10px] sm:text-[11px] font-mono tracking-widest">
+                        <div class="flex items-center space-x-2 text-[#C4B5FD] bg-[#1E0B36]/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#8A4FFF]/40">
+                            <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#8A4FFF] animate-pulse shadow-[0_0_8px_#8A4FFF]"></span>
+                            <span id="scrolly-frame-telemetry">LIVE 3D // 001 / 120</span>
                         </div>
-
-                        <!-- 1. Nombre de la empresa al principio: GIGANTE, impactante, blanco brillante con glitch -->
-                        <div class="hero-brand-wrap">
-                            <span class="glitch-box cursor-pointer select-none inline-block max-w-full" id="hero-glitch-box" title="Clic o pasa el mouse para efecto glitch">
-                                <span class="glitch-overlay-layer"></span>
-                                <span class="glitch font-cyber hero-cyber-brand font-black text-white drop-shadow-[0_0_25px_rgba(20,184,166,0.25)] leading-none tracking-tight block" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
-                            </span>
-                        </div>
-
-                        <!-- 2. Subtítulo: Elegante, proporcionado y más pequeño para NO opacar el nombre de la empresa -->
-                        <h1 class="text-xl sm:text-2xl md:text-3xl font-display font-medium text-slate-200 leading-snug tracking-tight max-w-2xl mx-auto lg:mx-0">
-                            <span class="text-teal-400 font-bold">Transformamos sus datos</span> en rentabilidad
-                        </h1>
-
-                        <!-- 3. Párrafo descriptivo -->
-                        <p class="text-base sm:text-lg text-slate-400 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                            Desarrollamos soluciones de software quirúrgicas: Concierges con IA para reservas 24/7, Menús QR interactivos, desarrollo web de alta conversión y auditoría de stock inteligente.
-                        </p>
-
-                        <!-- Botones de Acción -->
-                        <div
-                            class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 sm:gap-4 pt-2">
-                            <a href="#contacto"
-                                class="w-full sm:w-auto text-center teal-gradient text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-mono font-bold text-sm sm:text-base border border-teal-400/30 shadow-lg hover:shadow-[0_0_25px_rgba(20,184,166,0.4)] hover:-translate-y-1 transition-all duration-300">
-                                [ Agendar Demo Técnica ]
-                            </a>
-                            <a href="#soluciones"
-                                class="w-full sm:w-auto text-center bg-slate-900/80 border border-teal-500/30 text-teal-300 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-mono font-semibold text-sm sm:text-base hover:bg-teal-500/10 hover:border-teal-400 transition-all duration-300">
-                                [ Ver Soluciones ]
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Columna Derecha: Consola Interactiva Bash (sin el cuadrado enorme de barras grises) -->
-                    <div class="lg:col-span-5 relative">
-                        <div class="absolute -inset-2 bg-teal-500/10 rounded-2xl blur-xl pointer-events-none"></div>
-                        <div class="relative bg-[#070B12] rounded-2xl overflow-hidden border border-teal-500/30 shadow-[0_0_35px_rgba(13,148,136,0.18)] text-left font-mono">
-                            <!-- Barra de título de la ventana bash -->
-                            <div class="h-10 bg-[#0D1322] flex items-center justify-between px-4 border-b border-slate-800">
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-3 h-3 bg-rose-500/90 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-amber-400/90 rounded-full"></div>
-                                    <div class="w-3 h-3 bg-emerald-500/90 rounded-full"></div>
-                                </div>
-                                <span class="text-xs text-slate-400 font-mono tracking-wide">root@devlantia:~/status</span>
-                                <span class="text-[10px] text-teal-400/80 border border-teal-500/30 px-1.5 py-0.5 rounded bg-teal-500/10">bash</span>
-                            </div>
-
-                            <!-- Cuerpo de la terminal con métricas alineadas -->
-                            <div class="p-5 sm:p-6 space-y-3 text-xs sm:text-sm leading-relaxed">
-                                <div class="text-slate-400">
-                                    <span class="text-emerald-400">$</span> cat /etc/devlantia/status
-                                </div>
-
-                                <div class="pt-1 space-y-2">
-                                    <div class="flex items-baseline">
-                                        <span class="text-emerald-400">sistema</span><span class="text-slate-600 select-none">............ </span><span class="text-white font-semibold">quirúrgico B2B</span>
-                                    </div>
-                                    <div class="flex items-baseline">
-                                        <span class="text-emerald-400">ubicacion</span><span class="text-slate-600 select-none">.......... </span><span class="text-white font-semibold">Mendoza, AR</span>
-                                    </div>
-                                    <div class="flex items-baseline">
-                                        <span class="text-emerald-400">control_stock</span><span class="text-slate-600 select-none">...... </span><span class="text-white font-semibold">automatizado</span>
-                                    </div>
-                                    <div class="flex items-baseline">
-                                        <span class="text-emerald-400">bots_ia</span><span class="text-slate-600 select-none">............ </span><span class="text-white font-semibold">activos 24/7</span>
-                                    </div>
-                                    <div class="flex items-baseline">
-                                        <span class="text-emerald-400">retorno_roi</span><span class="text-slate-600 select-none">........ </span><span class="text-teal-300 font-bold">optimizado</span>
-                                    </div>
-                                </div>
-
-                                <div class="pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
-                                    <div>
-                                        <span class="text-teal-400">root@devlantia:~#</span> <span class="terminal-cursor"></span>
-                                    </div>
-                                    <span class="text-emerald-400 flex items-center gap-1.5">
-                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> 100% READY
-                                    </span>
-                                </div>
+                        <div class="flex items-center space-x-2">
+                            <button id="scrolly-motion-toggle" type="button" aria-pressed="false"
+                                class="pointer-events-auto text-violet-100 hover:text-[#C4B5FD] bg-[#1E0B36]/80 backdrop-blur-md px-2.5 sm:px-3 py-1 rounded-full border border-[#8A4FFF]/40 hover:border-[#C4B5FD]/75 transition-colors cursor-pointer">
+                                || 3D
+                            </button>
+                            <div class="flex items-center space-x-1.5 text-violet-200 bg-[#1E0B36]/80 backdrop-blur-md px-3 py-1 rounded-full border border-[#7C3AED]/40">
+                                <span class="hidden sm:inline text-violet-300/75">SCROLL</span>
+                                <span id="scrolly-progress-pct" class="text-[#C4B5FD] font-bold">00%</span>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- 4. Bloques de Texto Scrollytelling Superpuestos (Intro + 4 Servicios + Cierre) -->
+                <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
+
+                    <!-- BLOQUE 0: Presentación Principal Hero (Centrado con halo de legibilidad) -->
+                    <div id="scrolly-block-0" class="scrolly-text-block justify-center">
+                        <div class="scrolly-text-block-inner scrolly-intro-backdrop text-center max-w-3xl mx-auto space-y-4 sm:space-y-5 px-4 py-6 sm:px-8 sm:py-8">
+                            <div class="inline-flex items-center space-x-2.5 scrolly-neon-badge px-3.5 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-mono text-[#C4B5FD] tracking-widest uppercase">
+                                <span class="w-2 h-2 rounded-full bg-[#8A4FFF] animate-ping"></span>
+                                <span>[ SISTEMA ACTIVO // AUTOMATIZACIÓN &amp; IA ]</span>
+                            </div>
+
+                            <h1 class="font-display font-black tracking-tight leading-[1.06] space-y-1 sm:space-y-2">
+                                <span class="block text-3xl sm:text-5xl md:text-6xl lg:text-[4rem] text-white drop-shadow-[0_4px_24px_rgba(30,11,54,0.95)]">
+                                    BIENVENIDOS A DEVLANTIA.
+                                </span>
+                                <span class="block text-2xl sm:text-4xl md:text-5xl lg:text-[3.2rem] scrolly-neon-cyan">
+                                    DATOS EN RENTABILIDAD.
+                                </span>
+                            </h1>
+
+                            <p class="text-sm sm:text-base md:text-lg text-violet-50 max-w-2xl mx-auto font-sans leading-relaxed drop-shadow-[0_2px_10px_rgba(30,11,54,0.9)]">
+                                Ingeniería de software quirúrgica e inteligencia artificial aplicada: recorra nuestras 4 soluciones autónomas diseñadas para escalar su margen neto.
+                            </p>
+
+                            <div class="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
+                                <a href="#contacto"
+                                    class="w-full sm:w-auto text-center bg-gradient-to-r from-[#8A4FFF] via-[#7C3AED] to-[#5B21B6] text-white px-7 py-3.5 rounded-xl font-mono font-extrabold text-xs sm:text-sm border border-[#C4B5FD]/55 shadow-[0_0_28px_rgba(138,79,255,0.5)] hover:shadow-[0_0_42px_rgba(138,79,255,0.8)] hover:-translate-y-0.5 transition-all duration-300">
+                                    [ Agendar Demo Técnica ]
+                                </a>
+                                <a href="#soluciones"
+                                    class="w-full sm:w-auto text-center bg-[#1E0B36]/90 backdrop-blur-md border border-[#8A4FFF]/65 text-violet-100 px-7 py-3.5 rounded-xl font-mono font-semibold text-xs sm:text-sm hover:bg-[#5B21B6]/40 hover:border-[#C4B5FD] transition-all duration-300">
+                                    [ Explorar Soluciones ]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 1: SERVICIO 01 — Concierge Digital con IA (Izquierda en Desktop) -->
+                    <div id="scrolly-block-1" class="scrolly-text-block justify-center lg:justify-start opacity-0">
+                        <div class="scrolly-text-block-inner scrolly-glass-card relative rounded-2xl p-6 sm:p-8 max-w-xl w-full lg:ml-4">
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#C4B5FD] font-semibold tracking-widest uppercase mb-3">
+                                <span>SERVICIO 01 // CONCIERGE IA 24/7</span>
+                                <span class="text-violet-200 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#8A4FFF] shadow-[0_0_8px_#8A4FFF]"></span>0.2s LATENCY
+                                </span>
+                            </div>
+
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold text-white leading-tight mb-3 drop-shadow-[0_2px_10px_rgba(15,5,30,0.65)]">
+                                Concierge Digital <span class="scrolly-neon-cyan">con IA</span>
+                            </h2>
+
+                            <p class="text-violet-50 text-xs sm:text-sm md:text-base leading-relaxed mb-5">
+                                Asistente virtual multilingüe en WhatsApp y Web conectado a Google Calendar y n8n. Automatiza reservas, responde consultas 24/7 y facilita la venta directa sin comisiones.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 font-mono text-[10px] sm:text-xs mb-5">
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#DDD6FE]">⚡ Respuesta 0.2s</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#C4B5FD]">📅 Google Calendar</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-violet-100">💬 Multilingüe 24/7</span>
+                            </div>
+
+                            <a href="concierge-ia.html"
+                                class="scrolly-card-cta inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold text-white">
+                                <span>./automatizar_ia.sh — Ver Simulador</span>
+                                <span class="text-[#C4B5FD]" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 2: SERVICIO 02 — Menú QR para Restaurantes (Derecha en Desktop) -->
+                    <div id="scrolly-block-2" class="scrolly-text-block justify-center lg:justify-end opacity-0">
+                        <div class="scrolly-text-block-inner scrolly-glass-card relative rounded-2xl p-6 sm:p-8 max-w-xl w-full lg:mr-4">
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#C4B5FD] font-semibold tracking-widest uppercase mb-3">
+                                <span>SERVICIO 02 // GASTRONOMÍA &amp; BODEGAS</span>
+                                <span class="text-violet-200 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#8A4FFF] shadow-[0_0_8px_#8A4FFF]"></span>LIVE MENU
+                                </span>
+                            </div>
+
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold text-white leading-tight mb-3 drop-shadow-[0_2px_10px_rgba(15,5,30,0.65)]">
+                                Menú QR para <span class="scrolly-neon-cyan">Restaurantes</span>
+                            </h2>
+
+                            <p class="text-violet-50 text-xs sm:text-sm md:text-base leading-relaxed mb-5">
+                                Cartas digitales interactivas de carga instantánea: modifique precios en segundos, muestre fotografía HD, filtre alérgenos y canalice pedidos directos a mesa sin reimpresiones.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 font-mono text-[10px] sm:text-xs mb-5">
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#DDD6FE]">📱 Edición al Instante</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#C4B5FD]">🍷 Ideal Bodegas</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-violet-100">🌍 Idiomas Turistas</span>
+                            </div>
+
+                            <a href="menu-qr.html"
+                                class="scrolly-card-cta inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold text-white">
+                                <span>./ver_menu_qr.sh — Probar Demo</span>
+                                <span class="text-[#C4B5FD]" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 3: SERVICIO 03 — Desarrollo Web & E-Commerce (Izquierda en Desktop) -->
+                    <div id="scrolly-block-3" class="scrolly-text-block justify-center lg:justify-start opacity-0">
+                        <div class="scrolly-text-block-inner scrolly-glass-card relative rounded-2xl p-6 sm:p-8 max-w-xl w-full lg:ml-4">
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#C4B5FD] font-semibold tracking-widest uppercase mb-3">
+                                <span>SERVICIO 03 // INGENIERÍA WEB</span>
+                                <span class="text-violet-200 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#8A4FFF] shadow-[0_0_8px_#8A4FFF]"></span>&lt; 1s LOAD
+                                </span>
+                            </div>
+
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold text-white leading-tight mb-3 drop-shadow-[0_2px_10px_rgba(15,5,30,0.65)]">
+                                Desarrollo Web <span class="scrolly-neon-cyan">&amp; E-Commerce</span>
+                            </h2>
+
+                            <p class="text-violet-50 text-xs sm:text-sm md:text-base leading-relaxed mb-5">
+                                Sitios a medida diseñados para convertir: Landing Pages B2B de alto impacto, tiendas online con MercadoPago o Stripe y portales corporativos con velocidad sub-segundo.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 font-mono text-[10px] sm:text-xs mb-5">
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#DDD6FE]">🚀 Lighthouse &gt;95</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#C4B5FD]">🛒 MercadoPago / Stripe</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-violet-100">🎯 Alta Conversión</span>
+                            </div>
+
+                            <a href="desarrollo-web.html"
+                                class="scrolly-card-cta inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold text-white">
+                                <span>./desarrollar_web.sh — Ver Showcase</span>
+                                <span class="text-[#C4B5FD]" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 4: SERVICIO 04 — Auditoría de Stock Inteligente (Derecha en Desktop) -->
+                    <div id="scrolly-block-4" class="scrolly-text-block justify-center lg:justify-end opacity-0">
+                        <div class="scrolly-text-block-inner scrolly-glass-card relative rounded-2xl p-6 sm:p-8 max-w-xl w-full lg:mr-4">
+                            <div class="flex items-center justify-between text-[10px] sm:text-xs font-mono text-[#C4B5FD] font-semibold tracking-widest uppercase mb-3">
+                                <span>SERVICIO 04 // CONTROL DE CAPITAL</span>
+                                <span class="text-violet-200 flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#8A4FFF] shadow-[0_0_8px_#8A4FFF]"></span>AUDIT ENGINE
+                                </span>
+                            </div>
+
+                            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-display font-extrabold text-white leading-tight mb-3 drop-shadow-[0_2px_10px_rgba(15,5,30,0.65)]">
+                                Auditoría de <span class="scrolly-neon-cyan">Stock Inteligente</span>
+                            </h2>
+
+                            <p class="text-violet-50 text-xs sm:text-sm md:text-base leading-relaxed mb-5">
+                                Cruza automáticamente existencias teóricas vs. físicas en tiempo real para detectar fugas de capital, mermas, desvíos de mercadería y errores de carga al instante.
+                            </p>
+
+                            <div class="flex flex-wrap gap-2 font-mono text-[10px] sm:text-xs mb-5">
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#DDD6FE]">📦 99.8% Precisión</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-[#C4B5FD]">🚨 Alertas WhatsApp</span>
+                                <span class="scrolly-metric-pill px-3 py-1.5 rounded-lg text-violet-100">📉 Cero Fugas</span>
+                            </div>
+
+                            <a href="auditoria-stock.html"
+                                class="scrolly-card-cta inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold text-white">
+                                <span>./optimizar_control.sh — Ver Auditoría</span>
+                                <span class="text-[#C4B5FD]" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- BLOQUE 5: Cierre & Impacto en Rentabilidad (Centrado) -->
+                    <div id="scrolly-block-5" class="scrolly-text-block justify-center opacity-0">
+                        <div class="scrolly-text-block-inner scrolly-glass-card relative rounded-3xl p-6 sm:p-9 max-w-2xl w-full text-center">
+                            <div class="inline-flex items-center space-x-2 scrolly-neon-badge px-3.5 py-1 rounded-full text-[10px] sm:text-xs font-mono text-[#C4B5FD] tracking-widest uppercase mb-4">
+                                <span class="w-1.5 h-1.5 rounded-full bg-[#8A4FFF]"></span>
+                                <span>ECOSISTEMA INTEGRAL // DEVLANTIA</span>
+                            </div>
+
+                            <h2 class="text-2xl sm:text-4xl lg:text-[2.65rem] font-display font-black text-white leading-tight mb-3 drop-shadow-[0_2px_10px_rgba(15,5,30,0.65)]">
+                                Sin Fricción. <span class="scrolly-neon-cyan">Solo Margen Neto.</span>
+                            </h2>
+
+                            <p class="text-violet-50 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto mb-6">
+                                Implementación ágil sobre lo que su empresa ya utiliza. Despliegue hoy la solución exacta que impacta en su rentabilidad desde Mendoza hacia el mundo.
+                            </p>
+
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4">
+                                <a href="#contacto"
+                                    class="w-full sm:w-auto text-center bg-gradient-to-r from-[#8A4FFF] via-[#7C3AED] to-[#5B21B6] text-white px-7 py-3.5 rounded-xl font-mono font-extrabold text-xs sm:text-sm border border-[#C4B5FD]/55 shadow-[0_0_28px_rgba(138,79,255,0.5)] hover:shadow-[0_0_42px_rgba(138,79,255,0.8)] transition-all duration-300">
+                                    [ Iniciar Diagnóstico Gratuito ]
+                                </a>
+                                <a href="#soluciones"
+                                    class="w-full sm:w-auto text-center bg-[#1E0B36]/95 border border-[#8A4FFF]/65 text-violet-100 px-7 py-3.5 rounded-xl font-mono font-semibold text-xs sm:text-sm hover:bg-[#5B21B6]/45 hover:border-[#C4B5FD] transition-all duration-300">
+                                    [ Ver Catálogo Completo ↓ ]
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- 5. Barra Inferior Minimalista de Progreso Scrollytelling + Puntos Interactivos -->
+                <div class="absolute bottom-4 sm:bottom-6 left-0 right-0 z-20 pointer-events-none">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-2.5 sm:gap-3">
+                        <!-- Puntos de Fase Narrativa (6 fases interactivas) -->
+                        <div class="pointer-events-auto flex items-center space-x-2.5 bg-[#1E0B36]/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-[#8A4FFF]/35">
+                            <button type="button" class="scrolly-phase-dot is-active w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="0" aria-label="Ir a Inicio"></button>
+                            <button type="button" class="scrolly-phase-dot w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="1" aria-label="Ir a Concierge IA"></button>
+                            <button type="button" class="scrolly-phase-dot w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="2" aria-label="Ir a Menú QR"></button>
+                            <button type="button" class="scrolly-phase-dot w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="3" aria-label="Ir a Desarrollo Web"></button>
+                            <button type="button" class="scrolly-phase-dot w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="4" aria-label="Ir a Auditoría Stock"></button>
+                            <button type="button" class="scrolly-phase-dot w-2 h-2 rounded-full bg-[#4C1D95] cursor-pointer" data-phase-dot="5" aria-label="Ir a Diagnóstico"></button>
+                            <span id="scrolly-phase-label" class="text-[10px] font-mono text-violet-200 tracking-wider uppercase ml-1.5">00 // DEVLANTIA</span>
+                        </div>
+
+                        <!-- Indicador de Deslizar (se desvanece suavemente al iniciar el scroll) -->
+                        <div id="scrolly-scroll-prompt" class="flex items-center space-x-2 text-[10px] sm:text-[11px] font-mono text-[#C4B5FD] tracking-widest uppercase">
+                            <span>DESLIZA PARA VER SERVICIOS</span>
+                            <span class="inline-block animate-bounce">↓</span>
+                        </div>
+
+                        <!-- Barra Lineal de Progreso Neón (GPU scaleX) -->
+                        <div class="w-40 sm:w-52 h-1.5 bg-[#2E1065]/90 rounded-full overflow-hidden border border-[#8A4FFF]/40">
+                            <div id="scrolly-progress-bar" class="h-full bg-gradient-to-r from-[#5B21B6] via-[#7C3AED] to-[#8A4FFF]"></div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- Soluciones a Medida Section -->
-        <section id="soluciones" class="py-20 bg-[#080C14] border-y border-white/5 relative overflow-hidden">
+        <!-- Soluciones a Medida Section (Transparente sobre el Canvas 3D Persistente) -->
+        <section id="soluciones" class="py-24 bg-gradient-to-b from-transparent via-[#1E0B36]/40 to-transparent border-t border-[#8A4FFF]/20 relative overflow-hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
-                    <h2 class="text-xs sm:text-sm font-mono text-teal-400 font-semibold tracking-wider">
-                        <span class="text-emerald-400">$</span> ls ./soluciones/ <span class="text-slate-500 font-normal">— Soluciones Eficientes</span>
+                <div class="text-center max-w-3xl mx-auto mb-16 space-y-4 reveal-up">
+                    <h2 class="text-xs sm:text-sm font-mono text-[#C4B5FD] font-semibold tracking-wider">
+                        <span class="text-[#8A4FFF]">$</span> ls ./soluciones/ <span class="text-violet-200/80 font-normal">— Soluciones Eficientes</span>
                     </h2>
-                    <p class="text-3xl sm:text-4xl font-display font-bold text-white">Herramientas diseñadas para
+                    <p class="text-3xl sm:text-4xl font-display font-bold text-white drop-shadow-[0_2px_12px_rgba(30,11,54,0.85)]">Herramientas diseñadas para
                         el resultado económico</p>
                 </div>
 
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 perspective-stage">
                     <!-- Solution Card 1 -->
-                    <div
-                        class="group tech-card p-8 rounded-2xl h-full flex flex-col">
+                    <div class="reveal-up delay-1 h-full">
                         <div
-                            class="w-14 h-14 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-500/20 transition-all duration-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-teal-300 transition-colors">Auditoría de Stock Inteligente
-                        </h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Un sistema que cruza automáticamente existencias teóricas vs. físicas para detectar fugas de
-                            capital y errores de carga al instante.
-                        </p>
-                        <div class="pt-4 border-t border-slate-800/80">
-                            <a href="auditoria-stock.html"
-                                class="text-teal-400 font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
-                                ./optimizar_control.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            class="group tech-card tilt-card p-8 rounded-2xl h-full flex flex-col">
+                            <div
+                                class="w-14 h-14 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#8A4FFF]/35 transition-all duration-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                            </a>
+                            </div>
+                            <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-[#C4B5FD] transition-colors">Auditoría de Stock Inteligente
+                            </h3>
+                            <p class="text-violet-100/90 text-sm leading-relaxed mb-6 flex-grow">
+                                Un sistema que cruza automáticamente existencias teóricas vs. físicas para detectar fugas de
+                                capital y errores de carga al instante.
+                            </p>
+                            <div class="pt-4 border-t border-[#8A4FFF]/25">
+                                <a href="auditoria-stock.html"
+                                    class="text-[#C4B5FD] font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                    ./optimizar_control.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Solution Card 2 -->
-                    <div
-                        class="group tech-card p-8 rounded-2xl h-full flex flex-col">
+                    <div class="reveal-up delay-2 h-full">
                         <div
-                            class="w-14 h-14 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-500/20 transition-all duration-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-teal-300 transition-colors">Desarrollo Web & E-Commerce</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Sitios a medida según su objetivo comercial: Landing Pages de alta conversión, tiendas online (E-Commerce) integradas con pasarelas de pago y portales corporativos de máxima velocidad.
-                        </p>
-                        <div class="pt-4 border-t border-slate-800/80">
-                            <a href="desarrollo-web.html"
-                                class="text-teal-400 font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
-                                ./desarrollar_web.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            class="group tech-card tilt-card p-8 rounded-2xl h-full flex flex-col">
+                            <div
+                                class="w-14 h-14 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#8A4FFF]/35 transition-all duration-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                        d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                 </svg>
-                            </a>
+                            </div>
+                            <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-[#C4B5FD] transition-colors">Desarrollo Web & E-Commerce</h3>
+                            <p class="text-violet-100/90 text-sm leading-relaxed mb-6 flex-grow">
+                                Sitios a medida según su objetivo comercial: Landing Pages de alta conversión, tiendas online (E-Commerce) integradas con pasarelas de pago y portales corporativos de máxima velocidad.
+                            </p>
+                            <div class="pt-4 border-t border-[#8A4FFF]/25">
+                                <a href="desarrollo-web.html"
+                                    class="text-[#C4B5FD] font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                    ./desarrollar_web.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Solution Card 3: Menú QR para Restaurantes -->
-                    <div
-                        class="group tech-card p-8 rounded-2xl h-full flex flex-col">
+                    <div class="reveal-up delay-3 h-full">
                         <div
-                            class="w-14 h-14 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-500/20 transition-all duration-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-teal-300 transition-colors">Menú QR para Restaurantes</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Cartas digitales interactivas para gastronomía: actualización instantánea de precios, fotos en alta resolución, filtros de alérgenos y pedidos a mesa sin costo de reimpresión.
-                        </p>
-                        <div class="pt-4 border-t border-slate-800/80">
-                            <a href="menu-qr.html"
-                                class="text-teal-400 font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
-                                ./ver_menu_qr.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            class="group tech-card tilt-card p-8 rounded-2xl h-full flex flex-col">
+                            <div
+                                class="w-14 h-14 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#8A4FFF]/35 transition-all duration-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                        d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                 </svg>
-                            </a>
+                            </div>
+                            <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-[#C4B5FD] transition-colors">Menú QR para Restaurantes</h3>
+                            <p class="text-violet-100/90 text-sm leading-relaxed mb-6 flex-grow">
+                                Cartas digitales interactivas para gastronomía: actualización instantánea de precios, fotos en alta resolución, filtros de alérgenos y pedidos a mesa sin costo de reimpresión.
+                            </p>
+                            <div class="pt-4 border-t border-[#8A4FFF]/25">
+                                <a href="menu-qr.html"
+                                    class="text-[#C4B5FD] font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                    ./ver_menu_qr.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Solution Card 4: Concierge Digital con IA -->
-                    <div
-                        class="group tech-card p-8 rounded-2xl h-full flex flex-col">
+                    <div class="reveal-up delay-4 h-full">
                         <div
-                            class="w-14 h-14 bg-teal-500/10 text-teal-400 border border-teal-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-teal-500/20 transition-all duration-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-teal-300 transition-colors">Concierge Digital con IA</h3>
-                        <p class="text-slate-400 text-sm leading-relaxed mb-6 flex-grow">
-                            Asistente virtual multilingüe que automatiza la atención al cliente, gestiona reservas en Google Calendar y facilita la venta directa 24/7.
-                        </p>
-                        <div class="pt-4 border-t border-slate-800/80">
-                            <a href="concierge-ia.html"
-                                class="text-teal-400 font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
-                                ./automatizar_ia.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
+                            class="group tech-card tilt-card p-8 rounded-2xl h-full flex flex-col">
+                            <div
+                                class="w-14 h-14 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#8A4FFF]/35 transition-all duration-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 5l7 7-7 7"></path>
+                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                                 </svg>
-                            </a>
+                            </div>
+                            <h3 class="text-xl font-display font-bold mb-3 text-white group-hover:text-[#C4B5FD] transition-colors">Concierge Digital con IA</h3>
+                            <p class="text-violet-100/90 text-sm leading-relaxed mb-6 flex-grow">
+                                Asistente virtual multilingüe que automatiza la atención al cliente, gestiona reservas en Google Calendar y facilita la venta directa 24/7.
+                            </p>
+                            <div class="pt-4 border-t border-[#8A4FFF]/25">
+                                <a href="concierge-ia.html"
+                                    class="text-[#C4B5FD] font-mono font-semibold text-xs inline-flex items-center group-hover:translate-x-2 transition-transform">
+                                    ./automatizar_ia.sh <svg class="ml-2 w-4 h-4" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -607,91 +1100,78 @@
         <section id="nosotros" class="py-20 lg:py-32 relative">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid lg:grid-cols-2 gap-16 items-center">
-                    <div class="order-2 lg:order-1">
+                    <div class="order-2 lg:order-1 perspective-stage">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div
-                                class="tech-card space-y-3 p-6 rounded-2xl border-l-4 border-l-teal-500">
+                                class="tech-card tilt-card reveal-up delay-1 space-y-3 p-6 rounded-2xl border-l-4 border-l-[#8A4FFF]">
                                 <h4 class="font-display font-bold text-lg text-white">Desarrollo Local</h4>
-                                <p class="text-sm text-slate-400 leading-relaxed">Conocemos el ritmo del comercio y la
+                                <p class="text-sm text-violet-100/90 leading-relaxed">Conocemos el ritmo del comercio y la
                                     industria en Mendoza. Cercanía y entendimiento real.</p>
                             </div>
                             <div
-                                class="tech-card space-y-3 p-6 rounded-2xl border-l-4 border-l-teal-500">
+                                class="tech-card tilt-card reveal-up delay-2 space-y-3 p-6 rounded-2xl border-l-4 border-l-[#7C3AED]">
                                 <h4 class="font-display font-bold text-lg text-white">Privacidad Absoluta</h4>
-                                <p class="text-sm text-slate-400 leading-relaxed">El procesamiento de sus datos es
+                                <p class="text-sm text-violet-100/90 leading-relaxed">El procesamiento de sus datos es
                                     local y seguro; su información nunca sale de su control.</p>
                             </div>
-                            <div class="sm:col-span-2 tech-card space-y-3 p-6 rounded-2xl border-l-4 border-l-emerald-400">
-                                <h4 class="font-display font-bold text-lg text-teal-400">Implementación Ágil</h4>
-                                <p class="text-sm text-slate-300 leading-relaxed">Herramientas diseñadas para integrarse
+                            <div class="sm:col-span-2 tech-card tilt-card reveal-up delay-3 space-y-3 p-6 rounded-2xl border-l-4 border-l-[#A78BFA]">
+                                <h4 class="font-display font-bold text-lg text-[#C4B5FD]">Implementación Ágil</h4>
+                                <p class="text-sm text-violet-50 leading-relaxed">Herramientas diseñadas para integrarse
                                     a lo que usted ya usa, sin cambiar su sistema actual. Sin fricción, solo resultados.
                                 </p>
                             </div>
                         </div>
                     </div>
-                    <div class="order-1 lg:order-2 space-y-6">
+                    <div class="order-1 lg:order-2 space-y-6 reveal-up">
                         <h2
-                            class="text-xs sm:text-sm font-mono text-teal-400 font-semibold tracking-wider text-center lg:text-left">
-                            <span class="text-emerald-400">$</span> cat ./diferencial.txt <span class="text-slate-500 font-normal">— Diferencial Estratégico</span>
+                            class="text-xs sm:text-sm font-mono text-[#C4B5FD] font-semibold tracking-wider text-center lg:text-left">
+                            <span class="text-[#8A4FFF]">$</span> cat ./diferencial.txt <span class="text-violet-200/80 font-normal">— Diferencial Estratégico</span>
                         </h2>
                         <h3
-                            class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white leading-tight text-center lg:text-left">
-                            ¿Por qué las empresas eligen <span class="text-teal-400">DEVLANTIA</span>?</h3>
-                        <p class="text-lg text-slate-400 leading-relaxed text-center lg:text-left">
+                            class="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-white leading-tight text-center lg:text-left drop-shadow-[0_2px_12px_rgba(30,11,54,0.85)]">
+                            ¿Por qué las empresas eligen <span class="scrolly-neon-cyan">DEVLANTIA</span>?</h3>
+                        <p class="text-lg text-violet-100 leading-relaxed text-center lg:text-left drop-shadow-[0_2px_10px_rgba(30,11,54,0.75)]">
                             No vendemos software genérico. Entramos en su operación, detectamos el cuello de botella y
                             desplegamos la solución que impacta directamente en su margen de ganancia.
                         </p>
-                        <div class="flex justify-center lg:justify-start pt-2">
-                            <div class="flex -space-x-2">
-                                <div class="w-10 h-10 rounded-full border-2 border-[#0B0F17] bg-slate-700 flex items-center justify-center text-xs font-mono text-teal-300">B2B</div>
-                                <div class="w-10 h-10 rounded-full border-2 border-[#0B0F17] bg-teal-900 flex items-center justify-center text-xs font-mono text-teal-300">IA</div>
-                                <div class="w-10 h-10 rounded-full border-2 border-[#0B0F17] bg-slate-800 flex items-center justify-center text-xs font-mono text-teal-300">ERP</div>
-                                <div
-                                    class="w-10 h-10 rounded-full border-2 border-[#0B0F17] bg-teal-600 flex items-center justify-center text-[10px] font-mono text-white font-bold">
-                                    +50</div>
-                            </div>
-                            <div class="ml-4 flex items-center">
-                                <p class="text-sm font-mono font-semibold text-slate-300">Empresas optimizadas</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- CTA / Contact Section -->
-        <section id="contacto" class="py-20 bg-[#060911] border-t border-white/5 text-white relative overflow-hidden">
-            <div class="absolute inset-x-0 bottom-0 top-1/2 teal-gradient opacity-10 pointer-events-none"></div>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <!-- CTA / Contact Section (Transparente sobre el Canvas 3D Persistente) -->
+        <section id="contacto" class="py-20 bg-gradient-to-b from-transparent via-[#2E1065]/40 to-[#1E0B36]/85 border-t border-[#8A4FFF]/20 text-white relative overflow-hidden">
+            <div class="absolute inset-x-0 bottom-0 top-1/2 teal-gradient opacity-15 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative perspective-stage">
                 <div
-                    class="max-w-4xl mx-auto tech-card p-8 lg:p-12 rounded-3xl shadow-2xl">
+                    class="max-w-4xl mx-auto tech-card reveal-up p-8 lg:p-12 rounded-3xl shadow-2xl">
                     <div class="grid lg:grid-cols-2 gap-12 items-start">
                         <div class="space-y-6">
-                            <div class="text-xs sm:text-sm font-mono text-teal-400 font-semibold tracking-wider">
-                                <span class="text-emerald-400">$</span> ./iniciar_diagnostico.sh
+                            <div class="text-xs sm:text-sm font-mono text-[#C4B5FD] font-semibold tracking-wider">
+                                <span class="text-[#8A4FFF]">$</span> ./iniciar_diagnostico.sh
                             </div>
                             <h2 class="text-3xl sm:text-4xl font-display font-extrabold tracking-tight text-white">Hablemos de su
-                                <span class="text-teal-400 italic">próximo salto</span> de eficiencia
+                                <span class="scrolly-neon-cyan italic">próximo salto</span> de eficiencia
                             </h2>
-                            <p class="text-slate-400 leading-relaxed">
+                            <p class="text-violet-100 leading-relaxed">
                                 Complete el formulario o hable directamente con un consultor técnico para diagnosticar
                                 su situación actual.
                             </p>
                             <div class="space-y-4 font-mono">
                                 <div class="flex items-center space-x-4">
                                     <div
-                                        class="w-10 h-10 bg-teal-500/15 text-teal-400 border border-teal-500/30 rounded-lg flex items-center justify-center">
+                                        class="w-10 h-10 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-lg flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                                         </svg>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-slate-200">marcelo170187@gmail.com</span>
+                                    <span class="text-xs sm:text-sm text-violet-100">marcelo170187@gmail.com</span>
                                 </div>
                                 <div class="flex items-center space-x-4">
                                     <div
-                                        class="w-10 h-10 bg-teal-500/15 text-teal-400 border border-teal-500/30 rounded-lg flex items-center justify-center">
+                                        class="w-10 h-10 bg-[#8A4FFF]/20 text-[#C4B5FD] border border-[#8A4FFF]/45 rounded-lg flex items-center justify-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -700,7 +1180,7 @@
                                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
                                     </div>
-                                    <span class="text-xs sm:text-sm text-slate-200">Mendoza, Argentina</span>
+                                    <span class="text-xs sm:text-sm text-violet-100">Mendoza, Argentina</span>
                                 </div>
                             </div>
                             <div class="pt-4">
@@ -714,40 +1194,40 @@
                                 </a>
                             </div>
                         </div>
-                        <form class="space-y-4 bg-[#070B12]/90 p-6 rounded-2xl border border-slate-800">
+                        <form class="space-y-4 bg-[#1E0B36]/95 p-6 rounded-2xl border border-[#8A4FFF]/35 shadow-inner">
                             <div>
                                 <label
-                                    class="text-xs font-mono uppercase tracking-wider text-teal-400 font-semibold mb-1.5 block">Nombre
+                                    class="text-xs font-mono uppercase tracking-wider text-[#C4B5FD] font-semibold mb-1.5 block">Nombre
                                     Completo</label>
                                 <input type="text"
-                                    class="w-full bg-[#0F172A] border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all text-sm"
+                                    class="w-full bg-[#2E1065]/70 border border-[#7C3AED]/45 rounded-xl px-4 py-3 text-white placeholder-violet-300/50 focus:outline-none focus:border-[#8A4FFF] focus:ring-1 focus:ring-[#8A4FFF] transition-all text-sm"
                                     placeholder="Juan Pérez">
                             </div>
                             <div>
                                 <label
-                                    class="text-xs font-mono uppercase tracking-wider text-teal-400 font-semibold mb-1.5 block">Empresa</label>
+                                    class="text-xs font-mono uppercase tracking-wider text-[#C4B5FD] font-semibold mb-1.5 block">Empresa</label>
                                 <input type="text"
-                                    class="w-full bg-[#0F172A] border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all text-sm"
+                                    class="w-full bg-[#2E1065]/70 border border-[#7C3AED]/45 rounded-xl px-4 py-3 text-white placeholder-violet-300/50 focus:outline-none focus:border-[#8A4FFF] focus:ring-1 focus:ring-[#8A4FFF] transition-all text-sm"
                                     placeholder="Nombre de su negocio">
                             </div>
                             <div>
                                 <label
-                                    class="text-xs font-mono uppercase tracking-wider text-teal-400 font-semibold mb-1.5 block">Email
+                                    class="text-xs font-mono uppercase tracking-wider text-[#C4B5FD] font-semibold mb-1.5 block">Email
                                     Corporativo</label>
                                 <input type="email"
-                                    class="w-full bg-[#0F172A] border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all text-sm"
+                                    class="w-full bg-[#2E1065]/70 border border-[#7C3AED]/45 rounded-xl px-4 py-3 text-white placeholder-violet-300/50 focus:outline-none focus:border-[#8A4FFF] focus:ring-1 focus:ring-[#8A4FFF] transition-all text-sm"
                                     placeholder="juan@empresa.com">
                             </div>
                             <div>
                                 <label
-                                    class="text-xs font-mono uppercase tracking-wider text-teal-400 font-semibold mb-1.5 block">Mensaje
+                                    class="text-xs font-mono uppercase tracking-wider text-[#C4B5FD] font-semibold mb-1.5 block">Mensaje
                                     / Desafío Actual</label>
                                 <textarea rows="3"
-                                    class="w-full bg-[#0F172A] border border-slate-700/80 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 focus:ring-1 focus:ring-teal-400 transition-all text-sm"
+                                    class="w-full bg-[#2E1065]/70 border border-[#7C3AED]/45 rounded-xl px-4 py-3 text-white placeholder-violet-300/50 focus:outline-none focus:border-[#8A4FFF] focus:ring-1 focus:ring-[#8A4FFF] transition-all text-sm"
                                     placeholder="Cuéntenos qué proceso desea optimizar..."></textarea>
                             </div>
                             <button type="submit"
-                                class="w-full teal-gradient text-white font-mono font-bold py-4 rounded-xl shadow-xl border border-teal-400/30 hover:shadow-[0_0_25px_rgba(20,184,166,0.4)] transition-all uppercase tracking-widest text-xs sm:text-sm">
+                                class="w-full teal-gradient text-white font-mono font-bold py-4 rounded-xl shadow-xl border border-[#C4B5FD]/40 hover:shadow-[0_0_28px_rgba(138,79,255,0.55)] transition-all uppercase tracking-widest text-xs sm:text-sm">
                                 [ Enviar Solicitud ]
                             </button>
                         </form>
@@ -864,19 +1344,19 @@
         </button>
     </div>
 
-    <footer class="bg-[#05080F] py-12 border-t border-slate-800/80">
+    <footer class="bg-[#1E0B36]/95 py-12 border-t border-[#8A4FFF]/25">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center mb-8 md:mb-0">
                     <div class="flex items-center space-x-3">
-                        <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#14B8A6" fill-opacity="0.15" />
-                            <path d="M24 4V24L4 14L24 4Z" fill="#0D9488" />
-                            <path d="M4 14V34L24 24L4 14Z" fill="#0F766E" />
-                            <path d="M24 44V24L4 34L24 44Z" fill="#1E293B" />
-                            <path d="M44 34V14L24 24L44 34Z" fill="#14B8A6" fill-opacity="0.85" />
-                            <path d="M24 4V24L44 14L24 4Z" fill="#2DD4BF" />
-                            <path d="M44 34L24 44V24L44 34Z" fill="#0D9488" fill-opacity="0.7" />
+                        <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-[0_0_10px_rgba(138,79,255,0.45)]">
+                            <path d="M24 4L4 14V34L24 44L44 34V14L24 4Z" fill="#8A4FFF" fill-opacity="0.18" />
+                            <path d="M24 4V24L4 14L24 4Z" fill="#7C3AED" />
+                            <path d="M4 14V34L24 24L4 14Z" fill="#4C1D95" />
+                            <path d="M24 44V24L4 34L24 44Z" fill="#1E0B36" />
+                            <path d="M44 34V14L24 24L44 34Z" fill="#5B21B6" />
+                            <path d="M24 4V24L44 14L24 4Z" fill="#8A4FFF" />
+                            <path d="M44 34L24 44V24L44 34Z" fill="#2E1065" />
                         </svg>
                         <div class="flex flex-col">
                             <span class="glitch-box cursor-pointer select-none">
@@ -884,24 +1364,24 @@
                                 <span class="glitch text-xl font-cyber font-black tracking-tight text-white leading-none uppercase" data-text="DEVLANTIA" data-final-text="DEVLANTIA">DEVLANTIA</span>
                             </span>
                             <span
-                                class="text-[8px] font-mono uppercase tracking-[0.25em] text-teal-400 font-semibold mt-0.5">Development
+                                class="text-[8px] font-mono uppercase tracking-[0.25em] text-[#C4B5FD] font-semibold mt-0.5">Development
                                 Company</span>
                         </div>
                     </div>
                 </div>
-                <div class="flex space-x-8 text-xs font-mono uppercase tracking-widest text-slate-400">
-                    <a href="#" class="hover:text-teal-400 transition-colors">Privacidad</a>
-                    <a href="#" class="hover:text-teal-400 transition-colors">Términos</a>
-                    <a href="#soluciones" class="hover:text-teal-400 transition-colors">Soluciones</a>
+                <div class="flex space-x-8 text-xs font-mono uppercase tracking-widest text-violet-200/80">
+                    <a href="#" class="hover:text-[#C4B5FD] transition-colors">Privacidad</a>
+                    <a href="#" class="hover:text-[#C4B5FD] transition-colors">Términos</a>
+                    <a href="#soluciones" class="hover:text-[#C4B5FD] transition-colors">Soluciones</a>
                 </div>
-                <p class="mt-8 md:mt-0 text-xs font-mono text-slate-500">
+                <p class="mt-8 md:mt-0 text-xs font-mono text-violet-300/70">
                     &copy; 2026 DEVLANTIA. Todos los derechos reservados.
                 </p>
             </div>
 
             <!-- Cierre del pie de página en fuente monoespaciada -->
-            <div class="mt-8 pt-6 border-t border-slate-800/50 text-center">
-                <p class="text-xs font-mono text-teal-400/70 tracking-widest">
+            <div class="mt-8 pt-6 border-t border-[#5B21B6]/40 text-center">
+                <p class="text-xs font-mono text-[#C4B5FD]/80 tracking-widest">
                     // end of transmission · DEVLANTIA
                 </p>
             </div>
@@ -922,15 +1402,20 @@
             }
         }
 
-        // Header scroll behavior (Dark Tech)
-        window.addEventListener('scroll', () => {
+        // Header scroll behavior (Dark Tech - passive & sin thrashing)
+        (function initHeaderScroll() {
             const header = document.querySelector('header');
-            if (window.scrollY > 50) {
-                header.classList.add('shadow-2xl', 'shadow-teal-950/50');
-            } else {
-                header.classList.remove('shadow-2xl', 'shadow-teal-950/50');
-            }
-        });
+            if (!header) return;
+            let isScrolled = false;
+            window.addEventListener('scroll', () => {
+                const next = window.scrollY > 50;
+                if (next !== isScrolled) {
+                    isScrolled = next;
+                    header.classList.toggle('shadow-2xl', isScrolled);
+                    header.classList.toggle('shadow-violet-950/70', isScrolled);
+                }
+            }, { passive: true });
+        })();
 
         // Chatbot Inteligente con n8n Webhook & Respaldo IA DEVLANTIA
         const chatWindow = document.getElementById('chat-window');
@@ -1764,6 +2249,890 @@
             `;
             scrollToBottom();
         }
+
+        /* ==========================================================================
+           INTERACCIÓN DE TARJETAS: PERSPECTIVE TILT 3D, GLARE DINÁMICO & SCROLL REVEAL
+           ========================================================================== */
+        (function initCardInteractionsAndReveal() {
+            // 1. Reflejo de luz dinámico + Inclinación 3D (Perspective Tilt) en tarjetas
+            const techCards = document.querySelectorAll('.tech-card');
+            techCards.forEach((card) => {
+                card.addEventListener('mousemove', (e) => {
+                    if (window.innerWidth < 768) return;
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    card.style.setProperty('--glare-x', `${x}px`);
+                    card.style.setProperty('--glare-y', `${y}px`);
+                    card.style.setProperty('--glare-opacity', '1');
+                }, { passive: true });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.setProperty('--glare-opacity', '0');
+                }, { passive: true });
+            });
+
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            tiltCards.forEach((card) => {
+                const maxTilt = 10;
+
+                card.addEventListener('mouseenter', () => {
+                    if (window.innerWidth < 768) return;
+                    card.classList.add('is-tilting');
+                }, { passive: true });
+
+                card.addEventListener('mousemove', (e) => {
+                    if (window.innerWidth < 768) return;
+                    const rect = card.getBoundingClientRect();
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const mouseX = e.clientX - rect.left;
+                    const mouseY = e.clientY - rect.top;
+
+                    const rotateY = ((mouseX - centerX) / centerX) * maxTilt;
+                    const rotateX = -((mouseY - centerY) / centerY) * maxTilt;
+
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+                }, { passive: true });
+
+                card.addEventListener('mouseleave', () => {
+                    card.classList.remove('is-tilting');
+                    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                }, { passive: true });
+            });
+
+            // 3. Animaciones fluidas Fade-Up al hacer scroll (IntersectionObserver nativo)
+            const revealElements = document.querySelectorAll('.reveal-up');
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver(
+                    (entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('is-visible');
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    },
+                    {
+                        threshold: 0.12,
+                        rootMargin: '0px 0px -35px 0px'
+                    }
+                );
+                revealElements.forEach((el) => revealObserver.observe(el));
+            } else {
+                revealElements.forEach((el) => el.classList.add('is-visible'));
+            }
+        })();
+
+        /* ==========================================================================
+           MOTOR 3D AUTÓNOMO "BUILT FROM LIGHT" + SCROLLYTELLING (GSAP + SCROLLTRIGGER + LENIS)
+           Movimiento 3D independiente continuo + Fondo persistente en toda la página
+           ========================================================================== */
+        (function initScrollytellingHero() {
+            const trackSection = document.getElementById('hero-scrollytelling');
+            const canvas = document.getElementById('hero-scrolly-canvas');
+            const fallbackVideo = document.getElementById('hero-fallback-video');
+            if (!trackSection || !canvas) return;
+
+            const ctx = canvas.getContext('2d', { alpha: false });
+            const frameTelemetryEl = document.getElementById('scrolly-frame-telemetry');
+            const progressPctEl = document.getElementById('scrolly-progress-pct');
+            const progressBarEl = document.getElementById('scrolly-progress-bar');
+            const scrollPromptEl = document.getElementById('scrolly-scroll-prompt');
+            const phaseLabelEl = document.getElementById('scrolly-phase-label');
+            const motionToggleBtn = document.getElementById('scrolly-motion-toggle');
+            const phaseDots = document.querySelectorAll('[data-phase-dot]');
+
+            const blocks = [
+                document.getElementById('scrolly-block-0'), // Intro
+                document.getElementById('scrolly-block-1'), // Servicio 1: Concierge IA
+                document.getElementById('scrolly-block-2'), // Servicio 2: Menú QR
+                document.getElementById('scrolly-block-3'), // Servicio 3: Desarrollo Web & E-Commerce
+                document.getElementById('scrolly-block-4'), // Servicio 4: Auditoría de Stock
+                document.getElementById('scrolly-block-5')  // Cierre Rentabilidad
+            ];
+
+            const phaseNames = [
+                '00 // DEVLANTIA',
+                '01 // CONCIERGE IA',
+                '02 // MENÚ QR',
+                '03 // WEB & E-COMMERCE',
+                '04 // AUDITORÍA STOCK',
+                '05 // RENTABILIDAD'
+            ];
+
+            // Detectar dispositivo táctil para preservar la inercia nativa del celular sin frenos
+            const isTouchDevice = window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window && window.innerWidth < 1024);
+            let isMobile = window.innerWidth < 768;
+
+            // Control de movimiento 3D independiente (respeta prefers-reduced-motion)
+            const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let isAutoMotionActive = !prefersReducedMotion;
+
+            if (motionToggleBtn) {
+                motionToggleBtn.textContent = isAutoMotionActive ? '|| 3D' : '▸ 3D';
+                motionToggleBtn.setAttribute('aria-pressed', isAutoMotionActive ? 'false' : 'true');
+                motionToggleBtn.addEventListener('click', () => {
+                    isAutoMotionActive = !isAutoMotionActive;
+                    motionToggleBtn.textContent = isAutoMotionActive ? '|| 3D' : '▸ 3D';
+                    motionToggleBtn.setAttribute('aria-pressed', isAutoMotionActive ? 'false' : 'true');
+                });
+            }
+
+            // ----------------------------------------------------------------------
+            // 1. LENIS FLUIDO EN DESKTOP + SCROLL NATIVO ACELERADO POR HARDWARE EN MÓVIL
+            // ----------------------------------------------------------------------
+            let lenis = null;
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.registerPlugin(ScrollTrigger);
+                ScrollTrigger.config({ ignoreMobileResize: true });
+            }
+
+            if (typeof Lenis !== 'undefined' && !isTouchDevice) {
+                lenis = new Lenis({
+                    lerp: 0.14,
+                    smoothWheel: true,
+                    wheelMultiplier: 1.15,
+                    syncTouch: false
+                });
+
+                if (typeof ScrollTrigger !== 'undefined') {
+                    lenis.on('scroll', ScrollTrigger.update);
+                }
+
+                if (typeof gsap !== 'undefined') {
+                    gsap.ticker.add((time) => {
+                        lenis.raf(time * 1000);
+                    });
+                    gsap.ticker.lagSmoothing(0);
+                }
+            }
+
+            // Navegación fluida en enlaces ancla (#soluciones, #nosotros, #contacto)
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener('click', (e) => {
+                    const targetId = anchor.getAttribute('href');
+                    if (!targetId || targetId === '#') return;
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        if (lenis) {
+                            lenis.scrollTo(targetEl, { offset: -68, duration: 0.9 });
+                        } else {
+                            targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
+
+            // Salto directo al hacer clic/tap en los 6 puntos de fase de la barra inferior
+            const phaseTargetProgress = [0, 0.23, 0.40, 0.57, 0.74, 0.95];
+            phaseDots.forEach((dot, idx) => {
+                dot.addEventListener('click', () => {
+                    const maxTrackScroll = Math.max(0, trackSection.offsetHeight - window.innerHeight);
+                    const targetY = trackSection.offsetTop + maxTrackScroll * (phaseTargetProgress[idx] || 0);
+                    if (lenis) {
+                        lenis.scrollTo(targetY, { duration: 0.75 });
+                    } else {
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // ----------------------------------------------------------------------
+            // 2. CONFIGURACIÓN DE SECUENCIA DE IMÁGENES / VIDEO MP4 DE RESPALDO
+            // ----------------------------------------------------------------------
+            const desktopFrames = parseInt(canvas.dataset.frameCount || '120', 10);
+            const mobileFrames = parseInt(canvas.dataset.mobileFrameCount || '72', 10);
+            let totalFrames = isMobile ? mobileFrames : desktopFrames;
+
+            const sequenceTemplate = (canvas.dataset.sequenceTemplate || '').trim();
+            const videoFallbackSrc = (canvas.dataset.videoFallback || '').trim();
+
+            const imageFrames = [];
+            let useVideoFallback = false;
+            let videoReady = false;
+
+            const playhead = {
+                frame: 0,
+                progress: 0,
+                smoothProgress: 0,
+                postHeroBlend: 0,
+                pageProgress: 0
+            };
+
+            let cw = window.innerWidth;
+            let ch = window.innerHeight;
+            let dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+
+            // Métricas cacheadas para transición fluida hacia #soluciones, #nosotros y #contacto (sin reflow)
+            let heroEndY = Math.max(1, trackSection.offsetHeight - window.innerHeight);
+            let docMaxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+
+            function updateScrollBounds() {
+                heroEndY = Math.max(1, trackSection.offsetHeight - window.innerHeight);
+                docMaxScroll = Math.max(1, document.body.scrollHeight - window.innerHeight);
+            }
+
+            // Parallax sutil del cursor en escritorio
+            let targetMouseX = 0;
+            let targetMouseY = 0;
+            let currentMouseX = 0;
+            let currentMouseY = 0;
+            if (!isTouchDevice) {
+                window.addEventListener('mousemove', (e) => {
+                    targetMouseX = (e.clientX / Math.max(1, cw)) * 2 - 1;
+                    targetMouseY = (e.clientY / Math.max(1, ch)) * 2 - 1;
+                }, { passive: true });
+            }
+
+            // Seguir scroll general de toda la página para transición continua del fondo 3D bajo las tarjetas
+            window.addEventListener('scroll', () => {
+                const sy = window.scrollY;
+                playhead.pageProgress = Math.max(0, Math.min(1, sy / docMaxScroll));
+                const beyondHero = Math.max(0, (sy - heroEndY) / Math.max(1, ch * 0.85));
+                playhead.postHeroBlend = Math.min(1, beyondHero);
+            }, { passive: true });
+
+            // Caché de UI para evitar escrituras innecesarias al DOM
+            let lastTelemetryFrame = -1;
+            let lastPct = -1;
+            let lastPhase = -1;
+            let lastActiveBlockIdx = -1;
+
+            function formatFrameIndex(idx, digits = 3) {
+                return String(idx).padStart(digits, '0');
+            }
+
+            function activateVideoFallback(srcUrl) {
+                if (!fallbackVideo || !srcUrl || useVideoFallback) return;
+                useVideoFallback = true;
+                fallbackVideo.src = srcUrl;
+                fallbackVideo.load();
+                fallbackVideo.addEventListener('loadedmetadata', () => {
+                    videoReady = true;
+                }, { once: true });
+            }
+
+            if (sequenceTemplate) {
+                let errorCount = 0;
+                for (let i = 0; i < totalFrames; i++) {
+                    const img = new Image();
+                    img.decoding = 'async';
+                    img.src = sequenceTemplate.replace('{index}', formatFrameIndex(i + 1, 4));
+                    img.onerror = () => {
+                        errorCount++;
+                        if (errorCount > 3 && videoFallbackSrc) {
+                            activateVideoFallback(videoFallbackSrc);
+                        }
+                    };
+                    imageFrames.push(img);
+                }
+            } else if (videoFallbackSrc) {
+                activateVideoFallback(videoFallbackSrc);
+            }
+
+            function drawMediaCover(media, mediaW, mediaH) {
+                if (!mediaW || !mediaH) return;
+                const canvasRatio = cw / ch;
+                const mediaRatio = mediaW / mediaH;
+                let drawW = cw;
+                let drawH = ch;
+                let offsetX = 0;
+                let offsetY = 0;
+
+                if (canvasRatio > mediaRatio) {
+                    drawW = cw;
+                    drawH = cw / mediaRatio;
+                    offsetY = (ch - drawH) * 0.5;
+                } else {
+                    drawH = ch;
+                    drawW = ch * mediaRatio;
+                    offsetX = (cw - drawW) * 0.5;
+                }
+                ctx.drawImage(media, offsetX, offsetY, drawW, drawH);
+            }
+
+            // ----------------------------------------------------------------------
+            // 3. ESCULTURA 3D "BUILT FROM LIGHT" (ESTILO INFINITY SOCKS — MOVIMIENTO AUTÓNOMO)
+            // ----------------------------------------------------------------------
+            const nodeCount = isMobile ? 34 : 64;
+            const dustCount = isMobile ? 42 : 84;
+
+            // Buffers prealocados en TypedArrays (Zero Garbage Collection a 60fps)
+            const sxArr = new Float32Array(nodeCount);
+            const syArr = new Float32Array(nodeCount);
+            const szArr = new Float32Array(nodeCount);
+            const nxArr = new Float32Array(nodeCount);
+            const nyArr = new Float32Array(nodeCount);
+            const nzArr = new Float32Array(nodeCount);
+            const gxArr = new Float32Array(nodeCount);
+            const gyArr = new Float32Array(nodeCount);
+            const gzArr = new Float32Array(nodeCount);
+            const hxArr = new Float32Array(nodeCount);
+            const hyArr = new Float32Array(nodeCount);
+            const hzArr = new Float32Array(nodeCount);
+            const phaseArr = new Float32Array(nodeCount);
+
+            const projX = new Float32Array(nodeCount);
+            const projY = new Float32Array(nodeCount);
+            const projS = new Float32Array(nodeCount);
+
+            // Partículas luminosas ambientales que flotan de forma independiente en el espacio 3D
+            const dustX = new Float32Array(dustCount);
+            const dustY = new Float32Array(dustCount);
+            const dustZ = new Float32Array(dustCount);
+            const dustSpeed = new Float32Array(dustCount);
+            const dustPhase = new Float32Array(dustCount);
+
+            for (let d = 0; d < dustCount; d++) {
+                const a = d * 2.39996;
+                const rad = 0.8 + ((d * 37) % 100) * 0.022;
+                dustX[d] = Math.cos(a) * rad;
+                dustY[d] = (((d * 53) % 100) / 50 - 1) * 1.45;
+                dustZ[d] = Math.sin(a) * rad;
+                dustSpeed[d] = 0.14 + ((d * 19) % 10) * 0.025;
+                dustPhase[d] = d * 0.7;
+            }
+
+            const side = Math.ceil(Math.cbrt(nodeCount));
+            const sideDenom = Math.max(1, side - 1);
+
+            for (let i = 0; i < nodeCount; i++) {
+                phaseArr[i] = i * 0.43;
+
+                // Fase 0/1: Esfera Cuántica de Luz (Núcleo + Concierge IA)
+                const phi = Math.acos(1 - (2 * (i + 0.5)) / nodeCount);
+                const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+                const sx = Math.sin(phi) * Math.cos(theta);
+                const sy = Math.sin(phi) * Math.sin(theta);
+                const sz = Math.cos(phi);
+                sxArr[i] = sx;
+                syArr[i] = sy;
+                szArr[i] = sz;
+
+                // Fase 2/3: Constelación Toroidal / Onda Holográfica (Menú QR & Web Sub-1s)
+                const u = (i / nodeCount) * Math.PI * 2;
+                const v = ((i * 7) % nodeCount) / nodeCount * Math.PI * 2;
+                const R = 1.15;
+                const rTube = 0.45;
+                nxArr[i] = (R + rTube * Math.cos(v)) * Math.cos(u);
+                nyArr[i] = rTube * Math.sin(v) * 1.35;
+                nzArr[i] = (R + rTube * Math.cos(v)) * Math.sin(u);
+
+                // Fase 4: Matriz Isométrica Cúbica (Auditoría de Stock Inteligente)
+                gxArr[i] = ((i % side) / sideDenom - 0.5) * 2.15;
+                gyArr[i] = ((Math.floor(i / side) % side) / sideDenom - 0.5) * 2.15;
+                gzArr[i] = ((Math.floor(i / (side * side))) / sideDenom - 0.5) * 2.15;
+
+                // Fase 5 + Fondo Persistente: Prisma Hexagonal DEVLANTIA Expandido
+                const ringIdx = i % 6;
+                const hexAngle = (ringIdx * Math.PI) / 3;
+                const hexScale = i < 12 ? 0.58 : (i % 2 === 0 ? 1.32 : 1.62);
+                hxArr[i] = Math.cos(hexAngle) * hexScale;
+                hyArr[i] = ((i % 5) - 2) * 0.42;
+                hzArr[i] = Math.sin(hexAngle) * hexScale;
+            }
+
+            // Paleta de luz neón Púrpura / Índigo unificada (#8A4FFF / #7C3AED / #5B21B6)
+            const phaseAccentColors = [
+                [138, 79, 255],  // 0: Intro #8A4FFF
+                [138, 79, 255],  // 1: Concierge IA #8A4FFF
+                [124, 58, 237],  // 2: Menú QR #7C3AED
+                [167, 139, 250], // 3: Web & E-Commerce #A78BFA
+                [124, 58, 237],  // 4: Auditoría Stock #7C3AED
+                [138, 79, 255]   // 5: Rentabilidad / Fondo continuo #8A4FFF
+            ];
+
+            function smoothstep(min, max, value) {
+                const x = Math.max(0, Math.min(1, (value - min) / (max - min)));
+                return x * x * (3 - 2 * x);
+            }
+
+            function lerp(a, b, t) {
+                return a + (b - a) * t;
+            }
+
+            // Reloj independiente del scroll (mantiene el 3D vivo incluso al frenar el scroll)
+            let autoTime = 0;
+            let lastRafTs = performance.now();
+
+            // Gradiente de fondo cacheado por altura (Bordes #1E0B36/#2E1065 -> Medio #4C1D95/#5B21B6 -> Centro iluminado)
+            let cachedBgGrad = null;
+            let cachedBgGradH = 0;
+
+            function getPurpleBackdropGradient() {
+                if (!cachedBgGrad || cachedBgGradH !== ch) {
+                    cachedBgGradH = ch;
+                    cachedBgGrad = ctx.createLinearGradient(0, 0, 0, ch);
+                    cachedBgGrad.addColorStop(0, '#1E0B36');
+                    cachedBgGrad.addColorStop(0.22, '#2E1065');
+                    cachedBgGrad.addColorStop(0.5, '#4C1D95');
+                    cachedBgGrad.addColorStop(0.78, '#2E1065');
+                    cachedBgGrad.addColorStop(1, '#1E0B36');
+                }
+                return cachedBgGrad;
+            }
+
+            function renderLiving3DLightScene(p, t, ambientBlend, pageP) {
+                // Interpolar color neón suavemente entre #8A4FFF y #7C3AED
+                const colorPos = p * 5;
+                const cIdxA = Math.min(5, Math.floor(colorPos));
+                const cIdxB = Math.min(5, cIdxA + 1);
+                const cT = colorPos - cIdxA;
+                let ar = Math.round(lerp(phaseAccentColors[cIdxA][0], phaseAccentColors[cIdxB][0], cT));
+                let ag = Math.round(lerp(phaseAccentColors[cIdxA][1], phaseAccentColors[cIdxB][1], cT));
+                let ab = Math.round(lerp(phaseAccentColors[cIdxA][2], phaseAccentColors[cIdxB][2], cT));
+
+                // Al bajar a #soluciones / #nosotros / #contacto, oscilar suavemente entre #8A4FFF y #7C3AED
+                if (ambientBlend > 0.01) {
+                    const postMix = 0.5 + 0.5 * Math.sin(pageP * Math.PI * 2 + t * 0.25);
+                    ar = Math.round(lerp(ar, lerp(138, 124, postMix), ambientBlend));
+                    ag = Math.round(lerp(ag, lerp(79, 58, postMix), ambientBlend));
+                    ab = Math.round(lerp(ab, lerp(255, 237, postMix), ambientBlend));
+                }
+
+                // Pesos geométricos entre las 4 topologías 3D
+                const w1 = smoothstep(0.16, 0.36, p);
+                const w2 = smoothstep(0.52, 0.70, p);
+                const w3 = smoothstep(0.80, 0.94, p);
+
+                // Desplazamiento lateral elegante en escritorio (se centra al pasar a las tarjetas inferiores)
+                const heroShift = isMobile ? 0 : (
+                    smoothstep(0.14, 0.24, p) * (1 - smoothstep(0.30, 0.38, p)) * 0.20 -
+                    smoothstep(0.32, 0.40, p) * (1 - smoothstep(0.47, 0.55, p)) * 0.20 +
+                    smoothstep(0.49, 0.57, p) * (1 - smoothstep(0.64, 0.72, p)) * 0.20 -
+                    smoothstep(0.66, 0.74, p) * (1 - smoothstep(0.81, 0.89, p)) * 0.20
+                ) * (1 - ambientBlend);
+
+                const cx = cw * (0.5 + heroShift) + currentMouseX * (isMobile ? 0 : 18);
+                const cy = ch * (0.52 - ambientBlend * 0.04) + Math.sin(t * 0.85) * 6 + currentMouseY * (isMobile ? 0 : 14);
+
+                // En secciones de tarjetas, la escultura se expande suavemente en profundidad como galaxia ambiental
+                const baseRadius = Math.min(cw, ch) * (isMobile ? 0.25 : 0.28) * (1 + ambientBlend * 0.26);
+                const intensityScale = 1 - ambientBlend * 0.24;
+
+                // 1. Fondo vertical Índigo Profundo / Púrpura (#1E0B36 -> #2E1065 -> #4C1D95 -> #2E1065 -> #1E0B36)
+                ctx.fillStyle = getPurpleBackdropGradient();
+                ctx.fillRect(0, 0, cw, ch);
+
+                // 2. Zona Central Iluminada (#8A4FFF / #7C3AED -> #5B21B6 -> #1E0B36) con respiración autónoma
+                const breathe = 1 + Math.sin(t * 1.45) * 0.06;
+                const glowRadius = baseRadius * 2.65 * breathe;
+                const bgGlow = ctx.createRadialGradient(cx, cy, baseRadius * 0.08, cx, cy, glowRadius);
+                bgGlow.addColorStop(0, `rgba(${ar},${ag},${ab},${(0.42 * intensityScale).toFixed(3)})`);
+                bgGlow.addColorStop(0.42, `rgba(91,33,182,${(0.24 * intensityScale).toFixed(3)})`);
+                bgGlow.addColorStop(0.75, `rgba(46,16,101,${(0.12 * intensityScale).toFixed(3)})`);
+                bgGlow.addColorStop(1, 'rgba(30,11,54,0)');
+                ctx.fillStyle = bgGlow;
+                ctx.fillRect(0, 0, cw, ch);
+
+                // 3. Horizonte cibernético con avance continuo independiente del scroll
+                const horizonY = ch * (0.79 + ambientBlend * 0.07);
+                ctx.strokeStyle = `rgba(196,181,253,${(0.11 * intensityScale).toFixed(3)})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                const gridLines = isMobile ? 5 : 10;
+                for (let g = -gridLines; g <= gridLines; g++) {
+                    ctx.moveTo(cx + g * (cw * 0.045), horizonY);
+                    ctx.lineTo(cx + g * (cw * 0.19), ch);
+                }
+                for (let h = 0; h < 4; h++) {
+                    const scanOffset = ((p * 4.5 + t * 0.16 + h * 0.25) % 1);
+                    const yLine = horizonY + scanOffset * scanOffset * (ch - horizonY);
+                    ctx.moveTo(0, yLine);
+                    ctx.lineTo(cw, yLine);
+                }
+                ctx.stroke();
+
+                // 4. Anillos HUD Orbitales con rotación autónoma continua + aceleración en scroll
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate(t * 0.22 + p * Math.PI * 1.8);
+                ctx.strokeStyle = `rgba(196,181,253,${(0.28 * intensityScale).toFixed(3)})`;
+                ctx.setLineDash([5, 11]);
+                ctx.beginPath();
+                ctx.arc(0, 0, baseRadius * 1.48 * breathe, 0, Math.PI * 2);
+                ctx.stroke();
+
+                ctx.rotate(-(t * 0.36 + p * Math.PI * 2.6));
+                ctx.strokeStyle = `rgba(${ar},${ag},${ab},${(0.32 * intensityScale).toFixed(3)})`;
+                ctx.setLineDash([26, 16]);
+                ctx.beginPath();
+                ctx.arc(0, 0, baseRadius * 1.24, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.restore();
+
+                // 5. Partículas de Luz Flotantes Independientes (Nube Bokeh 3D Persistente)
+                const dustCos = Math.cos(t * 0.12 + pageP * 1.5);
+                const dustSin = Math.sin(t * 0.12 + pageP * 1.5);
+                ctx.fillStyle = `rgba(221,214,254,${(0.45 * intensityScale).toFixed(3)})`;
+                ctx.beginPath();
+                for (let d = 0; d < dustCount; d++) {
+                    const dx0 = dustX[d];
+                    const dy0 = ((dustY[d] - t * dustSpeed[d] * 0.35 + 3.0) % 3.0) - 1.5;
+                    const dz0 = dustZ[d];
+                    const rdx = dx0 * dustCos - dz0 * dustSin;
+                    const rdz = dx0 * dustSin + dz0 * dustCos;
+                    const dScale = 2.8 / (4.2 + rdz);
+                    const px = cx + rdx * baseRadius * 1.45 * dScale;
+                    const py = cy + dy0 * baseRadius * 1.15 * dScale;
+                    const dr = Math.max(0.9, (1.8 + Math.sin(t * 2.2 + dustPhase[d]) * 0.6) * dScale);
+                    ctx.moveTo(px + dr, py);
+                    ctx.arc(px, py, dr, 0, Math.PI * 2);
+                }
+                ctx.fill();
+
+                // 6. Proyección 3D de la Escultura Principal (Rotación Autónoma + Scroll + Respiración)
+                const rotY = t * 0.34 + p * Math.PI * 3.0 + currentMouseX * 0.35;
+                const rotX = 0.28 + Math.sin(t * 0.55) * 0.16 + Math.sin(p * Math.PI * 2.5) * 0.22 - currentMouseY * 0.28;
+                const cosY = Math.cos(rotY);
+                const sinY = Math.sin(rotY);
+                const cosX = Math.cos(rotX);
+                const sinX = Math.sin(rotX);
+
+                const fovZ = 4.6 + ambientBlend * 0.9;
+
+                for (let i = 0; i < nodeCount; i++) {
+                    let x = lerp(sxArr[i], nxArr[i], w1);
+                    let y = lerp(syArr[i], nyArr[i], w1);
+                    let z = lerp(szArr[i], nzArr[i], w1);
+
+                    x = lerp(x, gxArr[i], w2);
+                    y = lerp(y, gyArr[i], w2);
+                    z = lerp(z, gzArr[i], w2);
+
+                    x = lerp(x, hxArr[i], w3);
+                    y = lerp(y, hyArr[i], w3);
+                    z = lerp(z, hzArr[i], w3);
+
+                    // Onda orgánica autónoma sobre cada nodo (hace que la escultura "respire" viva)
+                    const wave = 1 + Math.sin(t * 1.9 + phaseArr[i]) * 0.055;
+                    x *= wave;
+                    y *= wave;
+                    z *= wave;
+
+                    const rx = x * cosY - z * sinY;
+                    const rz1 = x * sinY + z * cosY;
+                    const ry = y * cosX - rz1 * sinX;
+                    const rz = y * sinX + rz1 * cosX;
+
+                    const scale = 3.4 / (fovZ + rz);
+                    projX[i] = cx + rx * baseRadius * scale;
+                    projY[i] = cy + ry * baseRadius * scale;
+                    projS[i] = scale;
+                }
+
+                // 7. Conexiones Sinápticas Batched + Pulsos de Energía Viajando en Tiempo Real
+                const maxConnectDist = baseRadius * (isMobile ? 0.88 : 0.78);
+                const maxConnectDistSq = maxConnectDist * maxConnectDist;
+
+                ctx.strokeStyle = `rgba(196,181,253,${(0.32 * intensityScale).toFixed(3)})`;
+                ctx.lineWidth = 1.1;
+                ctx.beginPath();
+                for (let i = 0; i < nodeCount; i++) {
+                    const ax = projX[i];
+                    const ay = projY[i];
+                    let links = 0;
+                    for (let j = i + 1; j < nodeCount; j++) {
+                        if (links >= 3) break;
+                        const dx = ax - projX[j];
+                        const dy = ay - projY[j];
+                        if (dx * dx + dy * dy < maxConnectDistSq) {
+                            links++;
+                            ctx.moveTo(ax, ay);
+                            ctx.lineTo(projX[j], projY[j]);
+                        }
+                    }
+                }
+                ctx.stroke();
+
+                // Pulsos luminosos viajando autónomamente entre nodos (efecto fibra óptica violeta)
+                ctx.fillStyle = `rgba(245,243,255,${(0.88 * intensityScale).toFixed(3)})`;
+                ctx.beginPath();
+                const pulseStep = isMobile ? 4 : 3;
+                for (let i = 0; i < nodeCount - 1; i += pulseStep) {
+                    const j = (i + 5) % nodeCount;
+                    const dx = projX[j] - projX[i];
+                    const dy = projY[j] - projY[i];
+                    if (dx * dx + dy * dy < maxConnectDistSq * 1.4) {
+                        const ptT = (t * 0.65 + i * 0.17) % 1;
+                        const px = projX[i] + dx * ptT;
+                        const py = projY[i] + dy * ptT;
+                        const pr = Math.max(1.3, 2.2 * projS[i]);
+                        ctx.moveTo(px + pr, py);
+                        ctx.arc(px, py, pr, 0, Math.PI * 2);
+                    }
+                }
+                ctx.fill();
+
+                // 8. Plano Láser de Escaneo durante la Fase de Auditoría de Stock (64% -> 84%)
+                const laserIntensity = smoothstep(0.62, 0.70, p) * (1 - smoothstep(0.81, 0.88, p)) * (1 - ambientBlend);
+                if (laserIntensity > 0.02) {
+                    const scanY = cy + Math.sin(t * 2.4 + p * Math.PI * 8) * baseRadius * 1.05;
+                    ctx.strokeStyle = `rgba(196,181,253,${(0.82 * laserIntensity).toFixed(2)})`;
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx - baseRadius * 1.5, scanY);
+                    ctx.lineTo(cx + baseRadius * 1.5, scanY);
+                    ctx.stroke();
+                }
+
+                // 9. Nodos Luminosos Batched (Halos Púrpura + Puntos Lavanda)
+                ctx.fillStyle = `rgba(${ar},${ag},${ab},${(0.32 * intensityScale).toFixed(3)})`;
+                ctx.beginPath();
+                for (let i = 0; i < nodeCount; i++) {
+                    const r = Math.max(2, 6.8 * projS[i]);
+                    ctx.moveTo(projX[i] + r, projY[i]);
+                    ctx.arc(projX[i], projY[i], r, 0, Math.PI * 2);
+                }
+                ctx.fill();
+
+                ctx.fillStyle = `rgba(245,243,255,${(0.95 * intensityScale).toFixed(3)})`;
+                ctx.beginPath();
+                for (let i = 0; i < nodeCount; i++) {
+                    const r = Math.max(1.4, 2.7 * projS[i]);
+                    ctx.moveTo(projX[i] + r, projY[i]);
+                    ctx.arc(projX[i], projY[i], r, 0, Math.PI * 2);
+                }
+                ctx.fill();
+
+                // 10. Núcleo Energético + Emblema Hexagonal DEVLANTIA (activo también como firma en secciones inferiores)
+                const coreRadius = baseRadius * (0.21 + w3 * 0.1) * breathe;
+                const coreGrad = ctx.createRadialGradient(cx, cy, coreRadius * 0.1, cx, cy, coreRadius * 1.85);
+                coreGrad.addColorStop(0, `rgba(255,255,255,${(0.92 * intensityScale).toFixed(3)})`);
+                coreGrad.addColorStop(0.35, `rgba(${ar},${ag},${ab},${(0.72 * intensityScale).toFixed(3)})`);
+                coreGrad.addColorStop(1, 'rgba(30,11,54,0)');
+                ctx.fillStyle = coreGrad;
+                ctx.beginPath();
+                ctx.arc(cx, cy, coreRadius * 1.85, 0, Math.PI * 2);
+                ctx.fill();
+
+                const hexVisibility = Math.max(w3, ambientBlend * 0.75);
+                if (hexVisibility > 0.02) {
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(t * 0.18 + (1 - hexVisibility) * 0.5);
+                    const hexR = baseRadius * 0.56 * hexVisibility;
+                    ctx.beginPath();
+                    for (let k = 0; k < 6; k++) {
+                        const angle = (k * Math.PI) / 3 - Math.PI / 2;
+                        const vx = Math.cos(angle) * hexR;
+                        const vy = Math.sin(angle) * hexR;
+                        if (k === 0) ctx.moveTo(vx, vy);
+                        else ctx.lineTo(vx, vy);
+                    }
+                    ctx.closePath();
+                    ctx.strokeStyle = `rgba(196,181,253,${(0.78 * hexVisibility * intensityScale).toFixed(3)})`;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            }
+
+            // ----------------------------------------------------------------------
+            // 4. BUCLE CONTINUO 60FPS (MOVIMIENTO INDEPENDIENTE + SYNC DE SCROLL)
+            // ----------------------------------------------------------------------
+            function updateTelemetryUI(currentIdx) {
+                if (currentIdx !== lastTelemetryFrame) {
+                    lastTelemetryFrame = currentIdx;
+                    if (frameTelemetryEl) {
+                        const modeTag = useVideoFallback ? 'MP4' : (sequenceTemplate ? 'SEQ' : 'LIVE 3D');
+                        frameTelemetryEl.textContent = `${modeTag} // ${formatFrameIndex(currentIdx + 1, 3)} / ${formatFrameIndex(totalFrames, 3)}`;
+                    }
+                }
+
+                const pct = Math.round(playhead.progress * 100);
+                if (pct !== lastPct) {
+                    lastPct = pct;
+                    if (progressPctEl) {
+                        progressPctEl.textContent = `${String(pct).padStart(2, '0')}%`;
+                    }
+                }
+
+                if (progressBarEl) {
+                    progressBarEl.style.transform = `scaleX(${playhead.progress.toFixed(4)})`;
+                }
+
+                const activePhase = Math.min(5, Math.floor(playhead.progress * 5.99));
+                if (activePhase !== lastPhase) {
+                    lastPhase = activePhase;
+                    phaseDots.forEach((dot, idx) => {
+                        dot.classList.toggle('is-active', idx === activePhase);
+                    });
+                    if (phaseLabelEl && phaseNames[activePhase]) {
+                        phaseLabelEl.textContent = phaseNames[activePhase];
+                    }
+                }
+            }
+
+            function renderLoop(now) {
+                requestAnimationFrame(renderLoop);
+                if (document.hidden) {
+                    lastRafTs = now;
+                    return;
+                }
+
+                const dt = Math.min((now - lastRafTs) * 0.001, 0.05);
+                lastRafTs = now;
+
+                // Reloj 3D autónomo: sigue avanzando suavemente aunque el scroll esté detenido
+                if (isAutoMotionActive) {
+                    autoTime += dt;
+                }
+
+                // Suavizado ultra-fluido del progreso visual del canvas y parallax del cursor
+                playhead.smoothProgress += (playhead.progress - playhead.smoothProgress) * (isTouchDevice ? 0.28 : 0.16);
+                currentMouseX += (targetMouseX - currentMouseX) * 0.06;
+                currentMouseY += (targetMouseY - currentMouseY) * 0.06;
+
+                const currentIdx = Math.max(0, Math.min(totalFrames - 1, Math.round(playhead.smoothProgress * (totalFrames - 1))));
+
+                if (sequenceTemplate && imageFrames[currentIdx] && imageFrames[currentIdx].complete && imageFrames[currentIdx].naturalWidth > 0) {
+                    const img = imageFrames[currentIdx];
+                    ctx.fillStyle = '#1E0B36';
+                    ctx.fillRect(0, 0, cw, ch);
+                    drawMediaCover(img, img.naturalWidth, img.naturalHeight);
+                } else if (useVideoFallback && videoReady && fallbackVideo.readyState >= 2) {
+                    ctx.fillStyle = '#1E0B36';
+                    ctx.fillRect(0, 0, cw, ch);
+                    drawMediaCover(fallbackVideo, fallbackVideo.videoWidth, fallbackVideo.videoHeight);
+                } else {
+                    renderLiving3DLightScene(playhead.smoothProgress, autoTime, playhead.postHeroBlend, playhead.pageProgress);
+                }
+
+                updateTelemetryUI(currentIdx);
+            }
+
+            // Inicializar dimensiones exactas del Canvas persistente
+            canvas.width = Math.round(cw * dpr);
+            canvas.height = Math.round(ch * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            updateScrollBounds();
+            requestAnimationFrame(renderLoop);
+
+            let resizeTimer = null;
+            function resizeScrollyCanvas() {
+                const nextW = window.innerWidth;
+                const nextH = window.innerHeight;
+                if (isTouchDevice && Math.abs(nextW - cw) < 2 && Math.abs(nextH - ch) < 120) {
+                    return;
+                }
+                cw = nextW;
+                ch = nextH;
+                isMobile = cw < 768;
+                totalFrames = isMobile ? mobileFrames : desktopFrames;
+                dpr = isMobile ? 1 : Math.min(window.devicePixelRatio || 1, 1.5);
+
+                canvas.width = Math.round(cw * dpr);
+                canvas.height = Math.round(ch * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                updateScrollBounds();
+            }
+
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(resizeScrollyCanvas, 150);
+            }, { passive: true });
+
+            // Control de pointer-events solo en el bloque actualmente visible
+            function setActiveInteractiveBlock(activeIdx) {
+                if (activeIdx === lastActiveBlockIdx) return;
+                lastActiveBlockIdx = activeIdx;
+                blocks.forEach((block, idx) => {
+                    if (!block) return;
+                    const inner = block.querySelector('.scrolly-text-block-inner');
+                    if (inner) {
+                        inner.style.pointerEvents = (idx === activeIdx) ? 'auto' : 'none';
+                    }
+                });
+            }
+
+            setActiveInteractiveBlock(0);
+
+            // ----------------------------------------------------------------------
+            // 5. TIMELINE GSAP SCROLLTRIGGER PARA LOS 6 BLOQUES (INTRO + 4 SERVICIOS + CIERRE)
+            // ----------------------------------------------------------------------
+            if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+                gsap.set(blocks.slice(1), {
+                    autoAlpha: 0,
+                    y: 38,
+                    scale: 0.97
+                });
+                gsap.set(blocks[0], {
+                    autoAlpha: 1,
+                    y: 0,
+                    scale: 1
+                });
+
+                const tl = gsap.timeline({
+                    scrollTrigger: {
+                        trigger: trackSection,
+                        start: 'top top',
+                        end: 'bottom bottom',
+                        scrub: isTouchDevice ? true : 0.2,
+                        onUpdate: (self) => {
+                            playhead.progress = self.progress;
+                            playhead.frame = self.progress * (totalFrames - 1);
+
+                            if (useVideoFallback && videoReady && fallbackVideo.duration) {
+                                const targetTime = self.progress * Math.max(0.1, fallbackVideo.duration - 0.05);
+                                if (Math.abs(fallbackVideo.currentTime - targetTime) > 0.04) {
+                                    fallbackVideo.currentTime = targetTime;
+                                }
+                            }
+
+                            const p = self.progress;
+                            if (p < 0.15) setActiveInteractiveBlock(0);
+                            else if (p < 0.32) setActiveInteractiveBlock(1);
+                            else if (p < 0.49) setActiveInteractiveBlock(2);
+                            else if (p < 0.66) setActiveInteractiveBlock(3);
+                            else if (p < 0.83) setActiveInteractiveBlock(4);
+                            else setActiveInteractiveBlock(5);
+                        }
+                    }
+                });
+
+                if (scrollPromptEl) {
+                    tl.to(scrollPromptEl, {
+                        autoAlpha: 0,
+                        y: 8,
+                        duration: 4,
+                        ease: 'power1.out'
+                    }, 1);
+                }
+
+                // BLOQUE 0 (0 -> 15): Intro DEVLANTIA
+                tl.to(blocks[0], {
+                    autoAlpha: 0,
+                    y: -38,
+                    scale: 0.97,
+                    duration: 8,
+                    ease: 'power2.inOut'
+                }, 7);
+
+                // BLOQUE 1 (16 -> 32): Servicio 01 — Concierge Digital con IA
+                tl.to(blocks[1], { autoAlpha: 1, y: 0, scale: 1, duration: 5, ease: 'power2.out' }, 16)
+                  .to(blocks[1], { autoAlpha: 0, y: -36, scale: 0.97, duration: 5, ease: 'power2.in' }, 27);
+
+                // BLOQUE 2 (33 -> 49): Servicio 02 — Menú QR para Restaurantes
+                tl.to(blocks[2], { autoAlpha: 1, y: 0, scale: 1, duration: 5, ease: 'power2.out' }, 33)
+                  .to(blocks[2], { autoAlpha: 0, y: -36, scale: 0.97, duration: 5, ease: 'power2.in' }, 44);
+
+                // BLOQUE 3 (50 -> 66): Servicio 03 — Desarrollo Web & E-Commerce
+                tl.to(blocks[3], { autoAlpha: 1, y: 0, scale: 1, duration: 5, ease: 'power2.out' }, 50)
+                  .to(blocks[3], { autoAlpha: 0, y: -36, scale: 0.97, duration: 5, ease: 'power2.in' }, 61);
+
+                // BLOQUE 4 (67 -> 83): Servicio 04 — Auditoría de Stock Inteligente
+                tl.to(blocks[4], { autoAlpha: 1, y: 0, scale: 1, duration: 5, ease: 'power2.out' }, 67)
+                  .to(blocks[4], { autoAlpha: 0, y: -36, scale: 0.97, duration: 5, ease: 'power2.in' }, 78);
+
+                // BLOQUE 5 (84 -> 100): Cierre & Diagnóstico
+                tl.to(blocks[5], { autoAlpha: 1, y: 0, scale: 1, duration: 6, ease: 'power2.out' }, 84)
+                  .to(blocks[5], { autoAlpha: 1, y: 0, duration: 10 }, 90);
+            }
+        })();
     </script>
 </body>
 
